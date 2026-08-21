@@ -13,7 +13,7 @@ const APP = {
     dateFormat: 'DD/MM/YYYY'
   },
   gdriveConfig: {
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbxb93ptWDyQPMNxtvQz8dRWa2-lb_BisBPyYVCAoACv394NJTywemZbrgQdfrJDbuXA5g/exec',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbw5sgzUBXZtkAXMcx_9h_d60tBPxSH7iu_wGKc03g-CXUBDpm3WPaS6UmLdQ5EwkCNeUg/exec',
     folderId: '1dMnCqrDz6TGBgrQon-5NgbUFP3R4zosM'
   },
   otpCode: null,

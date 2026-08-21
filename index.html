@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#F8FAF9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>My Health Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash" class="screen active">
+  <div class="splash-content">
+    <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/app-logo.png" alt="My Health Journal" class="app-logo" id="splashLogo" />
+    <h1 class="brand-name">My Health Journal</h1>
+    <p class="brand-tagline">Log, Track &amp; Live Well!</p>
+    <div class="splash-loader"></div>
+    <div class="splash-credit"><p class="splash-dev">Developed &amp; Maintained by</p><p class="splash-brand">WhiteMoon Jeweller | Asad Jewellers, Okara</p></div>
+  </div>
+</div>
+
+<!-- ===== APP CONTAINER ===== -->
+<div id="app">
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="top-bar" id="topBar">
+    <div class="brand">
+      <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/reporting-logo.png" alt="Logo" class="mini-logo" id="topLogo" />
+    </div>
+    <div class="actions">
+      <span id="topTime" class="top-time">--:--:--</span>
+      <div class="avatar" id="topAvatar" title="Account menu" hidden>
+        <span id="avatarInitials">U</span>
+      </div>
+      <div class="avatar-menu" id="avatarMenu" hidden>
+        <button data-avatar-action="profile">Edit Profile</button><button data-avatar-action="security">Security</button>
+        <button data-avatar-action="pdf">Export (PDF)</button><button data-avatar-action="csv">Export (CSV)</button>
+        <button data-avatar-action="drive">Backup to Drive</button><button data-avatar-action="settings">Settings</button>
+        <button data-avatar-action="logout" class="danger-text">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SCREEN CONTAINER ===== -->
+  <div class="screen-container" id="screenContainer">
+
+    <!-- ===== LOGIN (Screen 02) ===== -->
+    <div class="screen-view active" id="view-login">
+      <div class="card login-card preauth-card">
+        <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/app-logo.png" alt="My Health Journal" class="preauth-logo" />
+        <div class="quick-auth-row">
+          <button class="quick-auth" id="openLoginSheet"><span class="ui-icon">&#9655;</span><strong>Login</strong></button>
+          <button class="quick-auth" id="pinLoginBtn"><span class="ui-icon">&#128274;</span><strong>PIN</strong><small>XXXXX</small></button>
+        </div>
+        <button class="biometric-btn" id="biometricLoginBtn"><span class="ui-icon">&#9783;</span> Fingerprint Unlock</button>
+        <a href="#" id="forgotPasswordLink" class="credentials-link">Forgot Your Credentials?</a>
+        <div class="preauth-options">
+          <button id="goRegister"><span>&#43;</span> Register Account</button>
+          <button data-recovery="pin"><span>&#9679;</span> Change PIN</button>
+          <button data-recovery="password"><span>&#9632;</span> Change Password</button>
+          <button id="switchAccountBtn"><span>&#8644;</span> Switch Account</button>
+        </div>
+      </div>
+      <div class="login-sheet" id="loginSheet" hidden>
+        <div class="modal-handle"></div><h3>Sign in</h3>
+        <div class="input-group"><label>Email or Username</label><input type="text" id="loginEmail" placeholder="Enter your email or username" autocomplete="email" /></div>
+        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter your password" /><button class="toggle-pw" data-target="loginPassword" type="button">&#9673;</button></div></div>
+        <button class="btn-primary" id="loginBtn">Login</button><button class="btn-outline" id="closeLoginSheet">Cancel</button>
+      </div>
+      <div class="pin-sheet" id="pinSheet" hidden><div class="modal-handle"></div><h3>Quick PIN</h3><div class="input-group"><label>5-digit PIN</label><input type="password" id="loginPin" placeholder="XXXXX" maxlength="5" inputmode="numeric" class="pin-input" /></div><button class="btn-primary" id="submitPinLogin">Login with PIN</button><button class="btn-outline" id="closePinSheet">Cancel</button></div>
+    </div>
+
+    <!-- ===== REGISTER (Screen 03 + 04 Combined) ===== -->
+    <div class="screen-view" id="view-register">
+      <div class="card">
+        <h2 class="section-title">Create Your Profile</h2>
+        <p class="section-sub">Set up your journal with personal details and security</p>
+
+        <!-- Personal Information -->
+        <div class="form-section">
+          <h3 class="form-section-title">Personal Information <span class="required-star">*</span></h3>
+
+          <div class="input-group">
+            <label>Full Name <span class="required-star">*</span></label>
+            <input type="text" id="regName" placeholder="Enter your full name" autocomplete="name" required />
+          </div>
+
+          <div class="input-group">
+            <label>Email <span class="required-star">*</span></label>
+            <input type="email" id="regEmail" placeholder="name@email.com" autocomplete="email" required />
+          </div>
+
+          <div class="input-group">
+            <label>Phone Number <span class="required-star">*</span></label>
+            <input type="tel" id="regPhone" placeholder="03XX-XXXXXXX" required />
+          </div>
+
+          <div class="input-group">
+            <label>Date of Birth <span class="required-star">*</span></label>
+            <input type="date" id="regDob" required />
+            <span id="regAge" class="age-display"></span>
+          </div>
+
+          <div class="input-group">
+            <label>Gender</label>
+            <select id="regGender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Address</label>
+            <input type="text" id="regAddress" placeholder="Your complete address" />
+          </div>
+
+          <div class="input-group">
+            <label>Blood Group</label>
+            <select id="regBlood">
+              <option value="">Select Blood Group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Emergency Contact Relationship</label>
+            <select id="regRelation">
+              <option value="">Select Relationship</option>
+              <option value="Parent">Parent</option>
+              <option value="Guardian">Guardian</option>
+              <option value="Spouse">Spouse</option>
+              <option value="Sibling">Sibling</option>
+              <option value="Child">Child</option>
+              <option value="Other Family Member">Other Family Member</option>
+              <option value="Friend">Friend</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Emergency Contact</label>
+            <input type="tel" id="regEmerg" placeholder="03XX-XXXXXXX" />
+          </div>
+
+          <div class="input-group">
+            <label>General Notes</label>
+            <textarea id="regNotes" placeholder="Add any important general information..."></textarea>
+          </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="form-section">
+          <h3 class="form-section-title">Security Settings <span class="required-star">*</span></h3>
+
+          <div class="input-group">
+            <label>Create Password (min 5 characters) <span class="required-star">*</span></label>
+            <div class="password-wrap">
+              <input type="password" id="regPassword" placeholder="Create your password (min 5 characters)" />
+              <button class="toggle-pw" data-target="regPassword" type="button">👁</button>
+            </div>
+            <div id="regPasswordError" class="error-msg" style="display:none;">Password must be at least 5 characters</div>
+          </div>
+
+          <div class="input-group">
+            <label>Confirm Password <span class="required-star">*</span></label>
+            <div class="password-wrap">
+              <input type="password" id="regPasswordConfirm" placeholder="Confirm your password" />
+              <button class="toggle-pw" data-target="regPasswordConfirm" type="button">👁</button>
+            </div>
+            <div id="regPasswordMatchError" class="error-msg" style="display:none;">Passwords do not match</div>
+          </div>
+
+          <div class="input-group">
+            <label>Create Quick PIN (exactly 5 digits) <span class="required-star">*</span></label>
+            <div class="password-wrap">
+              <input type="password" id="regPin" placeholder="Create your PIN (min 5 characters)" maxlength="5" inputmode="numeric" />
+              <button class="toggle-pw" data-target="regPin" type="button">👁</button>
+            </div>
+            <div id="regPinError" class="error-msg" style="display:none;">PIN must be exactly 5 digits</div>
+          </div>
+
+          <div class="input-group">
+            <label>Confirm PIN <span class="required-star">*</span></label>
+            <div class="password-wrap">
+              <input type="password" id="regPinConfirm" placeholder="Confirm your PIN" maxlength="5" inputmode="numeric" />
+              <button class="toggle-pw" data-target="regPinConfirm" type="button">👁</button>
+            </div>
+            <div id="regPinMatchError" class="error-msg" style="display:none;">PINs do not match</div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="finishSignupBtn">Create Account</button>
+        <button class="btn-outline mt-8" id="backToLogin">← Back to Login</button>
+      </div>
+    </div>
+
+    <!-- ===== OTP VERIFICATION ===== -->
+    <div class="screen-view" id="view-otp">
+      <div class="card">
+        <h2 class="section-title">Verify Your Email</h2>
+        <p class="section-sub">We've sent a 6-digit OTP to <span id="otpEmailDisplay"></span></p>
+
+        <div class="input-group">
+          <label>Enter OTP</label>
+          <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6" inputmode="numeric" />
+        </div>
+
+        <button class="btn-primary" id="verifyOtpBtn">Verify OTP</button>
+        <button class="btn-outline mt-8" id="resendOtpBtn">Resend OTP</button>
+        <button class="btn-outline mt-8" id="cancelOtpBtn">Cancel</button>
+        <div id="otpError" class="error-msg" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- ===== FORGOT PASSWORD ===== -->
+    <div class="screen-view" id="view-forgot">
+      <div class="card">
+        <h2 class="section-title">Reset Password</h2>
+        <p class="section-sub">Enter your email to receive OTP for password reset</p>
+
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="forgotEmail" placeholder="name@email.com" />
+        </div>
+
+        <button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
+        <button class="btn-outline mt-8" id="backToLoginFromForgot">← Back to Login</button>
+      </div>
+    </div>
+
+    <!-- ===== RESET PASSWORD ===== -->
+    <div class="screen-view" id="view-reset">
+      <div class="card">
+        <h2 class="section-title">Set New Password</h2>
+        <p class="section-sub">Enter your new password</p>
+
+        <div class="input-group">
+          <label>New Password (min 5 characters)</label>
+          <div class="password-wrap">
+            <input type="password" id="resetNewPw" placeholder="Enter new password" />
+            <button class="toggle-pw" data-target="resetNewPw" type="button">👁</button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Confirm New Password</label>
+          <div class="password-wrap">
+            <input type="password" id="resetNewPwConfirm" placeholder="Confirm new password" />
+            <button class="toggle-pw" data-target="resetNewPwConfirm" type="button">👁</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
+        <button class="btn-outline mt-8" id="backToLoginFromReset">← Back to Login</button>
+      </div>
+    </div>
+
+    <!-- ===== ACCOUNT READY (Screen 05) ===== -->
+    <div class="screen-view" id="view-ready">
+      <div class="card ready-card">
+        <div class="ready-icon">✅</div>
+        <h2 class="ready-title">You're all set, <span id="readyName">User</span>.</h2>
+        <p class="ready-sub">Your journal is ready.</p>
+        <button class="btn-primary" id="startJournalBtn">START JOURNAL</button>
+      </div>
+    </div>
+
+    <!-- ===== HOME (Screen 06) ===== -->
+    <div class="screen-view" id="view-home">
+      <div class="home-header">
+        <div class="greeting" id="greetingMsg">Good Morning, User</div>
+        <div class="home-date" id="homeDate">19 Aug 2026 · 01:45:07 PM</div>
+      </div>
+
+      <!-- Current Reading Card -->
+      <div class="card reading-card" id="currentReadingCard">
+        <div class="reading-display">
+          <div class="reading-label">Current Blood Pressure</div>
+          <div class="reading-value" id="currentBP">-- / --</div>
+          <div class="reading-unit">mmHg</div>
+          <div class="reading-status" id="currentStatus">No reading yet</div>
+          <div class="reading-pulse" id="currentPulse">Pulse -- BPM</div>
+          <div class="reading-time" id="currentReadingTime">--:--:-- · DD MMM YYYY</div>
+        </div>
+        <button class="btn-primary record-btn" id="recordFromHome">+ Record Measurement</button>
+      </div>
+
+      <!-- Today's Snapshot -->
+      <div class="card snapshot-card">
+        <h3 class="snapshot-title">Today's Snapshot</h3>
+
+        <div class="snapshot-grid">
+          <div class="snapshot-item">
+            <span class="snapshot-label">Average BP</span>
+            <span class="snapshot-value" id="todayAvgBP">-- / --</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Average Pulse</span>
+            <span class="snapshot-value" id="todayAvgPulse">-- BPM</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Highest BP</span>
+            <span class="snapshot-value" id="todayHighestBP">-- / --</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Lowest BP</span>
+            <span class="snapshot-value" id="todayLowestBP">-- / --</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Highest Pulse</span>
+            <span class="snapshot-value" id="todayHighestPulse">-- BPM</span>
+          </div>
+          <div class="snapshot-item">
+            <span class="snapshot-label">Lowest Pulse</span>
+            <span class="snapshot-value" id="todayLowestPulse">-- BPM</span>
+          </div>
+        </div>
+
+        <div class="today-consistency">
+          <span class="consistency-label">Measurement Consistency</span>
+          <span class="consistency-value" id="todayConsistency">0%</span>
+          <span class="consistency-grade" id="todayConsistencyGrade">Awful</span>
+        </div>
+
+        <div class="daily-windows">
+          <div class="window-item" id="wMorning">
+            <span class="window-icon">🌅</span>
+            <span class="window-name">Morning</span>
+            <span class="window-status pending">Pending</span>
+          </div>
+          <div class="window-item" id="wAfternoon">
+            <span class="window-icon">☀️</span>
+            <span class="window-name">Afternoon</span>
+            <span class="window-status pending">Pending</span>
+          </div>
+          <div class="window-item" id="wEvening">
+            <span class="window-icon">🌙</span>
+            <span class="window-name">Evening</span>
+            <span class="window-status pending">Pending</span>
+          </div>
+        </div>
+
+        <div id="todayReadingsList" class="today-readings-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== RECORD MEASUREMENT (Screen 06B) ===== -->
+    <div class="screen-view" id="view-record">
+      <div class="card">
+        <h2 class="section-title">Record Measurement</h2>
+
+        <div class="input-group">
+          <label>Systolic (mmHg)</label>
+          <input type="number" id="recSys" value="120" min="0" max="300" />
+        </div>
+
+        <div class="input-group">
+          <label>Diastolic (mmHg)</label>
+          <input type="number" id="recDia" value="80" min="0" max="200" />
+        </div>
+
+        <div class="input-group">
+          <label>Pulse (BPM)</label>
+          <input type="number" id="recPulse" value="72" min="0" max="250" />
+        </div>
+
+        <div class="input-group">
+          <label>Date</label>
+          <input type="date" id="recDate" />
+        </div>
+
+        <div class="input-group">
+          <label>Time</label>
+          <input type="time" id="recTime" step="1" />
+        </div>
+
+        <button class="btn-outline expand-btn" id="expandDetailsBtn">＋ Add measurement details</button>
+
+        <div id="extraDetails" style="display:none;">
+          <div class="input-group">
+            <label>Symptoms (select multiple)</label>
+            <select id="recSymptoms" multiple>
+              <option value="Feeling normal">Feeling normal</option>
+              <option value="Headache">Headache</option>
+              <option value="Dizziness">Dizziness</option>
+              <option value="Fatigue">Fatigue</option>
+              <option value="Stress">Stress</option>
+              <option value="Anxiety">Anxiety</option>
+              <option value="Nausea">Nausea</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="input-group" id="otherSymptomGroup" style="display:none;">
+            <label>Other Symptom</label>
+            <input type="text" id="recOtherSymptom" placeholder="Describe your symptom..." />
+          </div>
+          <div class="input-group">
+            <label>Arm</label>
+            <select id="recArm">
+              <option value="Left">Left</option>
+              <option value="Right">Right</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Position</label>
+            <select id="recPos">
+              <option value="Sitting">Sitting</option>
+              <option value="Standing">Standing</option>
+              <option value="Lying">Lying</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Medication</label>
+            <select id="recMed">
+              <option value="Before medication">Before medication</option>
+              <option value="After medication">After medication</option>
+              <option value="Not applicable">Not applicable</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Meal</label>
+            <select id="recMeal">
+              <option value="Before meal">Before meal</option>
+              <option value="After meal">After meal</option>
+              <option value="Not applicable">Not applicable</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Activity</label>
+            <select id="recAct">
+              <option value="Resting">Resting</option>
+              <option value="After walking">After walking</option>
+              <option value="After exercise">After exercise</option>
+              <option value="After climbing stairs">After climbing stairs</option>
+              <option value="After stressful activity">After stressful activity</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Recent intake</label>
+            <select id="recIntake">
+              <option value="None">None</option>
+              <option value="Coffee/tea">Coffee/tea</option>
+              <option value="Meal">Meal</option>
+              <option value="Salty food">Salty food</option>
+              <option value="Smoking">Smoking</option>
+              <option value="Medication">Medication</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Additional Note</label>
+            <textarea id="recExtraNote" placeholder="Add anything else..."></textarea>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="saveReadingBtn">SAVE READING</button>
+        <button class="btn-outline mt-8" id="cancelRecord">Cancel</button>
+      </div>
+    </div>
+
+    <!-- ===== READING RESULT (Screen 08) ===== -->
+    <div class="screen-view" id="view-result">
+      <div class="card result-card">
+        <div class="result-icon">✅</div>
+        <h2 class="result-title">Reading Saved</h2>
+        <div class="result-bp" id="resultBP">-- / --</div>
+        <div class="result-status" id="resultStatus">--</div>
+        <div class="result-pulse" id="resultPulse">Pulse: -- BPM</div>
+        <div class="result-time" id="resultTime">Recorded at --:--:--</div>
+        <div class="result-avg" id="resultAvg">Today's average: -- / --</div>
+        <div class="result-count" id="resultCount">0 of 3 recommended daily readings</div>
+        <button class="btn-primary" id="resultDoneBtn">DONE</button>
+      </div>
+    </div>
+
+    <!-- ===== HISTORY (Screen 09) ===== -->
+    <div class="screen-view" id="view-history">
+      <div class="card">
+        <h2 class="section-title">History</h2>
+
+        <div class="history-filters">
+          <button class="filter-btn-small active" data-history="1">1D</button>
+          <button class="filter-btn-small" data-history="2">2D</button>
+          <button class="filter-btn-small" data-history="3">3D</button>
+          <button class="filter-btn-small" data-history="7">7D</button>
+          <button class="filter-btn-small" data-history="14">14D</button>
+          <button class="filter-btn-small" data-history="30">30D</button>
+          <button class="filter-btn-small" data-history="60">60D</button>
+          <button class="filter-btn-small" data-history="90">90D</button>
+          <button class="filter-btn-small" data-history="180">180D</button>
+          <button class="filter-btn-small" data-history="custom">Custom</button>
+        </div>
+
+        <div id="historyCustomRange" style="display:none;">
+          <div class="input-group inline-group">
+            <label>From</label>
+            <input type="date" id="historyFrom" />
+          </div>
+          <div class="input-group inline-group">
+            <label>To</label>
+            <input type="date" id="historyTo" />
+          </div>
+          <button class="btn-secondary" id="applyHistoryFilter">Apply</button>
+        </div>
+
+        <div id="historyDateDisplay" class="history-date-display"></div>
+        <div class="history-bulk"><label><input type="checkbox" id="selectAllHistory" /> Select All</label><button class="btn-secondary" id="bulkExportBtn" disabled>Export Selected</button><button class="btn-secondary danger-btn" id="bulkDeleteBtn" disabled>Delete Selected</button></div>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== READING DETAIL (Screen 10) ===== -->
+    <div class="screen-view" id="view-detail">
+      <div class="card">
+        <button class="btn-outline back-btn" id="backFromDetail">← Back</button>
+        <div id="detailContent"></div>
+      </div>
+    </div>
+
+    <!-- ===== TRENDS (Screen 11) ===== -->
+    <div class="screen-view" id="view-trends">
+      <div class="card">
+        <h2 class="section-title">Trend Analysis</h2>
+
+        <div class="filter-bar">
+          <button class="filter-btn" data-days="1">1D</button>
+          <button class="filter-btn" data-days="2">2D</button>
+          <button class="filter-btn" data-days="3">3D</button>
+          <button class="filter-btn" data-days="7">7D</button>
+          <button class="filter-btn active" data-days="14">14D</button>
+          <button class="filter-btn" data-days="30">30D</button>
+          <button class="filter-btn" data-days="60">60D</button>
+          <button class="filter-btn" data-days="90">90D</button>
+          <button class="filter-btn" data-days="180">180D</button>
+          <button class="filter-btn" data-days="custom">Custom</button>
+        </div>
+
+        <div id="customDateRange" style="display:none;">
+          <div class="input-group inline-group">
+            <label>From</label>
+            <input type="date" id="trendFrom" />
+          </div>
+          <div class="input-group inline-group">
+            <label>To</label>
+            <input type="date" id="trendTo" />
+          </div>
+          <button class="btn-secondary" id="applyCustomRange">Apply</button>
+        </div>
+
+        <div id="trendDateDisplay" class="trend-date-display"></div>
+
+        <!-- Chart Options -->
+        <div class="chart-options">
+          <button class="chart-option active" data-chart="bp">BP Only</button>
+          <button class="chart-option" data-chart="pulse">Pulse Only</button>
+          <button class="chart-option" data-chart="combined">Combined</button>
+        </div>
+
+        <div class="trend-stats" id="trendStats">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <span class="stat-label">Average BP</span>
+              <span class="stat-value" id="trendAvgBP">-- / --</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Average Pulse</span>
+              <span class="stat-value" id="trendAvgPulse">-- BPM</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Highest BP</span>
+              <span class="stat-value" id="trendHighestBP">-- / --</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Lowest BP</span>
+              <span class="stat-value" id="trendLowestBP">-- / --</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Highest Pulse</span>
+              <span class="stat-value" id="trendHighestPulse">-- BPM</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Lowest Pulse</span>
+              <span class="stat-value" id="trendLowestPulse">-- BPM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-consistency">
+          <h4>Measurement Consistency</h4>
+          <div class="consistency-display">
+            <span class="consistency-percent" id="trendConsistencyPercent">0%</span>
+            <span class="consistency-grade" id="trendConsistencyGrade">Awful</span>
+          </div>
+          <div class="consistency-detail" id="trendConsistencyDetail">0 of 0 expected readings</div>
+        </div>
+
+        <div class="chart-container">
+          <h4>Blood Pressure Trend</h4>
+          <div class="chart-area" id="bpChart">
+            <canvas id="bpChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h4>Pulse Trend</h4>
+          <div class="chart-area" id="pulseChart">
+            <canvas id="pulseChartCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROFILE (Screen 17) ===== -->
+    <div class="screen-view" id="view-profile">
+      <div class="card">
+        <h2 class="section-title">Profile</h2>
+
+        <div id="profileView">
+          <div class="profile-avatar-section">
+            <div class="profile-avatar" id="profileAvatar">
+              <span id="profileAvatarInitials">U</span>
+            </div>
+            <div class="avatar-actions">
+              <button class="btn-secondary" id="uploadAvatarBtn">Upload Photo</button>
+              <button class="btn-secondary" id="chooseEmojiBtn">Choose Emoji</button>
+            </div>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
+          </div>
+
+          <div class="profile-field">
+            <label>Full Name</label>
+            <span id="pName">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Email</label>
+            <span id="pEmail">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Phone</label>
+            <span id="pPhone">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Date of Birth</label>
+            <span id="pDob">--</span>
+          </div>
+          <div class="profile-field"><label>Age</label><span id="pAge" class="age-display">--</span></div>
+          <div class="profile-field">
+            <label>Gender</label>
+            <span id="pGender">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Address</label>
+            <span id="pAddress">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Blood Group</label>
+            <span id="pBlood">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Emergency Contact</label>
+            <span id="pEmerg">--</span>
+          </div>
+          <div class="profile-field">
+            <label>Notes</label>
+            <span id="pNotes">--</span>
+          </div>
+
+          <button class="btn-primary" id="editProfileBtn">Edit Profile</button>
+          <button class="btn-outline mt-8" id="securityBtn">Security</button>
+          <button class="btn-outline mt-8" id="exportBackupBtn">Export / Backup</button>
+          <button class="btn-outline mt-8" id="logoutBtn">Logout</button>
+          <button class="btn-outline mt-8" id="settingsBtn">Settings</button>
+        </div>
+
+        <!-- Edit Profile -->
+        <div id="profileEdit" style="display:none;">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="editName" placeholder="Enter your full name" />
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="editEmail" placeholder="name@email.com" />
+          </div>
+          <div class="input-group">
+            <label>Phone</label>
+            <input type="tel" id="editPhone" placeholder="03XX-XXXXXXX" />
+          </div>
+          <div class="input-group">
+            <label>Date of Birth</label>
+            <input type="date" id="editDob" />
+          </div>
+          <div class="input-group">
+            <label>Gender</label>
+            <select id="editGender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Address</label>
+            <input type="text" id="editAddress" placeholder="Your complete address" />
+          </div>
+          <div class="input-group">
+            <label>Blood Group</label>
+            <select id="editBlood">
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Emergency Contact</label>
+            <input type="tel" id="editEmerg" placeholder="03XX-XXXXXXX" />
+          </div>
+          <div class="input-group">
+            <label>Notes</label>
+            <textarea id="editNotes" placeholder="Add any important information..."></textarea>
+          </div>
+          <button class="btn-primary" id="saveProfileBtn">Save Profile</button>
+          <button class="btn-outline mt-8" id="cancelEditProfile">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-container -->
+
+  <!-- ===== BOTTOM NAVIGATION ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" data-screen="home">
+      <span class="nav-icon">&#8962;</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-item" data-screen="history">
+      <span class="nav-icon">&#9776;</span>
+      <span class="nav-label">History</span>
+    </button>
+    <button class="nav-item" data-screen="trends">
+      <span class="nav-icon">&#8599;</span>
+      <span class="nav-label">Trends</span>
+    </button>
+    <button class="nav-item" data-screen="profile">
+      <span class="nav-icon">&#9675;</span>
+      <span class="nav-label">Profile</span>
+    </button>
+    <button class="nav-item fab-btn" id="fabRecord">+</button>
+  </nav>
+
+</div><!-- /app -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Export / Backup</h3>
+
+    <div class="input-group">
+      <label>From Date</label>
+      <input type="date" id="exportFrom" />
+    </div>
+    <div class="input-group">
+      <label>To Date</label>
+      <input type="date" id="exportTo" />
+    </div>
+
+    <button class="btn-primary export-option" data-type="pdf">PDF Report</button>
+    <button class="btn-primary export-option" data-type="csv">CSV Data</button>
+    <button class="btn-primary export-option" data-type="backup">Backup File</button>
+    <button class="btn-primary export-option" data-type="gdrive">Google Drive Backup</button>
+    <button class="btn-outline" id="closeExport">Cancel</button>
+  </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Import Journal Data</h3>
+    <p class="import-info">Import your JSON backup file to restore data</p>
+    <button class="btn-primary" id="importBackupBtn">📥 Import Backup</button>
+    <input type="file" id="fileInput" style="display:none" accept=".json" />
+    <div id="importPreview" class="import-preview"></div>
+    <button class="btn-outline" id="closeImport">Cancel</button>
+  </div>
+</div>
+
+<!-- Avatar Selection Modal -->
+<div class="modal-overlay" id="avatarModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Choose Avatar</h3>
+    <div class="avatar-options">
+      <div class="avatar-option" data-avatar="👨">👨</div>
+      <div class="avatar-option" data-avatar="👩">👩</div>
+      <div class="avatar-option" data-avatar="🧑">🧑</div>
+      <div class="avatar-option" data-avatar="👴">👴</div>
+      <div class="avatar-option" data-avatar="👵">👵</div>
+      <div class="avatar-option" data-avatar="🧔">🧔</div>
+      <div class="avatar-option" data-avatar="👶">👶</div>
+      <div class="avatar-option" data-avatar="🧒">🧒</div>
+      <div class="avatar-option" data-avatar="🧓">🧓</div>
+    </div>
+    <button class="btn-outline" id="closeAvatarModal">Cancel</button>
+  </div>
+</div>
+
+<!-- Security Modal -->
+<div class="modal-overlay" id="securityModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Security Settings</h3>
+
+    <div class="input-group">
+      <label>New Password (min 5 chars)</label>
+      <div class="password-wrap">
+        <input type="password" id="secNewPw" placeholder="Enter new password" />
+        <button class="toggle-pw" data-target="secNewPw" type="button">👁</button>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Confirm New Password</label>
+      <div class="password-wrap">
+        <input type="password" id="secNewPwConfirm" placeholder="Confirm new password" />
+        <button class="toggle-pw" data-target="secNewPwConfirm" type="button">👁</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>New PIN (exactly 5 digits)</label>
+      <div class="password-wrap">
+        <input type="password" id="secNewPin" placeholder="Enter new PIN" maxlength="5" inputmode="numeric" />
+        <button class="toggle-pw" data-target="secNewPin" type="button">👁</button>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Confirm New PIN</label>
+      <div class="password-wrap">
+        <input type="password" id="secNewPinConfirm" placeholder="Confirm new PIN" maxlength="5" inputmode="numeric" />
+        <button class="toggle-pw" data-target="secNewPinConfirm" type="button">👁</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="saveSecurityBtn">Save Security Settings</button>
+    <button class="btn-outline" id="closeSecurityModal">Cancel</button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Settings</h3>
+
+    <div class="settings-item">
+      <label>Enable PIN</label>
+      <label class="switch">
+        <input type="checkbox" id="appLockToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="settings-item"><label>Enable Biometric Verification</label><label class="switch"><input type="checkbox" id="biometricToggle" /><span class="slider"></span></label></div>
+    <details class="reference-guide"><summary>BP &amp; Pulse Classification</summary><h4>Blood Pressure</h4><table><tr><th>Category</th><th>Systolic</th><th>Diastolic</th></tr><tr class="ref-low"><td>Low</td><td>&lt;90</td><td>&lt;60</td></tr><tr class="ref-normal"><td>Normal</td><td>90–120</td><td>60–80</td></tr><tr class="ref-elevated"><td>Elevated</td><td>121–129</td><td>&lt;80</td></tr><tr class="ref-stage1"><td>Stage 1</td><td>130–139</td><td>81–89</td></tr><tr class="ref-stage2"><td>Stage 2</td><td>140–180</td><td>90–120</td></tr><tr class="ref-crisis"><td>Crisis</td><td>&gt;180</td><td>&gt;120</td></tr></table><p>The higher-category rule applies: if the systolic and diastolic values fall into different categories, the more serious category is shown. Example: 128/82 is Stage 1 because the diastolic value is in the Stage 1 range; 128/78 is Elevated.</p><h4>Heart Rate</h4><table><tr><th>Category</th><th>BPM</th></tr><tr class="ref-crisis"><td>Severe bradycardia</td><td>&lt;40</td></tr><tr class="ref-elevated"><td>Low</td><td>40–59</td></tr><tr class="ref-normal"><td>Normal</td><td>60–100</td></tr><tr class="ref-stage1"><td>Mild tachycardia</td><td>101–120</td></tr><tr class="ref-crisis"><td>Severe tachycardia</td><td>&gt;120</td></tr></table></details>
+
+    <div class="settings-item">
+      <label>Import Data</label>
+      <button class="btn-secondary" id="settingsImportBtn">Import Backup</button>
+    </div>
+
+    <div class="settings-item">
+      <label>Delete Account &amp; Data</label>
+      <button class="btn-secondary danger-btn" id="settingsDeleteBtn">Delete</button>
+    </div>
+
+    <div class="settings-item">
+      <label>About My Health Journal</label>
+      <p class="about-copy">My Health Journal helps you securely log blood pressure and pulse readings, review trends, export reports, and keep personal backups. Email verification protects account and security changes, and this device supports up to five accounts. Help: <a href="mailto:jewellers.asad@gmail.com">jewellers.asad@gmail.com</a> or <a href="mailto:whitemoonjeweller@gmail.com">whitemoonjeweller@gmail.com</a>. WhatsApp: <a href="https://wa.me/923110177836">+92 311 0177836</a> or <a href="https://wa.me/923035908359">+92 303 5908359</a>.</p><span class="settings-version">v1.1.0</span>
+    </div>
+
+    <button class="btn-outline" id="closeSettingsModal">Close</button>
+  </div>
+</div>
+
+<!-- Google Drive Setup Modal -->
+<div class="modal-overlay" id="gdriveModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">Google Drive Setup</h3>
+    <p class="gdrive-info">Connect your Google Drive to backup and restore your journal data.</p>
+
+    <div class="input-group">
+      <label>Google Apps Script Deployment URL</label>
+      <input type="url" id="gdriveScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbyLWZyWGzOZEXsyER_i-0oC0Nwj24TOGTVsBlS2Ab0jUSlH-UOqW6cO_zOKyAszDb4e/exec" />
+    </div>
+    <div class="input-group">
+      <label>Folder ID</label>
+      <input type="text" id="gdriveFolderId" placeholder="Folder ID" value="1Yb3oXj9CAQH_aXqQo26g0x71rdXMhV8t" />
+    </div>
+
+    <button class="btn-primary" id="gdriveConnectBtn">Connect to Google Drive</button>
+    <button class="btn-outline" id="closeGdriveModal">Cancel</button>
+  </div>
+</div>
+
+<!-- EmailJS Config Modal -->
+<div class="modal-overlay" id="emailjsModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 class="modal-title">EmailJS Configuration</h3>
+
+    <div class="input-group">
+      <label>Service ID</label>
+      <input type="text" id="emailjsServiceId" value="service_ved4qqb" />
+    </div>
+    <div class="input-group">
+      <label>Template ID</label>
+      <input type="text" id="emailjsTemplateId" value="template_87h1v0p" />
+    </div>
+    <div class="input-group">
+      <label>Public Key</label>
+      <input type="text" id="emailjsPublicKey" value="1GEDigcPYGqjeQyY4" />
+    </div>
+
+    <button class="btn-primary" id="saveEmailjsBtn">Save Configuration</button>
+    <button class="btn-outline" id="closeEmailjsModal">Cancel</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+<script src="enhancements.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('SW registered'))
+      .catch(() => console.log('SW registration failed'));
+  }
+</script>
+
+</body>
+</html>

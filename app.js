@@ -12,6 +12,11 @@ const APP = {
     biometric: false,
     dateFormat: 'DD/MM/YYYY'
   },
+emailjsConfig: {
+  serviceId: 'service_v9ftkd3',
+  templateId: 'template_2uke34t',
+  publicKey: 'ty3zPrAyx5SIEI836'
+ },
   gdriveConfig: {
     scriptUrl: 'https://script.google.com/macros/s/AKfycbw5sgzUBXZtkAXMcx_9h_d60tBPxSH7iu_wGKc03g-CXUBDpm3WPaS6UmLdQ5EwkCNeUg/exec',
     folderId: '1dMnCqrDz6TGBgrQon-5NgbUFP3R4zosM'
@@ -79,9 +84,12 @@ function goToHome() {
     return;
   }
   updateAvatarDisplay();
-  document.getElementById('homeUserDisplay').textContent = APP.user.name;
-  document.getElementById('readyName').textContent = APP.user.name;
-  document.getElementById('greetingMsg').textContent = getGreeting() + ', ' + APP.user.name;
+  const homeUserDisplay = document.getElementById('homeUserDisplay');
+  if (homeUserDisplay) homeUserDisplay.textContent = APP.user.name;
+  const readyName = document.getElementById('readyName');
+  if (readyName) readyName.textContent = APP.user.name;
+  const greetingMsg = document.getElementById('greetingMsg');
+  if (greetingMsg) greetingMsg.textContent = getGreeting() + ', ' + APP.user.name;
   showScreen('home');
   updateHome();
 }
@@ -204,7 +212,15 @@ function displayAge(dob) {
 
 // ===== LOGIN =====
 function loginUser(identifier, password = null, pin = null) {
+  console.log('Login attempt for:', identifier);
+  
+  if (!identifier) {
+    showToast('Please enter email or username');
+    return false;
+  }
+
   const stored = loadData(identifier);
+  console.log('Stored data found:', stored ? 'Yes' : 'No');
 
   if (stored && stored.user) {
     const user = stored.user;
@@ -226,6 +242,7 @@ function loginUser(identifier, password = null, pin = null) {
       return false;
     }
 
+    // Login successful
     APP.user = user;
     APP.readings = stored.readings || [];
     APP.avatar = stored.avatar || '';
@@ -234,15 +251,16 @@ function loginUser(identifier, password = null, pin = null) {
     APP.isLoggedIn = true;
     localStorage.setItem('mhj:lastActive', user.email.toLowerCase());
     saveData();
+    
+    console.log('Login successful for:', user.name);
+    goToHome();
+    showToast('Welcome back, ' + APP.user.name + '!');
+    return true;
   } else {
     showToast('No account found. Please register.');
     showScreen('register');
     return false;
   }
-
-  goToHome();
-  showToast('Welcome back, ' + APP.user.name + '!');
-  return true;
 }
 
 // ===== LOGOUT =====
@@ -287,7 +305,7 @@ function updateAvatarDisplay() {
   }
 }
 
-// ===== OTP FUNCTIONS - SIMPLE WORKING VERSION =====
+// ===== OTP FUNCTIONS =====
 function generateOTP() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
@@ -298,36 +316,32 @@ async function sendOTP(email, name, purpose) {
   APP.otpEmail = email;
   APP.otpPurpose = purpose;
 
-  // SHOW OTP IN ALERT FOR TESTING
-  alert(`Your OTP is: ${otp}\n\nEmail: ${email}\nPurpose: ${purpose}`);
-  console.log('OTP:', otp, 'Email:', email, 'Purpose:', purpose);
-  showToast(`OTP sent! Check alert/console`);
+  console.log('Sending OTP via EmailJS to:', email);
+  console.log('OTP:', otp);
 
-  // Try Apps Script (doesn't block if fails)
   try {
-    const response = await fetch(APP.gdriveConfig.scriptUrl, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'sendotp',
-        email: email,
+    const result = await emailjs.send(
+      APP.emailjsConfig.serviceId,
+      APP.emailjsConfig.templateId,
+      {
         name: name,
-        otp: otp
-      })
-    });
+        otp: otp,
+        email: email,
+        app_name: 'My Health Journal',
+        tagline: 'Log, Track & Live Well!'
+      },
+      APP.emailjsConfig.publicKey
+    );
     
-    if (response.ok) {
-      const result = await response.json();
-      console.log('Apps Script OTP sent:', result);
-    } else {
-      console.warn('Apps Script failed with status:', response.status);
-    }
+    console.log('EmailJS success:', result);
+    showToast('OTP sent to your email');
+    return true;
+    
   } catch (error) {
-    console.warn('Apps Script error (non-blocking):', error.message);
+    console.error('EmailJS error:', error);
+    showToast('Failed to send OTP. Please try again.');
+    return false;
   }
-
-  return true;
 }
 
 function verifyOTP(enteredOTP) {
@@ -1165,34 +1179,125 @@ function downloadFile(content, filename, mimeType) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+function exportPDF(fromDate, toDate, rowsOverride) {
+  const rows = rowsOverride || getReadingsInRange(fromDate, toDate);
+  
+  if (!rows.length) {
+    showToast('No readings to export');
+    return;
+  }
+  
+  if (!window.jspdf?.jsPDF) {
+    showToast('PDF library not loaded');
+    return;
+  }
+  
+  showToast('Preparing PDF report...');
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a3' });
+    
+    doc.setFontSize(20);
+    doc.text('My Health Journal', 36, 40);
+    doc.setFontSize(10);
+    doc.text('Log, Track & Live Well!', 36, 57);
+    
+    doc.setFontSize(8);
+    const cols = [36, 105, 175, 235, 285, 345, 400, 500];
+    doc.text(['Date', 'Time', 'Window', 'SYS', 'DIA', 'Pulse', 'Status', 'Symptoms'], cols, 80);
+    
+    const maxRows = 48;
+    const shown = rows.slice(0, maxRows);
+    
+    shown.forEach((r, i) => {
+      const d = new Date(r.timestamp);
+      const y = 100 + i * 12;
+      
+      // Get status WITHOUT emojis
+      const statusObj = getBPStatus(r.sys, r.dia);
+      const statusText = statusObj.label.replace(/[^\w\s]/g, '').trim();
+      
+      const rowData = [
+        d.toLocaleDateString(),
+        d.toLocaleTimeString(),
+        r.window || '',
+        String(r.sys),
+        String(r.dia),
+        String(r.pulse),
+        statusText,
+        (r.symptoms || '-').substring(0, 50)
+      ];
+      
+      rowData.forEach((v, j) => {
+        doc.text(String(v).slice(0, j === 7 ? 55 : 22), cols[j], y);
+      });
+    });
+    
+    if (rows.length > maxRows) {
+      doc.text(`Showing ${maxRows} of ${rows.length} readings. Export CSV for complete data.`, 36, 690);
+    }
+    
+    doc.setFontSize(8);
+    doc.setTextColor(145);
+    doc.text('Developed & Maintained by', 36, 805);
+    doc.setTextColor(85);
+    doc.setFontSize(10);
+    doc.text('WhiteMoon Jeweller | Asad Jewellers, Okara', 36, 820);
+    
+    const fileName = generateFileName('pdf', fromDate, toDate);
+    doc.save(fileName);
+    showToast('PDF exported successfully');
+    
+  } catch (error) {
+    console.error('PDF error:', error);
+    showToast('PDF error: ' + error.message);
+  }
+}
+
 // ===== EVENT LISTENERS =====
 function setupEventListeners() {
   // ===== LOGIN =====
-  document.getElementById('loginBtn')?.addEventListener('click', () => {
-    const identifier = document.getElementById('loginEmail')?.value?.trim() || '';
-    const password = document.getElementById('loginPassword')?.value || '';
-    loginUser(identifier, password);
-  });
+document.getElementById('loginBtn')?.addEventListener('click', function(e) {
+  e.preventDefault();
+  console.log('Login button clicked');
+  const identifier = document.getElementById('loginEmail')?.value?.trim() || '';
+  const password = document.getElementById('loginPassword')?.value || '';
+  
+  if (!identifier) {
+    showToast('Please enter your email or username');
+    return;
+  }
+  if (!password) {
+    showToast('Please enter your password');
+    return;
+  }
+  
+  loginUser(identifier, password);
+});
 
   document.getElementById('loginPassword')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('loginBtn')?.click();
   });
 
   // ===== PIN LOGIN =====
-  document.getElementById('legacyPinLoginBtn')?.addEventListener('click', () => {
-    const pin = document.getElementById('loginPin')?.value || '';
-    if (pin.length !== 5) {
-      showToast('PIN must be exactly 5 digits');
-      return;
-    }
-    const stored = loadData();
-    if (stored && stored.user && stored.user.pin === pin) {
-      loginUser(stored.user.email || stored.user.name, null, pin);
-      document.getElementById('loginPin').value = '';
-    } else {
-      showToast('Invalid PIN');
-    }
-  });
+document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function(e) {
+  e.preventDefault();
+  console.log('PIN login button clicked');
+  const pin = document.getElementById('loginPin')?.value || '';
+  if (pin.length !== 5) {
+    showToast('PIN must be exactly 5 digits');
+    return;
+  }
+  const stored = loadData();
+  console.log('Stored user:', stored?.user?.name);
+  if (stored && stored.user && stored.user.pin === pin) {
+    loginUser(stored.user.email || stored.user.name, null, pin);
+    document.getElementById('loginPin').value = '';
+  } else {
+    showToast('Invalid PIN');
+  }
+});
 
   document.getElementById('loginPin')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') document.getElementById('pinLoginBtn')?.click();
@@ -1449,18 +1554,20 @@ function setupEventListeners() {
     }
   });
 
-  // ===== NAVIGATION =====
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const screen = btn.dataset.screen;
-      if (screen && APP.isLoggedIn) {
-        navigateTo(screen);
-      } else if (screen) {
-        showToast('Please login first');
-        showScreen('login');
-      }
-    });
+ // ===== NAVIGATION =====
+document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const screen = this.dataset.screen;
+    console.log('Nav clicked:', screen, 'Logged in:', APP.isLoggedIn);
+    if (screen && APP.isLoggedIn) {
+      navigateTo(screen);
+    } else if (screen) {
+      showToast('Please login first');
+      showScreen('login');
+    }
   });
+});
 
   // ===== HISTORY FILTERS =====
   document.querySelectorAll('.filter-btn-small').forEach(btn => {

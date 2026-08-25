@@ -2,33 +2,34 @@
   "name": "My Health Journal",
   "short_name": "Health Journal",
   "description": "Track your blood pressure and pulse readings with ease.",
-  "version": "v1.1.0",
   "start_url": "./",
+  "scope": "/",                    // ← NEW: Controls app scope
+  "id": "my-health-journal",       // ← NEW: Unique app ID
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"], // ← NEW: Better display control
   "orientation": "portrait",
+  "lang": "en",                    // ← NEW: Language
+  "dir": "ltr",                    // ← NEW: Text direction
   "background_color": "#F8FAF9",
   "theme_color": "#FF8308",
-  "icons": [
+  "categories": ["health", "fitness", "medical"],
+  "screenshots": [...],
+  "prefer_related_applications": false,
+  "icons": [...],
+  "shortcuts": [                   // ← NEW: App shortcuts (long-press menu)
     {
-      "src": "app-logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "name": "Record BP",
+      "short_name": "Record",
+      "description": "Quickly record your blood pressure",
+      "url": "./?action=record",
+      "icons": [{ "src": "app-logo.png", "sizes": "96x96" }]
     },
     {
-      "src": "app-logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "name": "View History",
+      "short_name": "History",
+      "description": "View your reading history",
+      "url": "./?action=history",
+      "icons": [{ "src": "app-logo.png", "sizes": "96x96" }]
     }
-  ],
-  "categories": ["health", "fitness", "medical"],
-  "screenshots": [
-    {
-      "src": "screenshot.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
-  ],
-  "prefer_related_applications": false
+  ]
 }

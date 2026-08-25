@@ -2,6 +2,7 @@
   "name": "My Health Journal",
   "short_name": "Health Journal",
   "description": "Track your blood pressure and pulse readings with ease.",
+  "version": "v1.1.0",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",

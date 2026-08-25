@@ -2059,3 +2059,22 @@ window.sendOTP = sendOTP;
 window.exportPDF = exportPDF;
 window.exportCSV = exportCSV;
 window.backupToDrive = backupToDrive;
+
+// ===== SHORTCUT NAVIGATION (For Android App Shortcuts) =====
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const action = params.get('action');
+  
+  if (action === 'record' && APP.isLoggedIn) {
+    setTimeout(() => {
+      setupRecord();
+      navigateTo('record');
+    }, 500);
+  }
+  
+  if (action === 'history' && APP.isLoggedIn) {
+    setTimeout(() => {
+      navigateTo('history');
+    }, 500);
+  }
+});

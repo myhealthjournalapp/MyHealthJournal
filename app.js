@@ -89,7 +89,7 @@ function goToHome() {
   const readyName = document.getElementById('readyName');
   if (readyName) readyName.textContent = APP.user.name;
   const greetingMsg = document.getElementById('greetingMsg');
-  if (greetingMsg) greetingMsg.textContent = getGreeting() + ', ' + APP.user.name;
+  if (greetingMsg) greetingMsg.textContent = getGreeting();
   showScreen('home');
   updateHome();
 }
@@ -132,8 +132,7 @@ function getBPStatus(sys, dia) {
   else if (sys >= 130) sysCategory = 'stage1';
   else if (sys >= 121) sysCategory = 'elevated';
   else if (sys >= 90) sysCategory = 'normal';
-  else if (sys >= 21) sysCategory = 'hypotension';
-  else sysCategory = 'normal';
+  else sysCategory = 'hypotension';
 
   if (dia > 120) diaCategory = 'crisis';
   else if (dia >= 90) diaCategory = 'stage2';
@@ -141,13 +140,20 @@ function getBPStatus(sys, dia) {
   else if (dia >= 60 && dia < 80) diaCategory = 'normal';
   else if (dia < 60 && dia >= 40) diaCategory = 'hypotension';
   else if (dia < 40) diaCategory = 'hypotension';
-  else diaCategory = 'normal';
+  else diaCategory = 'hypotension';
 
-  const severityOrder = ['crisis', 'stage2', 'stage1', 'elevated', 'normal', 'hypotension'];
-  const sysIndex = severityOrder.indexOf(sysCategory);
-  const diaIndex = severityOrder.indexOf(diaCategory);
-  const finalIndex = Math.min(sysIndex, diaIndex);
-  const finalCategory = severityOrder[finalIndex];
+  // Apply the more serious AHA hypertension category when SYS and DIA differ.
+  // If neither value is hypertensive, either low value classifies the result as hypotension.
+  const hypertensionRank = { normal: 0, elevated: 1, stage1: 2, stage2: 3, crisis: 4 };
+  const highCategories = [sysCategory, diaCategory].filter(c => c !== 'hypotension');
+  let finalCategory;
+  if (highCategories.some(c => hypertensionRank[c] > 0)) {
+    finalCategory = highCategories.reduce((a, b) => hypertensionRank[a] >= hypertensionRank[b] ? a : b);
+  } else if (sysCategory === 'hypotension' || diaCategory === 'hypotension') {
+    finalCategory = 'hypotension';
+  } else {
+    finalCategory = 'normal';
+  }
 
   switch (finalCategory) {
     case 'crisis':
@@ -289,19 +295,10 @@ function updateAvatarDisplay() {
       profileAvatarEl.parentElement.innerHTML =
         `<img src="${APP.avatar}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;" />`;
     }
-  } else if (APP.avatar && APP.avatar.length === 1 && !APP.avatar.match(/[a-zA-Z]/)) {
-    avatarEl.innerHTML = `<span class="avatar-emoji">${APP.avatar}</span>`;
-    if (profileAvatarEl) {
-      profileAvatarEl.textContent = APP.avatar;
-      profileAvatarEl.style.fontSize = '32px';
-    }
-  } else if (APP.user && APP.user.name) {
-    const initials = APP.user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-    avatarEl.innerHTML = `<span>${initials}</span>`;
-    if (profileAvatarEl) {
-      profileAvatarEl.textContent = initials;
-      profileAvatarEl.style.fontSize = '24px';
-    }
+  } else if (APP.user) {
+    const genderAvatar = APP.user.gender === 'Female' ? '👩' : APP.user.gender === 'Male' ? '👨' : '👤';
+    avatarEl.innerHTML = `<span class="avatar-emoji">${genderAvatar}</span>`;
+    if (profileAvatarEl) { profileAvatarEl.textContent = genderAvatar; profileAvatarEl.style.fontSize = '32px'; }
   }
 }
 
@@ -375,15 +372,15 @@ function updateHome() {
     if (!el) return;
     const has = todayReadings.some(r => r.window === win);
     const statusEl = el.querySelector('.window-status');
-    if (statusEl) {
-      if (has) {
-        statusEl.textContent = '✅ Completed';
-        statusEl.className = 'window-status completed';
-      } else {
-        statusEl.textContent = '⏳ Pending';
-        statusEl.className = 'window-status pending';
-      }
-    }
+if (statusEl) {
+  if (has) {
+    statusEl.innerHTML = '✓ Completed';
+    statusEl.className = 'window-status completed';
+  } else {
+    statusEl.innerHTML = '● Pending';
+    statusEl.className = 'window-status pending';
+  }
+}
   });
 
   if (todayReadings.length > 0) {
@@ -484,7 +481,7 @@ function updateHome() {
 
   const greetingMsg = document.getElementById('greetingMsg');
   if (greetingMsg && APP.user) {
-    greetingMsg.textContent = getGreeting() + ', ' + APP.user.name;
+    greetingMsg.textContent = getGreeting();
   }
 }
 
@@ -811,7 +808,8 @@ function renderCharts(readings) {
 
   const bpContainer = document.getElementById('bpChart');
   if (!bpContainer) return;
-  bpContainer.innerHTML = '<canvas id="bpChartCanvas"></canvas>';
+  const legendItems = chartType === 'bp' ? '<span class="legend-sys">Systolic</span><span class="legend-dia">Diastolic</span>' : chartType === 'pulse' ? '<span class="legend-pulse">Pulse</span>' : '<span class="legend-sys">Systolic</span><span class="legend-dia">Diastolic</span><span class="legend-pulse">Pulse</span>';
+  bpContainer.innerHTML = `<div class="chart-legend">${legendItems}</div><canvas id="bpChartCanvas"></canvas>`;
   const bpCanvas = document.getElementById('bpChartCanvas');
   if (!bpCanvas) return;
   const bpCtx = bpCanvas.getContext('2d');
@@ -874,11 +872,6 @@ function renderCharts(readings) {
       bpCtx.fill();
     });
 
-    bpCtx.fillStyle = color;
-    bpCtx.fillRect(padding.left + 10, padding.top - 4 + (Object.keys(drawLine.labels || {}).length * 20), 12, 4);
-    bpCtx.fillStyle = '#2D3748';
-    bpCtx.font = '10px Inter';
-    bpCtx.fillText(label, padding.left + 24, padding.top - 6 + (Object.keys(drawLine.labels || {}).length * 20));
     if (!drawLine.labels) drawLine.labels = {};
     drawLine.labels[label] = true;
   }
@@ -1003,7 +996,7 @@ function updateProfile() {
   const ageEl = document.getElementById('pAge');
   if (ageEl && u.dob) {
     const age = calculateAge(u.dob);
-    ageEl.textContent = age !== null ? `(${age} years)` : '';
+    ageEl.textContent = age !== null ? `${age} years` : '';
   }
 
   updateAvatarDisplay();
@@ -1053,6 +1046,14 @@ function saveReading() {
   if (hour >= 6 && hour < 12) window = 'Morning';
   else if (hour >= 12 && hour < 17) window = 'Afternoon';
 
+  const multiValue = (id, customId) => {
+    const select = document.getElementById(id);
+    let values = select ? Array.from(select.selectedOptions).map(o => o.value) : [];
+    const custom = document.getElementById(customId)?.value.trim();
+    if (values.includes('Custom')) values = values.filter(v => v !== 'Custom').concat(custom ? [custom] : []);
+    return values.join(', ');
+  };
+
   const reading = {
     sys,
     dia,
@@ -1064,8 +1065,8 @@ function saveReading() {
     position: document.getElementById('recPos')?.value || 'Sitting',
     medication: document.getElementById('recMed')?.value || 'Not applicable',
     meal: document.getElementById('recMeal')?.value || 'Not applicable',
-    activity: document.getElementById('recAct')?.value || 'Resting',
-    intake: document.getElementById('recIntake')?.value || 'None',
+    activity: multiValue('recAct', 'recCustomAct') || 'Resting',
+    intake: multiValue('recIntake', 'recCustomIntake') || 'None',
     extraNote: document.getElementById('recExtraNote')?.value || ''
   };
 
@@ -1580,6 +1581,11 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
       if (days === 'custom') {
         customRange.style.display = 'block';
         historyDays = 0;
+      } else if (days === 'today') {
+        customRange.style.display = 'none';
+        const today = new Date().toISOString().slice(0, 10);
+        historyDays = 0; historyCustomFrom = today; historyCustomTo = today;
+        renderHistory();
       } else {
         customRange.style.display = 'none';
         historyDays = parseInt(days);
@@ -1618,6 +1624,11 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
       if (days === 'custom') {
         customRange.style.display = 'block';
         currentTrendDays = 0;
+      } else if (days === 'today') {
+        customRange.style.display = 'none';
+        const today = new Date().toISOString().slice(0, 10);
+        currentTrendDays = 0; customTrendFrom = today; customTrendTo = today;
+        updateTrends();
       } else {
         customRange.style.display = 'none';
         currentTrendDays = parseInt(days);
@@ -1691,7 +1702,8 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
       document.getElementById('profileEdit').style.display = 'none';
       updateProfile();
       updateAvatarDisplay();
-      document.getElementById('greetingMsg').textContent = getGreeting() + ', ' + APP.user.name;
+      document.getElementById('greetingMsg').textContent = getGreeting();
+      document.getElementById('homeUserDisplay').textContent = APP.user.name;
       showToast('Profile updated successfully');
     }
   });
@@ -1707,6 +1719,10 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
   // ===== AVATAR UPLOAD =====
   document.getElementById('uploadAvatarBtn')?.addEventListener('click', () => {
     document.getElementById('avatarFileInput')?.click();
+  });
+
+  document.getElementById('profileAvatar')?.addEventListener('click', () => {
+    document.querySelector('.profile-avatar-section')?.classList.toggle('actions-open');
   });
 
   document.getElementById('avatarFileInput')?.addEventListener('change', function(e) {
@@ -1751,6 +1767,8 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
 
   // ===== SECURITY =====
   document.getElementById('securityBtn')?.addEventListener('click', () => {
+    document.getElementById('appLockToggle').checked = APP.settings.appLock || false;
+    document.getElementById('biometricToggle').checked = APP.settings.biometric || false;
     document.getElementById('securityModal').classList.add('open');
   });
 
@@ -1927,15 +1945,11 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
 
   // ===== SETTINGS =====
   document.getElementById('settingsBtn')?.addEventListener('click', () => {
-    document.getElementById('appLockToggle').checked = APP.settings.appLock || false;
     document.getElementById('settingsModal').classList.add('open');
   });
 
   document.getElementById('closeSettingsModal')?.addEventListener('click', () => {
-    APP.settings.appLock = document.getElementById('appLockToggle').checked;
-    saveData();
     document.getElementById('settingsModal').classList.remove('open');
-    showToast('Settings saved');
   });
 
   document.getElementById('settingsImportBtn')?.addEventListener('click', () => {
@@ -1989,7 +2003,7 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
       const target = document.getElementById(btn.dataset.target);
       if (target) {
         target.type = target.type === 'password' ? 'text' : 'password';
-        btn.textContent = target.type === 'password' ? '👁' : '👁‍🗨';
+        btn.textContent = target.type === 'password' ? '👁️' : '👁️‍🗨️';
       }
     });
   });

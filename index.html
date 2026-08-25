@@ -18,8 +18,8 @@
 <!-- ===== SPLASH SCREEN ===== -->
 <div id="splash" class="screen active">
   <div class="splash-content">
-    <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/app-logo.png" alt="My Health Journal" class="app-logo" id="splashLogo" />
-    <h1 class="brand-name">My Health Journal</h1>
+    <img src="app-logo.png" alt="My Health Journal" class="app-logo" id="splashLogo" />
+    <h1 class="brand-name"><span>My</span> <span class="health-word">Health</span> <span>Journal</span></h1>
     <p class="brand-tagline">Log, Track &amp; Live Well!</p>
     <div class="splash-loader"></div>
     <div class="splash-credit"><p class="splash-dev">Developed &amp; Maintained by</p><p class="splash-brand">WhiteMoon Jeweller | Asad Jewellers, Okara</p></div>
@@ -32,7 +32,7 @@
   <!-- ===== TOP BAR ===== -->
   <header class="top-bar" id="topBar">
     <div class="brand">
-      <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/reporting-logo.png" alt="Logo" class="mini-logo" id="topLogo" />
+      <img src="app-logo.png" alt="My Health Journal" class="mini-logo" id="topLogo" />
     </div>
     <div class="actions">
       <span id="topTime" class="top-time">--:--:--</span>
@@ -41,8 +41,8 @@
       </div>
       <div class="avatar-menu" id="avatarMenu" hidden>
         <button data-avatar-action="profile">Edit Profile</button><button data-avatar-action="security">Security</button>
-        <button data-avatar-action="pdf">Export (PDF)</button><button data-avatar-action="csv">Export (CSV)</button>
-        <button data-avatar-action="drive">Backup to Drive</button><button data-avatar-action="settings">Settings</button>
+        <button data-avatar-action="pdf">Export as PDF</button><button data-avatar-action="import">Import Data</button>
+        <button data-avatar-action="drive">Google Drive Backup</button><button data-avatar-action="settings">Settings</button>
         <button data-avatar-action="logout" class="danger-text">Logout</button>
       </div>
     </div>
@@ -54,27 +54,28 @@
     <!-- ===== LOGIN (Screen 02) ===== -->
     <div class="screen-view active" id="view-login">
       <div class="card login-card preauth-card">
-        <img src="https://raw.githubusercontent.com/HassanAli-dev-1/BP-PulseJournal/main/app-logo.png" alt="My Health Journal" class="preauth-logo" />
+        <img src="reporting-logo.png" alt="My Health Journal" class="preauth-logo" />
         <div class="quick-auth-row">
-          <button class="quick-auth" id="openLoginSheet"><span class="ui-icon">&#9655;</span><strong>Login</strong></button>
-          <button class="quick-auth" id="pinLoginBtn"><span class="ui-icon">&#128274;</span><strong>PIN</strong><small>XXXXX</small></button>
+          <button class="quick-auth" id="openLoginSheet"><strong>Login</strong><small>Login with Your Username & Password</small></button>
+          <button class="quick-auth" id="pinLoginBtn"><strong>PIN</strong><small>Enter Your 5-digits PIN</small></button>
         </div>
         <button class="biometric-btn" id="biometricLoginBtn"><span class="ui-icon">&#9783;</span> Fingerprint Unlock</button>
-        <a href="#" id="forgotPasswordLink" class="credentials-link">Forgot Your Credentials?</a>
         <div class="preauth-options">
-          <button id="goRegister"><span>&#43;</span> Register Account</button>
-          <button data-recovery="pin"><span>&#9679;</span> Change PIN</button>
-          <button data-recovery="password"><span>&#9632;</span> Change Password</button>
-          <button id="switchAccountBtn"><span>&#8644;</span> Switch Account</button>
+          <button id="goRegister">Register Account</button>
+          <button id="switchAccountBtn">Switch Account</button>
+          <button data-recovery="pin">Change PIN</button>
+          <button data-recovery="password">Change Password</button>
         </div>
       </div>
       <div class="login-sheet" id="loginSheet" hidden>
         <div class="modal-handle"></div><h3>Sign in</h3>
         <div class="input-group"><label>Email or Username</label><input type="text" id="loginEmail" placeholder="Enter your email or username" autocomplete="email" /></div>
-        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter your password" /><button class="toggle-pw" data-target="loginPassword" type="button">&#9673;</button></div></div>
-        <button class="btn-primary" id="loginBtn">Login</button><button class="btn-outline" id="closeLoginSheet">Cancel</button>
+        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter your password" /><button class="toggle-pw" data-target="loginPassword" type="button">👁️</button></div></div>
+        <button class="modal-close" id="closeLoginSheet" aria-label="Close">✕</button>
+        <a href="#" id="forgotPasswordLink" class="credentials-link">Forgot Your Credentials?</a>
+        <button class="btn-primary" id="loginBtn">Login</button>
       </div>
-      <div class="pin-sheet" id="pinSheet" hidden><div class="modal-handle"></div><h3>Quick PIN</h3><div class="input-group"><label>5-digit PIN</label><input type="password" id="loginPin" placeholder="XXXXX" maxlength="5" inputmode="numeric" class="pin-input" /></div><button class="btn-primary" id="submitPinLogin">Login with PIN</button><button class="btn-outline" id="closePinSheet">Cancel</button></div>
+      <div class="pin-sheet" id="pinSheet" hidden><button class="modal-close" id="closePinSheet" aria-label="Close">✕</button><div class="modal-handle"></div><h3>Quick PIN</h3><div class="input-group"><label>5-digit PIN</label><div class="password-wrap"><input type="password" id="loginPin" placeholder="Enter Your 5-Digits PIN" maxlength="5" inputmode="numeric" /><button class="toggle-pw" data-target="loginPin" type="button">👁️</button></div></div><button class="btn-primary" id="submitPinLogin">Login with PIN</button></div>
     </div>
 
     <!-- ===== REGISTER (Screen 03 + 04 Combined) ===== -->
@@ -206,7 +207,7 @@
         </div>
 
         <button class="btn-primary" id="finishSignupBtn">Create Account</button>
-        <button class="btn-outline mt-8" id="backToLogin">← Back to Login</button>
+        <button class="modal-close" id="backToLogin" aria-label="Close">✕</button>
       </div>
     </div>
 
@@ -223,7 +224,7 @@
 
         <button class="btn-primary" id="verifyOtpBtn">Verify OTP</button>
         <button class="btn-outline mt-8" id="resendOtpBtn">Resend OTP</button>
-        <button class="btn-outline mt-8" id="cancelOtpBtn">Cancel</button>
+        <button class="modal-close" id="cancelOtpBtn" aria-label="Close">✕</button>
         <div id="otpError" class="error-msg" style="display:none;"></div>
       </div>
     </div>
@@ -240,7 +241,7 @@
         </div>
 
         <button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
-        <button class="btn-outline mt-8" id="backToLoginFromForgot">← Back to Login</button>
+        <button class="modal-close" id="backToLoginFromForgot" aria-label="Close">✕</button>
       </div>
     </div>
 
@@ -267,7 +268,7 @@
         </div>
 
         <button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
-        <button class="btn-outline mt-8" id="backToLoginFromReset">← Back to Login</button>
+        <button class="modal-close" id="backToLoginFromReset" aria-label="Close">✕</button>
       </div>
     </div>
 
@@ -284,7 +285,8 @@
     <!-- ===== HOME (Screen 06) ===== -->
     <div class="screen-view" id="view-home">
       <div class="home-header">
-        <div class="greeting" id="greetingMsg">Good Morning, User</div>
+        <div class="greeting" id="greetingMsg">Good Morning</div>
+        <div class="home-username" id="homeUserDisplay">User</div>
         <div class="home-date" id="homeDate">19 Aug 2026 · 01:45:07 PM</div>
       </div>
 
@@ -338,23 +340,23 @@
           <span class="consistency-grade" id="todayConsistencyGrade">Awful</span>
         </div>
 
-        <div class="daily-windows">
-          <div class="window-item" id="wMorning">
-            <span class="window-icon">🌅</span>
-            <span class="window-name">Morning</span>
-            <span class="window-status pending">Pending</span>
-          </div>
-          <div class="window-item" id="wAfternoon">
-            <span class="window-icon">☀️</span>
-            <span class="window-name">Afternoon</span>
-            <span class="window-status pending">Pending</span>
-          </div>
-          <div class="window-item" id="wEvening">
-            <span class="window-icon">🌙</span>
-            <span class="window-name">Evening</span>
-            <span class="window-status pending">Pending</span>
-          </div>
-        </div>
+<div class="daily-windows">
+  <div class="window-item" id="wMorning">
+    <span class="window-icon">&#127749;</span>
+    <span class="window-name">Morning</span>
+    <span class="window-status pending">● Pending</span>
+  </div>
+  <div class="window-item" id="wAfternoon">
+    <span class="window-icon">&#127774;</span>
+    <span class="window-name">Afternoon</span>
+    <span class="window-status pending">● Pending</span>
+  </div>
+  <div class="window-item" id="wEvening">
+    <span class="window-icon">&#127751;</span>
+    <span class="window-name">Evening</span>
+    <span class="window-status pending">● Pending</span>
+  </div>
+</div>
 
         <div id="todayReadingsList" class="today-readings-list"></div>
       </div>
@@ -443,24 +445,28 @@
           </div>
           <div class="input-group">
             <label>Activity</label>
-            <select id="recAct">
+            <select id="recAct" multiple>
               <option value="Resting">Resting</option>
               <option value="After walking">After walking</option>
               <option value="After exercise">After exercise</option>
               <option value="After climbing stairs">After climbing stairs</option>
               <option value="After stressful activity">After stressful activity</option>
+              <option value="Custom">Custom</option>
             </select>
+            <input class="custom-multi-input" type="text" id="recCustomAct" placeholder="Type custom activity..." hidden />
           </div>
           <div class="input-group">
             <label>Recent intake</label>
-            <select id="recIntake">
+            <select id="recIntake" multiple>
               <option value="None">None</option>
               <option value="Coffee/tea">Coffee/tea</option>
               <option value="Meal">Meal</option>
               <option value="Salty food">Salty food</option>
               <option value="Smoking">Smoking</option>
               <option value="Medication">Medication</option>
+              <option value="Custom">Custom</option>
             </select>
+            <input class="custom-multi-input" type="text" id="recCustomIntake" placeholder="Type custom intake..." hidden />
           </div>
           <div class="input-group">
             <label>Additional Note</label>
@@ -469,7 +475,7 @@
         </div>
 
         <button class="btn-primary" id="saveReadingBtn">SAVE READING</button>
-        <button class="btn-outline mt-8" id="cancelRecord">Cancel</button>
+        <button class="modal-close" id="cancelRecord" aria-label="Close">✕</button>
       </div>
     </div>
 
@@ -494,7 +500,8 @@
         <h2 class="section-title">History</h2>
 
         <div class="history-filters">
-          <button class="filter-btn-small active" data-history="1">1D</button>
+          <button class="filter-btn-small active" data-history="today">Today</button>
+          <button class="filter-btn-small" data-history="1">1D</button>
           <button class="filter-btn-small" data-history="2">2D</button>
           <button class="filter-btn-small" data-history="3">3D</button>
           <button class="filter-btn-small" data-history="7">7D</button>
@@ -519,7 +526,7 @@
         </div>
 
         <div id="historyDateDisplay" class="history-date-display"></div>
-        <div class="history-bulk"><label><input type="checkbox" id="selectAllHistory" /> Select All</label><button class="btn-secondary" id="bulkExportBtn" disabled>Export Selected</button><button class="btn-secondary danger-btn" id="bulkDeleteBtn" disabled>Delete Selected</button></div>
+        <div class="history-bulk" id="historyBulk" hidden><label><input type="checkbox" id="selectAllHistory" /> Select All</label><button class="btn-secondary" id="bulkExportBtn">Export</button><button class="btn-secondary danger-btn" id="bulkDeleteBtn">Delete</button></div>
         <div id="historyList" class="history-list"></div>
       </div>
     </div>
@@ -527,7 +534,7 @@
     <!-- ===== READING DETAIL (Screen 10) ===== -->
     <div class="screen-view" id="view-detail">
       <div class="card">
-        <button class="btn-outline back-btn" id="backFromDetail">← Back</button>
+        <button class="modal-close" id="backFromDetail" aria-label="Close">✕</button>
         <div id="detailContent"></div>
       </div>
     </div>
@@ -538,6 +545,7 @@
         <h2 class="section-title">Trend Analysis</h2>
 
         <div class="filter-bar">
+          <button class="filter-btn" data-days="today">Today</button>
           <button class="filter-btn" data-days="1">1D</button>
           <button class="filter-btn" data-days="2">2D</button>
           <button class="filter-btn" data-days="3">3D</button>
@@ -637,7 +645,7 @@
             </div>
             <div class="avatar-actions">
               <button class="btn-secondary" id="uploadAvatarBtn">Upload Photo</button>
-              <button class="btn-secondary" id="chooseEmojiBtn">Choose Emoji</button>
+              <button class="btn-secondary" id="chooseEmojiBtn">Change Avatar</button>
             </div>
             <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
           </div>
@@ -682,7 +690,7 @@
 
           <button class="btn-primary" id="editProfileBtn">Edit Profile</button>
           <button class="btn-outline mt-8" id="securityBtn">Security</button>
-          <button class="btn-outline mt-8" id="exportBackupBtn">Export / Backup</button>
+          <button class="btn-outline mt-8" id="exportBackupBtn">My Health Logs</button>
           <button class="btn-outline mt-8" id="logoutBtn">Logout</button>
           <button class="btn-outline mt-8" id="settingsBtn">Settings</button>
         </div>
@@ -739,33 +747,33 @@
             <textarea id="editNotes" placeholder="Add any important information..."></textarea>
           </div>
           <button class="btn-primary" id="saveProfileBtn">Save Profile</button>
-          <button class="btn-outline mt-8" id="cancelEditProfile">Cancel</button>
+          <button class="modal-close" id="cancelEditProfile" aria-label="Close">✕</button>
         </div>
       </div>
     </div>
 
   </div><!-- /screen-container -->
 
-  <!-- ===== BOTTOM NAVIGATION ===== -->
-  <nav class="bottom-nav" id="bottomNav">
-    <button class="nav-item active" data-screen="home">
-      <span class="nav-icon">&#8962;</span>
-      <span class="nav-label">Home</span>
-    </button>
-    <button class="nav-item" data-screen="history">
-      <span class="nav-icon">&#9776;</span>
-      <span class="nav-label">History</span>
-    </button>
-    <button class="nav-item" data-screen="trends">
-      <span class="nav-icon">&#8599;</span>
-      <span class="nav-label">Trends</span>
-    </button>
-    <button class="nav-item" data-screen="profile">
-      <span class="nav-icon">&#9675;</span>
-      <span class="nav-label">Profile</span>
-    </button>
-    <button class="nav-item fab-btn" id="fabRecord">+</button>
-  </nav>
+<!-- ===== BOTTOM NAVIGATION ===== -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-item active" data-screen="home">
+    <span class="nav-icon">&#8962;</span>
+    <span class="nav-label">Home</span>
+  </button>
+  <button class="nav-item" data-screen="history">
+    <span class="nav-icon">&#128203;&#65038;</span>
+    <span class="nav-label">History</span>
+  </button>
+  <button class="nav-item" data-screen="trends">
+    <span class="nav-icon">&#128202;&#65038;</span>
+    <span class="nav-label">Trends</span>
+  </button>
+  <button class="nav-item" data-screen="profile">
+    <span class="nav-icon">&#128100;&#65038;</span>
+    <span class="nav-label">Profile</span>
+  </button>
+  <button class="nav-item fab-btn" id="fabRecord">+</button>
+</nav>
 
 </div><!-- /app -->
 
@@ -775,7 +783,8 @@
 <div class="modal-overlay" id="exportModal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <h3 class="modal-title">Export / Backup</h3>
+    <button class="modal-close" id="closeExport" aria-label="Close">✕</button>
+    <h3 class="modal-title">My Health Logs</h3>
 
     <div class="input-group">
       <label>From Date</label>
@@ -786,30 +795,31 @@
       <input type="date" id="exportTo" />
     </div>
 
-    <button class="btn-primary export-option" data-type="pdf">PDF Report</button>
-    <button class="btn-primary export-option" data-type="csv">CSV Data</button>
-    <button class="btn-primary export-option" data-type="backup">Backup File</button>
-    <button class="btn-primary export-option" data-type="gdrive">Google Drive Backup</button>
-    <button class="btn-outline" id="closeExport">Cancel</button>
+    <button class="btn-primary export-option" data-type="pdf">Export PDF Report</button>
+    <button class="btn-primary export-option" data-type="csv">Export CSV Spreadsheet</button>
+    <button class="btn-primary export-option" data-type="gdrive">Save to Google Drive</button>
+    <button class="btn-primary export-option" data-type="backup">Download Backup File</button>
+    <button class="btn-primary" id="openImportFromLogs">Import Backup File</button>
   </div>
 </div>
 
 <!-- Import Modal -->
 <div class="modal-overlay" id="importModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeImport" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">Import Journal Data</h3>
     <p class="import-info">Import your JSON backup file to restore data</p>
     <button class="btn-primary" id="importBackupBtn">📥 Import Backup</button>
     <input type="file" id="fileInput" style="display:none" accept=".json" />
     <div id="importPreview" class="import-preview"></div>
-    <button class="btn-outline" id="closeImport">Cancel</button>
   </div>
 </div>
 
 <!-- Avatar Selection Modal -->
 <div class="modal-overlay" id="avatarModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeAvatarModal" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">Choose Avatar</h3>
     <div class="avatar-options">
@@ -823,15 +833,17 @@
       <div class="avatar-option" data-avatar="🧒">🧒</div>
       <div class="avatar-option" data-avatar="🧓">🧓</div>
     </div>
-    <button class="btn-outline" id="closeAvatarModal">Cancel</button>
   </div>
 </div>
 
 <!-- Security Modal -->
 <div class="modal-overlay" id="securityModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeSecurityModal" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">Security Settings</h3>
+    <div class="settings-item"><label>Enable PIN</label><label class="switch"><input type="checkbox" id="appLockToggle" /><span class="slider"></span></label></div>
+    <div class="settings-item"><label>Enable Biometric Verification</label><label class="switch"><input type="checkbox" id="biometricToggle" /><span class="slider"></span></label></div>
 
     <div class="input-group">
       <label>New Password (min 5 chars)</label>
@@ -864,30 +876,17 @@
     </div>
 
     <button class="btn-primary" id="saveSecurityBtn">Save Security Settings</button>
-    <button class="btn-outline" id="closeSecurityModal">Cancel</button>
   </div>
 </div>
 
 <!-- Settings Modal -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeSettingsModal" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">Settings</h3>
 
-    <div class="settings-item">
-      <label>Enable PIN</label>
-      <label class="switch">
-        <input type="checkbox" id="appLockToggle" />
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="settings-item"><label>Enable Biometric Verification</label><label class="switch"><input type="checkbox" id="biometricToggle" /><span class="slider"></span></label></div>
-    <details class="reference-guide"><summary>BP &amp; Pulse Classification</summary><h4>Blood Pressure</h4><table><tr><th>Category</th><th>Systolic</th><th>Diastolic</th></tr><tr class="ref-low"><td>Low</td><td>&lt;90</td><td>&lt;60</td></tr><tr class="ref-normal"><td>Normal</td><td>90–120</td><td>60–80</td></tr><tr class="ref-elevated"><td>Elevated</td><td>121–129</td><td>&lt;80</td></tr><tr class="ref-stage1"><td>Stage 1</td><td>130–139</td><td>81–89</td></tr><tr class="ref-stage2"><td>Stage 2</td><td>140–180</td><td>90–120</td></tr><tr class="ref-crisis"><td>Crisis</td><td>&gt;180</td><td>&gt;120</td></tr></table><p>The higher-category rule applies: if the systolic and diastolic values fall into different categories, the more serious category is shown. Example: 128/82 is Stage 1 because the diastolic value is in the Stage 1 range; 128/78 is Elevated.</p><h4>Heart Rate</h4><table><tr><th>Category</th><th>BPM</th></tr><tr class="ref-crisis"><td>Severe bradycardia</td><td>&lt;40</td></tr><tr class="ref-elevated"><td>Low</td><td>40–59</td></tr><tr class="ref-normal"><td>Normal</td><td>60–100</td></tr><tr class="ref-stage1"><td>Mild tachycardia</td><td>101–120</td></tr><tr class="ref-crisis"><td>Severe tachycardia</td><td>&gt;120</td></tr></table></details>
-
-    <div class="settings-item">
-      <label>Import Data</label>
-      <button class="btn-secondary" id="settingsImportBtn">Import Backup</button>
-    </div>
+    <details class="reference-guide"><summary>Classification Reference</summary><h4>Blood Pressure</h4><table><tr><th>Category</th><th>Range</th><th>Colour</th></tr><tr class="ref-low"><td>Hypotension</td><td>SYS &lt;90 or DIA &lt;60</td><td>Blue</td></tr><tr class="ref-normal"><td>Normal</td><td>SYS 90–120 and DIA 60–80</td><td>Green</td></tr><tr class="ref-elevated"><td>Elevated</td><td>SYS 121–129 and DIA &lt;80</td><td>Yellow</td></tr><tr class="ref-stage1"><td>Stage 1</td><td>SYS 130–139 or DIA 81–89</td><td>Orange</td></tr><tr class="ref-stage2"><td>Stage 2</td><td>SYS 140–180 or DIA 90–120</td><td>Purple</td></tr><tr class="ref-crisis"><td>Crisis</td><td>SYS &gt;180 or DIA &gt;120</td><td>Red</td></tr></table><h4>Pulse</h4><table><tr><th>Category</th><th>BPM</th><th>Colour</th></tr><tr class="ref-crisis"><td>Severe bradycardia</td><td>&lt;40</td><td>Orange</td></tr><tr class="ref-elevated"><td>Low</td><td>40–59</td><td>Yellow</td></tr><tr class="ref-normal"><td>Normal</td><td>60–100</td><td>Green</td></tr><tr class="ref-stage1"><td>Mild tachycardia</td><td>101–120</td><td>Purple</td></tr><tr class="ref-crisis"><td>Severe tachycardia</td><td>&gt;120</td><td>Red</td></tr></table><h4>Measurement Score</h4><table><tr><th>Grade</th><th>Score</th><th>Colour</th></tr><tr><td>Awful</td><td>≤39%</td><td>Purple</td></tr><tr><td>Poor</td><td>40–59%</td><td>Red</td></tr><tr><td>Below Average</td><td>60–69%</td><td>Orange</td></tr><tr><td>Average</td><td>70–79%</td><td>Yellow</td></tr><tr><td>Good</td><td>80–89%</td><td>Light Green</td></tr><tr><td>Excellent</td><td>≥90%</td><td>Green</td></tr></table></details>
 
     <div class="settings-item">
       <label>Delete Account &amp; Data</label>
@@ -896,16 +895,141 @@
 
     <div class="settings-item">
       <label>About My Health Journal</label>
-      <p class="about-copy">My Health Journal helps you securely log blood pressure and pulse readings, review trends, export reports, and keep personal backups. Email verification protects account and security changes, and this device supports up to five accounts. Help: <a href="mailto:jewellers.asad@gmail.com">jewellers.asad@gmail.com</a> or <a href="mailto:whitemoonjeweller@gmail.com">whitemoonjeweller@gmail.com</a>. WhatsApp: <a href="https://wa.me/923110177836">+92 311 0177836</a> or <a href="https://wa.me/923035908359">+92 303 5908359</a>.</p><span class="settings-version">v1.1.0</span>
+      <button class="btn-secondary" id="openAboutBtn">Open</button>
     </div>
 
-    <button class="btn-outline" id="closeSettingsModal">Close</button>
+  </div>
+</div>
+
+<!-- In index.html, find the aboutModal div and replace its content -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal-sheet about-sheet">
+    <button class="modal-close" id="closeAboutModal" aria-label="Close">✕</button>
+    
+    <h3 class="about-title">About <span class="orange-text">My Health Journal</span></h3>
+    
+    <p class="about-description">
+      <strong>My Health Journal</strong> is a secure, privacy-first offline application designed to help you log blood pressure and pulse readings, uncover vital trends, and maintain full control of your personal health data.
+    </p>
+
+    <h4 class="about-section-heading">Key Features</h4>
+    <ul class="about-feature-list">
+      <li><strong>AHA Color-Coded Guidance:</strong> Readings are automatically classified (Normal, Elevated, Stage 1, Stage 2, Hypertensive Crisis) following American Heart Association guidelines.</li>
+      <li><strong>Measurement Score:</strong> Track consistency using a 3-readings-per-day target (Morning, Afternoon, Evening) to measure log completeness over time.</li>
+      <li><strong>Contextual Tags:</strong> Optionally attach tags (medications taken, meals, post-activity) to each reading for deeper personal insights.</li>
+      <li><strong>Visual Analytics:</strong> Track health trends across custom date ranges with interactive, combined, or individual line graphs for BP and Pulse.</li>
+      <li><strong>Doctor-Ready Exports:</strong> Generate formatted PDF summary reports or CSV data sheets to print or share directly with your physician.</li>
+      <li><strong>100% Offline &amp; Private:</strong> Primary health logs stay strictly on your local device. Cloud backup options rely on secure transfers to the app's designated cloud storage facility.</li>
+      <li><strong>Multi-User Support:</strong> Supports up to 5 distinct user accounts on a single device.</li>
+      <li><strong>App Security:</strong> Secure your account with a custom PIN or compatible Fingerprint authentication.</li>
+    </ul>
+
+    <h4 class="about-section-heading">Clinical &amp; Metric Classifications</h4>
+
+    <h5 class="about-sub-heading">Blood Pressure (BP) Classification <span class="orange-text">(AHA Standards)</span></h5>
+    <table class="about-table">
+      <thead>
+        <tr><th>Category</th><th>Systolic (mmHg)</th><th></th><th>Diastolic (mmHg)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="ref-low"><td><strong>Hypotension</strong></td><td>&lt; 90</td><td>AND</td><td>&lt; 60</td></tr>
+        <tr class="ref-normal"><td><strong>Normal</strong></td><td>90 – 120</td><td>AND</td><td>60 – 80</td></tr>
+        <tr class="ref-elevated"><td><strong>Elevated</strong></td><td>121 – 129</td><td>AND</td><td>&lt; 80</td></tr>
+        <tr class="ref-stage1"><td><strong>Stage 1 Hypertension</strong></td><td>130 – 139</td><td>OR</td><td>80 – 89</td></tr>
+        <tr class="ref-stage2"><td><strong>Stage 2 Hypertension</strong></td><td>140 – 180</td><td>OR</td><td>90 – 120</td></tr>
+        <tr class="ref-crisis"><td><strong>Hypertensive Crisis</strong></td><td>&gt; 180</td><td>AND/OR</td><td>&gt; 120</td></tr>
+      </tbody>
+    </table>
+
+    <h5 class="about-sub-heading">Pulse Rate Classification</h5>
+    <table class="about-table">
+      <thead>
+        <tr><th>Category</th><th>Range (BPM)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="ref-crisis"><td><strong>Severe Bradycardia</strong></td><td>&lt; 40 BPM</td></tr>
+        <tr class="ref-elevated"><td><strong>Low (Bradycardia)</strong></td><td>40 – 59 BPM</td></tr>
+        <tr class="ref-normal"><td><strong>Normal</strong></td><td>60 – 100 BPM</td></tr>
+        <tr class="ref-stage1"><td><strong>Mild Tachycardia</strong></td><td>101 – 120 BPM</td></tr>
+        <tr class="ref-crisis"><td><strong>Severe Tachycardia</strong></td><td>&gt; 120 BPM</td></tr>
+      </tbody>
+    </table>
+
+    <h5 class="about-sub-heading">Log Consistency Grade</h5>
+    <table class="about-table">
+      <thead>
+        <tr><th>Grade</th><th>Consistency Score</th><th>Target Standard</th></tr>
+      </thead>
+      <tbody>
+        <tr class="ref-stage2"><td><strong>Awful</strong></td><td>≤ 39%</td><td>Needs significant tracking improvement</td></tr>
+        <tr class="ref-crisis"><td><strong>Poor</strong></td><td>40% – 59%</td><td>Inconsistent tracking</td></tr>
+        <tr class="ref-stage1"><td><strong>Below Average</strong></td><td>60% – 69%</td><td>Moderate log gaps</td></tr>
+        <tr class="ref-elevated"><td><strong>Average</strong></td><td>70% – 79%</td><td>Acceptable baseline tracking</td></tr>
+        <tr class="ref-normal"><td><strong>Good</strong></td><td>80% – 89%</td><td>Strong logging consistency</td></tr>
+        <tr class="ref-low"><td><strong>Excellent</strong></td><td>≥ 90%</td><td>Optimal diagnostic log quality</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="about-section-heading">User Manual &amp; Data Management</h4>
+    <ol class="about-ordered-list">
+      <li><strong>Logging Readings:</strong> For maximum accuracy, log up to 3 times daily (Morning, Afternoon, Evening). Complete all three daily entries to achieve a 100% Measurement Score.</li>
+      <li><strong>Backups &amp; Storage Options:</strong>
+        <ul>
+          <li><strong>Central Cloud Facility:</strong> Sync your encrypted data directly to the App's centralized cloud storage facility. Access to this service requires account authorization and developer permission.</li>
+          <li><strong>Local Storage (Recommended for Absolute Privacy):</strong> For maximum confidentiality and total control, generate local <code>.backup</code> files stored directly on your physical device or PC without using cloud services.</li>
+          <li><strong>Restoring Data:</strong> Access <em>Settings &gt; Import Backup File</em> anytime to restore from local <code>.backup</code> files or authorized cloud data sets.</li>
+        </ul>
+      </li>
+      <li><strong>Security Updates:</strong> To change your PIN or account password, the app sends a unique One-Time Password (OTP) to your verified email address to validate the request.</li>
+    </ol>
+
+    <h4 class="about-section-heading">Medical Disclaimer</h4>
+    <p class="about-disclaimer">
+      <strong>Notice:</strong> <em>My Health Journal</em> is strictly a personal data-logging tool and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider regarding any medical condition or clinical decisions. Never disregard professional medical advice based on information stored or displayed within this app.
+    </p>
+
+    <h4 class="about-section-heading">Terms of Service &amp; Privacy Policy</h4>
+    <p class="about-terms">
+      By using <strong>My Health Journal</strong>, you acknowledge and agree to the following terms:
+    </p>
+    <ul class="about-terms-list">
+      <li><strong>App-Managed Cloud Storage Facility:</strong> Cloud backups are uploaded directly to the application's centralized cloud storage infrastructure maintained by the developers. Personal user-owned cloud accounts cannot be integrated. Access to the app's cloud facility is provided at the sole discretion of the developers.</li>
+      <li><strong>Privacy Choice &amp; Recommendation:</strong> If you require maximum confidentiality or do not wish to store health records on centralized servers, <strong>you are explicitly advised to use Local Storage backups</strong> on your physical device instead of the cloud backup facility.</li>
+      <li><strong>Data Protection &amp; Security:</strong> While the developers implement industry-standard security protocols to keep stored data safe, no central facility is completely immune to external security events. The developers assume no liability for lost, stolen, corrupted, or deleted data.</li>
+      <li><strong>No Automatic Cloud Sync:</strong> Cloud backups are strictly user-initiated. You retain 100% responsibility for regularly generating local or cloud backups to protect your records.</li>
+      <li><strong>Accuracy of Data Entry:</strong> The user is solely responsible for entering accurate blood pressure, pulse, and contextual entries.</li>
+      <li><strong>Guideline Calculations:</strong> Color coding and classification categories are provided for general informational reference based on standard guidelines and do not constitute an official medical diagnosis.</li>
+      <li><strong>OTP &amp; Account Verification:</strong> Email verification via OTP is used exclusively for account security and identity authentication procedures.</li>
+      <li><strong>Multi-Account Boundaries:</strong> Up to 5 accounts can exist per device. Passcodes/PINs must be set per account to prevent unauthorized access by secondary device users.</li>
+      <li><strong>Application Provided "As Is":</strong> The app is provided on an "as-is" and "as-available" basis without warranties of any kind regarding continuous uptime or error-free operation.</li>
+      <li><strong>User Acceptance:</strong> Installing, importing data into, or regularly using this application constitutes full acceptance of these terms.</li>
+    </ul>
+
+    <h4 class="about-section-heading">Support &amp; Contact</h4>
+    <p class="about-contact">
+      <strong>Email:</strong> <a href="mailto:myhealthjournalapp@gmail.com">myhealthjournalapp@gmail.com</a><br>
+      <strong>WhatsApp:</strong> +92 311 0177836 | +92 303 5908359
+    </p>
+
+    <p class="about-version">
+      <strong>App Version:</strong> <span id="aboutVersion">v1.1.0</span>
+    </p>
+
+    <p class="about-maintainer">
+      <strong>Maintained &amp; Developed by:</strong><br>
+      <span class="orange-text">WhiteMoon Jeweller | Asad Jewellers, Okara</span>
+    </p>
+
+    <p class="about-copyright">
+      &copy; <span id="aboutYear"></span> <strong>My Health Journal</strong>. All rights reserved.
+    </p>
   </div>
 </div>
 
 <!-- Google Drive Setup Modal -->
 <div class="modal-overlay" id="gdriveModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeGdriveModal" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">Google Drive Setup</h3>
     <p class="gdrive-info">Connect your Google Drive to backup and restore your journal data.</p>
@@ -920,13 +1044,13 @@
     </div>
 
     <button class="btn-primary" id="gdriveConnectBtn">Connect to Google Drive</button>
-    <button class="btn-outline" id="closeGdriveModal">Cancel</button>
   </div>
 </div>
 
 <!-- EmailJS Config Modal -->
 <div class="modal-overlay" id="emailjsModal">
   <div class="modal-sheet">
+    <button class="modal-close" id="closeEmailjsModal" aria-label="Close">✕</button>
     <div class="modal-handle"></div>
     <h3 class="modal-title">EmailJS Configuration</h3>
 
@@ -944,7 +1068,6 @@
     </div>
 
     <button class="btn-primary" id="saveEmailjsBtn">Save Configuration</button>
-    <button class="btn-outline" id="closeEmailjsModal">Cancel</button>
   </div>
 </div>
 
@@ -952,6 +1075,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="app.js"></script>
 <script src="enhancements.js"></script>
+<script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
       .then(() => console.log('SW registered'))

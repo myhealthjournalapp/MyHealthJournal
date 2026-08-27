@@ -542,8 +542,8 @@ window.exportPDF = async function (fromDate, toDate, rowsOverride) {
     y += 5;
 
     const tableStartY = y;
-    const tableCols = [12, 45, 18, 18, 20, 50];
-    const tableHeaders = ['#', 'Date & Time', 'SYS', 'DIA', 'Pulse', 'Status'];
+    const tableCols = [12, 45, 28, 20, 50];
+    const tableHeaders = ['#', 'Date & Time', 'BP', 'Pulse', 'Status'];
     const totalTableWidth = tableCols.reduce((a, b) => a + b, 0);
     const tableStartX = margin;
 
@@ -598,19 +598,19 @@ window.exportPDF = async function (fromDate, toDate, rowsOverride) {
       doc.setTextColor(colors.gray[0], colors.gray[1], colors.gray[2]);
       centerText(i + 1, 0);
       
-      doc.setTextColor(colors.navy[0], colors.navy[1], colors.navy[2]);
-      centerText(formatDateForReport(d), 1);
-      
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
-      centerText(r.sys, 2);
-      centerText(r.dia, 3);
-      
-      doc.setTextColor(pulseColor[0], pulseColor[1], pulseColor[2]);
-      centerText(r.pulse, 4);
-      
-      doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
-      centerText(statusText, 5);
+doc.setTextColor(colors.navy[0], colors.navy[1], colors.navy[2]);
+centerText(formatDateForReport(d), 1);
+
+// BP column - show as "SYS/DIA"
+doc.setFont('helvetica', 'bold');
+doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
+centerText(`${r.sys}/${r.dia}`, 2);
+
+doc.setTextColor(pulseColor[0], pulseColor[1], pulseColor[2]);
+centerText(r.pulse, 3);
+
+doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
+centerText(statusText, 4);
     });
 
     let finalY = tableY + (shown.length * 6) + 10;

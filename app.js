@@ -23,8 +23,98 @@ emailjsConfig: {
   },
   otpCode: null,
   otpEmail: null,
-  otpPurpose: null // 'register' or 'reset'
+  otpPurpose: null, // 'register' or 'reset'
+  firebaseInitialized: false  
 };
+
+// ===== FIREBASE HELPERS =====
+async function createFirebaseUser(email, password, userData) {
+  try {
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    const firebaseUser = userCredential.user;
+    
+    // Save user profile to Firestore
+    await firebase.firestore().collection('users').doc(firebaseUser.uid).set({
+      ...userData,
+      uid: firebaseUser.uid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    return firebaseUser;
+  } catch (error) {
+    console.error('Firebase registration error:', error);
+    throw error;
+  }
+}
+
+async function loginWithFirebase(email, password) {
+  try {
+    const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Firebase login error:', error);
+    throw error;
+  }
+}
+
+async function getUserDataFromFirestore(uid) {
+  try {
+    const doc = await firebase.firestore().collection('users').doc(uid).get();
+    return doc.exists ? doc.data() : null;
+  } catch (error) {
+    console.error('Firestore get error:', error);
+    return null;
+  }
+}
+
+async function syncReadingsToFirestore(uid, readings) {
+  try {
+    const readingsRef = firebase.firestore()
+      .collection('users')
+      .doc(uid)
+      .collection('readings');
+    
+    // Clear existing readings
+    const existing = await readingsRef.get();
+    const batch = firebase.firestore().batch();
+    existing.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    
+    // Upload new readings
+    for (const reading of readings) {
+      await readingsRef.add({
+        ...reading,
+        syncedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    console.log('Readings synced to Firestore');
+    return true;
+  } catch (error) {
+    console.error('Sync error:', error);
+    return false;
+  }
+}
+
+async function loadReadingsFromFirestore(uid) {
+  try {
+    const readingsRef = firebase.firestore()
+      .collection('users')
+      .doc(uid)
+      .collection('readings')
+      .orderBy('timestamp', 'desc');
+    
+    const snapshot = await readingsRef.get();
+    if (snapshot.empty) return [];
+    
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error('Load readings error:', error);
+    return [];
+  }
+}
 
 // ===== DOM REFS =====
 const $ = (s) => document.querySelector(s);
@@ -217,57 +307,116 @@ function displayAge(dob) {
 }
 
 // ===== LOGIN =====
-function loginUser(identifier, password = null, pin = null) {
+async function loginUser(identifier, password = null, pin = null) {
   console.log('Login attempt for:', identifier);
-  
+
   if (!identifier) {
     showToast('Please enter email or username');
     return false;
   }
 
-  const stored = loadData(identifier);
-  console.log('Stored data found:', stored ? 'Yes' : 'No');
+  // For PIN login - check local first (keep existing behavior)
+  if (pin) {
+    const stored = loadData(identifier);
+    if (stored && stored.user && stored.user.pin === pin) {
+      APP.user = stored.user;
+      APP.readings = stored.readings || [];
+      APP.avatar = stored.avatar || '';
+      APP.avatarType = stored.avatarType || 'initials';
+      APP.settings = { ...APP.settings, ...(stored.settings || {}) };
+      APP.isLoggedIn = true;
+      localStorage.setItem('mhj:lastActive', stored.user.email.toLowerCase());
+      saveData();
+      goToHome();
+      showToast('Welcome back, ' + APP.user.name + '!');
+      return true;
+    }
+    showToast('Invalid PIN');
+    return false;
+  }
 
-  if (stored && stored.user) {
-    const user = stored.user;
-    const identifierMatch =
-      (identifier && (identifier === user.email || identifier === user.phone || identifier === user.name));
-
-    if (!identifierMatch) {
-      showToast('User not found');
-      return false;
+  // For email/password login - use Firebase
+  try {
+    // Determine email from identifier
+    let email = identifier;
+    if (!identifier.includes('@')) {
+      // If username, check localStorage first
+      const stored = loadData(identifier);
+      if (stored && stored.user) {
+        email = stored.user.email;
+      } else {
+        showToast('User not found');
+        return false;
+      }
     }
 
-    if (password && user.password !== password) {
-      showToast('Invalid password');
-      return false;
-    }
-
-    if (pin && user.pin !== pin) {
-      showToast('Invalid PIN');
-      return false;
-    }
-
-    // Login successful
-    APP.user = user;
-    APP.readings = stored.readings || [];
-    APP.avatar = stored.avatar || '';
-    APP.avatarType = stored.avatarType || 'initials';
-    APP.settings = { ...APP.settings, ...(stored.settings || {}) };
-    APP.isLoggedIn = true;
-    localStorage.setItem('mhj:lastActive', user.email.toLowerCase());
-    saveData();
+    // Login with Firebase
+    const firebaseUser = await loginWithFirebase(email, password);
     
-    console.log('Login successful for:', user.name);
+    // Get user data from Firestore
+    const userData = await getUserDataFromFirestore(firebaseUser.uid);
+    
+    if (!userData) {
+      showToast('User data not found');
+      return false;
+    }
+
+    // Also check localStorage for offline data
+    const stored = loadData(email);
+    const localReadings = stored?.readings || [];
+
+    // Merge data: Firestore takes priority
+    APP.user = {
+      uid: firebaseUser.uid,
+      name: userData.name || stored?.user?.name || 'User',
+      email: email,
+      phone: userData.phone || stored?.user?.phone || '',
+      dob: userData.dob || stored?.user?.dob || '',
+      gender: userData.gender || stored?.user?.gender || '',
+      address: userData.address || stored?.user?.address || '',
+      bloodGroup: userData.bloodGroup || stored?.user?.bloodGroup || '',
+      relation: userData.relation || stored?.user?.relation || '',
+      emergencyContact: userData.emergencyContact || stored?.user?.emergencyContact || '',
+      notes: userData.notes || stored?.user?.notes || '',
+      password: password,
+      pin: userData.pin || stored?.user?.pin || ''
+    };
+
+    // Load readings from Firestore (or use local as fallback)
+    const cloudReadings = await loadReadingsFromFirestore(firebaseUser.uid);
+    if (cloudReadings.length > 0) {
+      APP.readings = cloudReadings;
+    } else {
+      APP.readings = localReadings || [];
+    }
+
+    APP.avatar = stored?.avatar || '';
+    APP.avatarType = stored?.avatarType || 'initials';
+    APP.settings = { ...APP.settings, ...(stored?.settings || {}) };
+    APP.isLoggedIn = true;
+    localStorage.setItem('mhj:lastActive', email.toLowerCase());
+
+    saveData();
     goToHome();
     showToast('Welcome back, ' + APP.user.name + '!');
     return true;
-  } else {
-    showToast('No account found. Please register.');
-    showScreen('register');
+
+  } catch (error) {
+    console.error('Login error:', error);
+    if (error.code === 'auth/user-not-found') {
+      showToast('User not found. Please register.');
+      showScreen('register');
+    } else if (error.code === 'auth/wrong-password') {
+      showToast('Invalid password');
+    } else if (error.code === 'auth/invalid-email') {
+      showToast('Invalid email format');
+    } else {
+      showToast('Login failed: ' + error.message);
+    }
     return false;
   }
 }
+
 
 // ===== LOGOUT =====
 function logoutUser() {
@@ -1072,6 +1221,11 @@ function saveReading() {
 
   APP.readings.push(reading);
   saveData();
+  
+  // ✅ CORRECT: Sync to Firebase after saving locally
+  if (APP.user && APP.user.uid) {
+    syncReadingsToFirestore(APP.user.uid, APP.readings);
+  }
 
   const status = getBPStatus(sys, dia);
   const pulseStatus = getPulseStatus(pulse);
@@ -1495,12 +1649,30 @@ document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function
     }
   });
 
-  // ===== COMPLETE REGISTRATION =====
-  function completeRegistration() {
-    const data = APP._tempRegistration;
-    if (!data) return;
+// ===== COMPLETE REGISTRATION =====
+async function completeRegistration() {
+  const data = APP._tempRegistration;
+  if (!data) return;
 
+  try {
+    // 1. Create user in Firebase Auth
+    const firebaseUser = await createFirebaseUser(data.email, data.password, {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      dob: data.dob,
+      gender: data.gender,
+      address: data.address,
+      bloodGroup: data.bloodGroup,
+      relation: data.relation,
+      emergencyContact: data.emergencyContact,
+      notes: data.notes,
+      pin: data.pin
+    });
+
+    // 2. Save to localStorage (for offline access)
     APP.user = {
+      uid: firebaseUser.uid,
       name: data.name,
       email: data.email,
       phone: data.phone,
@@ -1523,7 +1695,16 @@ document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function
     document.getElementById('readyName').textContent = data.name;
     showScreen('ready');
     showToast('Account created successfully!');
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    if (error.code === 'auth/email-already-in-use') {
+      showToast('Email already registered. Please login.');
+    } else {
+      showToast('Registration failed: ' + error.message);
+    }
   }
+}
 
   // ===== START JOURNAL =====
   document.getElementById('startJournalBtn')?.addEventListener('click', () => {

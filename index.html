@@ -56,7 +56,7 @@
       <div class="card login-card preauth-card">
         <img src="reporting-logo.png" alt="My Health Journal" class="preauth-logo" />
         <div class="quick-auth-row">
-          <button class="quick-auth" id="openLoginSheet"><strong>Login</strong><small>Login with Your Username & Password</small></button>
+          <button class="quick-auth" id="openLoginSheet"><strong>Login</strong><small>Enter Your Email & Password</small></button>
           <button class="quick-auth" id="pinLoginBtn"><strong>PIN</strong><small>Enter Your 5-digits PIN</small></button>
         </div>
         <button class="biometric-btn" id="biometricLoginBtn"><span class="ui-icon">&#9783;</span> Fingerprint Unlock</button>
@@ -1071,11 +1071,41 @@
   </div>
 </div>
 
+<!-- Firebase SDK (NEW - Add this first) -->
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore-compat.js"></script>
+
+<!-- EmailJS and other libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+
+<!-- Your Firebase Config -->
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUO4TJ8IlY46omW8eoQNyuClZHPUormdw",
+    authDomain: "my-health-journal-application.firebaseapp.com",
+    projectId: "my-health-journal-application",
+    storageBucket: "my-health-journal-application.firebasestorage.app",
+    messagingSenderId: "626039155068",
+    appId: "1:626039155068:web:85b7c7df69cb109d3b5cf9"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+
+
+<!-- Firebase Helpers (NEW - ADD THIS LINE) -->
+<script src="firebase.js"></script>
+
+<!-- Your App Scripts -->
 <script src="app.js"></script>
 <script src="enhancements.js"></script>
-<script>
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
       .then(() => console.log('SW registered'))

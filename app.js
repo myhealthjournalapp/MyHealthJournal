@@ -18,7 +18,7 @@ emailjsConfig: {
   publicKey: 'ty3zPrAyx5SIEI836'
  },
   gdriveConfig: {
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbxNq17oJOxxvNMixbjhBknPHIwGYbT7SQwNPGyBqkbvkOnHZNcLFROXVwmdlI3SI_oM-A/exec',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbzx9iQMlMAtJN74z1E8f6H6vk3GCdMHp60wfsXLPE8p7bfUeNFIMeOi8pcehVoIeVy2dQ/exec',
     folderId: '1dMnCqrDz6TGBgrQon-5NgbUFP3R4zosM'
   },
   otpCode: null,
@@ -561,6 +561,22 @@ async function sendOTP(email, name, purpose) {
     return true;
   } else {
     showToast('Failed to send OTP. Please try again.');
+    return false;
+  }
+}
+
+// ===== VERIFY OTP =====
+function verifyOTP(enteredOTP) {
+  if (!APP.otpCode) {
+    showToast('No OTP found. Please request a new one.');
+    return false;
+  }
+
+  if (enteredOTP === APP.otpCode) {
+    APP.otpCode = null;
+    return true;
+  } else {
+    showToast('Invalid OTP. Please try again.');
     return false;
   }
 }

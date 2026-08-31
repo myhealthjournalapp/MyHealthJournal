@@ -23,13 +23,22 @@
     if (pin !== record.user?.pin) return showToast('Invalid PIN');
     loginUser(email, null, pin); toggleSheet('pinSheet', false);
   });
-  document.querySelectorAll('[data-recovery]').forEach(btn => btn.addEventListener('click', () => { showScreen('forgot'); }));
-  byId('switchAccountBtn')?.addEventListener('click', () => {
-    const accounts = accountIndex();
-    if (!accounts.length) return showToast('No registered accounts on this device');
-    const email = prompt(`Choose an account:\n${accounts.join('\n')}`, accounts[0]);
-    if (email && accounts.includes(email)) { byId('loginEmail').value = email; toggleSheet('loginSheet', true); }
+document.querySelectorAll('[data-recovery]').forEach(btn => {
+  btn.addEventListener('click', () => { 
+    const type = btn.dataset.recovery;
+    if (type === 'pin') {
+      showScreen('pin-reset');
+    } else {
+      showScreen('forgot');
+    }
   });
+});
+byId('switchAccountBtn')?.addEventListener('click', () => {
+  const accounts = accountIndex();
+  if (!accounts.length) return showToast('No registered accounts on this device');
+  const email = prompt(`Choose an account:\n${accounts.join('\n')}`, accounts[0]);
+  if (email && accounts.includes(email)) { byId('loginEmail').value = email; toggleSheet('loginSheet', true); }
+});
 
   const avatar = byId('topAvatar'), avatarMenu = byId('avatarMenu');
   avatar?.addEventListener('click', e => { if (!APP.isLoggedIn) return; e.stopPropagation(); avatarMenu.hidden = !avatarMenu.hidden; });
@@ -366,24 +375,32 @@ window.exportPDF = async function (fromDate, toDate, rowsOverride) {
       console.log('Watermark not added:', e);
     }
 
-    // ===== 2. TOP-LEFT REPORTING LOGO (Bigger - 22mm height) =====
-    try {
-      const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.src = 'https://raw.githubusercontent.com/myhealthjournalapp/MyHealthJournal/main/reporting-logo.png';
-      await new Promise((resolve) => {
-        img.onload = resolve;
-        img.onerror = resolve;
-        setTimeout(resolve, 3000);
-      });
-      if (img.complete && img.naturalWidth > 0) {
-        const imgHeight = 28;
-        const imgWidth = (img.naturalWidth / img.naturalHeight) * imgHeight;
-        doc.addImage(img, 'PNG', margin, 4, imgWidth, imgHeight);
-      }
-    } catch(e) {
-      console.log('Top logo not added:', e);
-    }
+// ===== 2. TOP-LEFT REPORTING LOGO =====
+try {
+  const img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.src = 'https://raw.githubusercontent.com/myhealthjournalapp/MyHealthJournal/main/reporting-logo.png';
+  await new Promise((resolve) => {
+    img.onload = () => {
+      console.log('✅ Header logo loaded successfully');
+      resolve();
+    };
+    img.onerror = () => {
+      console.log('❌ Header logo failed to load');
+      resolve();
+    };
+    setTimeout(resolve, 3000);
+  });
+  if (img.complete && img.naturalWidth > 0) {
+    const imgHeight = 28;
+    const imgWidth = (img.naturalWidth / img.naturalHeight) * imgHeight;
+    doc.addImage(img, 'PNG', margin, 4, imgWidth, imgHeight);
+  } else {
+    console.log('Header logo not loaded - skipping');
+  }
+} catch(e) {
+  console.log('Top logo error:', e);
+}
 
     // ===== 3. HEADER TITLE =====
     doc.setFontSize(20);

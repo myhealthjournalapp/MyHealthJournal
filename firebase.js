@@ -7,9 +7,10 @@ async function createFirebaseUser(email, password, userData) {
     const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
     const firebaseUser = userCredential.user;
     
-    // Save user profile to Firestore
+    // Save user profile to Firestore - ADD recoveryEmail field
     await db.collection('users').doc(firebaseUser.uid).set({
       ...userData,
+      recoveryEmail: userData.recoveryEmail || '',  // ← ADD THIS
       uid: firebaseUser.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });

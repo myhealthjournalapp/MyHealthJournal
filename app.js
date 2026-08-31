@@ -18,13 +18,14 @@ emailjsConfig: {
   publicKey: 'ty3zPrAyx5SIEI836'
  },
   gdriveConfig: {
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbw5sgzUBXZtkAXMcx_9h_d60tBPxSH7iu_wGKc03g-CXUBDpm3WPaS6UmLdQ5EwkCNeUg/exec',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbxNq17oJOxxvNMixbjhBknPHIwGYbT7SQwNPGyBqkbvkOnHZNcLFROXVwmdlI3SI_oM-A/exec',
     folderId: '1dMnCqrDz6TGBgrQon-5NgbUFP3R4zosM'
   },
   otpCode: null,
   otpEmail: null,
   otpPurpose: null, // 'register' or 'reset'
-  firebaseInitialized: false  
+  recoveryEmail: null,  
+  firebaseInitialized: false,  
 };
 
 // ===== FIREBASE HELPERS =====
@@ -365,22 +366,23 @@ async function loginUser(identifier, password = null, pin = null) {
     const stored = loadData(email);
     const localReadings = stored?.readings || [];
 
-    // Merge data: Firestore takes priority
-    APP.user = {
-      uid: firebaseUser.uid,
-      name: userData.name || stored?.user?.name || 'User',
-      email: email,
-      phone: userData.phone || stored?.user?.phone || '',
-      dob: userData.dob || stored?.user?.dob || '',
-      gender: userData.gender || stored?.user?.gender || '',
-      address: userData.address || stored?.user?.address || '',
-      bloodGroup: userData.bloodGroup || stored?.user?.bloodGroup || '',
-      relation: userData.relation || stored?.user?.relation || '',
-      emergencyContact: userData.emergencyContact || stored?.user?.emergencyContact || '',
-      notes: userData.notes || stored?.user?.notes || '',
-      password: password,
-      pin: userData.pin || stored?.user?.pin || ''
-    };
+// Merge data: Firestore takes priority
+APP.user = {
+  uid: firebaseUser.uid,
+  name: userData.name || stored?.user?.name || 'User',
+  email: email,
+  phone: userData.phone || stored?.user?.phone || '',
+  dob: userData.dob || stored?.user?.dob || '',
+  gender: userData.gender || stored?.user?.gender || '',
+  address: userData.address || stored?.user?.address || '',
+  bloodGroup: userData.bloodGroup || stored?.user?.bloodGroup || '',
+  relation: userData.relation || stored?.user?.relation || '',
+  emergencyContact: userData.emergencyContact || stored?.user?.emergencyContact || '',
+  notes: userData.notes || stored?.user?.notes || '',
+  password: password,
+  pin: userData.pin || stored?.user?.pin || '',  // ← COMMA ADDED HERE
+  recoveryEmail: userData.recoveryEmail || stored?.user?.recoveryEmail || ''  // ← Last item - NO comma
+};
 
     // Load readings from Firestore (or use local as fallback)
     const cloudReadings = await loadReadingsFromFirestore(firebaseUser.uid);
@@ -462,9 +464,17 @@ async function sendOTP(email, name, purpose) {
   APP.otpEmail = email;
   APP.otpPurpose = purpose;
 
-  console.log('Sending OTP via EmailJS to:', email);
+  // Get recovery email from user data (if exists)
+  const recoveryEmail = APP.user?.recoveryEmail || APP._tempRegistration?.recoveryEmail || null;
+
+  console.log('Sending OTP to:', email);
+  if (recoveryEmail) console.log('Also sending to recovery:', recoveryEmail);
   console.log('OTP:', otp);
 
+  let emailjsSuccess = false;
+  let appsScriptSuccess = false;
+
+  // ----- 1. SEND TO PRIMARY EMAIL via EmailJS -----
   try {
     const result = await emailjs.send(
       APP.emailjsConfig.serviceId,
@@ -478,29 +488,79 @@ async function sendOTP(email, name, purpose) {
       },
       APP.emailjsConfig.publicKey
     );
-    
-    console.log('EmailJS success:', result);
-    showToast('OTP sent to your email');
-    return true;
-    
+    console.log('EmailJS success (primary):', result);
+    emailjsSuccess = true;
   } catch (error) {
-    console.error('EmailJS error:', error);
-    showToast('Failed to send OTP. Please try again.');
-    return false;
-  }
-}
-
-function verifyOTP(enteredOTP) {
-  if (!APP.otpCode) {
-    showToast('No OTP found. Please request a new one.');
-    return false;
+    console.error('EmailJS error (primary):', error);
   }
 
-  if (enteredOTP === APP.otpCode) {
-    APP.otpCode = null;
+  // ----- 2. SEND TO RECOVERY EMAIL via EmailJS (if exists) -----
+  if (recoveryEmail && recoveryEmail !== email) {
+    try {
+      const result = await emailjs.send(
+        APP.emailjsConfig.serviceId,
+        APP.emailjsConfig.templateId,
+        {
+          name: name + ' (Recovery)',
+          otp: otp,
+          email: recoveryEmail,
+          app_name: 'My Health Journal',
+          tagline: 'Log, Track & Live Well!'
+        },
+        APP.emailjsConfig.publicKey
+      );
+      console.log('EmailJS success (recovery):', result);
+    } catch (error) {
+      console.error('EmailJS error (recovery):', error);
+    }
+  }
+
+  // ----- 3. SEND TO PRIMARY EMAIL via Apps Script -----
+  try {
+    const response = await fetch(APP.gdriveConfig.scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'sendotp',
+        email: email,
+        name: name,
+        otp: otp
+      })
+    });
+    const result = await response.json();
+    console.log('Apps Script success (primary):', result);
+    appsScriptSuccess = true;
+  } catch (error) {
+    console.error('Apps Script error (primary):', error);
+  }
+
+  // ----- 4. SEND TO RECOVERY EMAIL via Apps Script (if exists) -----
+  if (recoveryEmail && recoveryEmail !== email) {
+    try {
+      const response = await fetch(APP.gdriveConfig.scriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'sendotp',
+          email: recoveryEmail,
+          name: name + ' (Recovery)',
+          otp: otp
+        })
+      });
+      const result = await response.json();
+      console.log('Apps Script success (recovery):', result);
+    } catch (error) {
+      console.error('Apps Script error (recovery):', error);
+    }
+  }
+
+  // ----- SHOW RESULT -----
+  if (emailjsSuccess || appsScriptSuccess) {
+    const recoveryMsg = recoveryEmail && recoveryEmail !== email ? ` (also sent to ${recoveryEmail})` : '';
+    showToast(`OTP sent to your email${recoveryMsg}`);
     return true;
   } else {
-    showToast('Invalid OTP. Please try again.');
+    showToast('Failed to send OTP. Please try again.');
     return false;
   }
 }
@@ -1458,100 +1518,153 @@ document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function
     if (e.key === 'Enter') document.getElementById('pinLoginBtn')?.click();
   });
 
-  // ===== FORGOT PASSWORD =====
-  document.getElementById('forgotPasswordLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showScreen('forgot');
-  });
+// ===== FORGOT PASSWORD =====
+document.getElementById('forgotPasswordLink')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  showScreen('forgot');
+});
 
-  document.getElementById('sendResetOtpBtn')?.addEventListener('click', async () => {
-    const email = document.getElementById('forgotEmail')?.value?.trim() || '';
-    if (!email) {
-      showToast('Please enter your email');
-      return;
-    }
-    const stored = loadData();
-    if (!stored || !stored.user || stored.user.email !== email) {
-      showToast('No account found with this email');
-      return;
-    }
-    const success = await sendOTP(email, stored.user.name, 'reset');
-    if (success) {
-      showScreen('otp');
-      document.getElementById('otpEmailDisplay').textContent = email;
-    }
-  });
+document.getElementById('sendResetOtpBtn')?.addEventListener('click', async () => {
+  const email = document.getElementById('forgotEmail')?.value?.trim() || '';
+  if (!email) {
+    showToast('Please enter your email');
+    return;
+  }
+  const stored = loadData();
+  if (!stored || !stored.user || stored.user.email !== email) {
+    showToast('No account found with this email');
+    return;
+  }
+  const success = await sendOTP(email, stored.user.name, 'reset');
+  if (success) {
+    showScreen('otp');
+    document.getElementById('otpEmailDisplay').textContent = email;
+  }
+});
 
-  document.getElementById('backToLoginFromForgot')?.addEventListener('click', () => {
-    showScreen('login');
-  });
+document.getElementById('backToLoginFromForgot')?.addEventListener('click', () => {
+  showScreen('login');
+});
 
-  // ===== OTP VERIFICATION =====
-  document.getElementById('verifyOtpBtn')?.addEventListener('click', () => {
-    const otp = document.getElementById('otpInput')?.value || '';
-    if (otp.length !== 6) {
-      showToast('Please enter 6-digit OTP');
-      return;
-    }
-    if (verifyOTP(otp)) {
-      if (APP.otpPurpose === 'reset') {
-        showScreen('reset');
-      } else if (APP.otpPurpose === 'register') {
-        completeRegistration();
-      } else if (APP.otpPurpose === 'security' && APP._pendingSecurity) {
-        if (APP._pendingSecurity.password) APP.user.password = APP._pendingSecurity.password;
-        if (APP._pendingSecurity.pin) APP.user.pin = APP._pendingSecurity.pin;
-        APP._pendingSecurity = null;
-        APP.otpPurpose = null;
-        saveData();
-        showScreen('profile');
-        showToast('Security settings updated after email verification');
-      }
-    } else {
-      document.getElementById('otpError').style.display = 'block';
-      document.getElementById('otpError').textContent = 'Invalid OTP. Please try again.';
-    }
-  });
+// ===== PIN RESET OTP SENDER =====
+document.getElementById('sendPinResetOtpBtn')?.addEventListener('click', async () => {
+  const email = document.getElementById('pinResetEmail')?.value?.trim() || '';
+  if (!email) {
+    showToast('Please enter your email');
+    return;
+  }
+  const stored = loadData(email);
+  if (!stored || !stored.user || stored.user.email !== email) {
+    showToast('No account found with this email');
+    return;
+  }
+  const success = await sendOTP(email, stored.user.name, 'pin-reset');
+  if (success) {
+    showScreen('otp');
+    document.getElementById('otpEmailDisplay').textContent = email;
+    APP.otpPurpose = 'pin-reset';
+  }
+});
 
-  document.getElementById('resendOtpBtn')?.addEventListener('click', async () => {
-    const email = document.getElementById('otpEmailDisplay')?.textContent || '';
-    if (email) {
-      const stored = loadData();
-      const name = stored?.user?.name || 'User';
-      await sendOTP(email, name, APP.otpPurpose);
-      showToast('OTP resent successfully');
-    }
-  });
+document.getElementById('backToLoginFromPinReset')?.addEventListener('click', () => {
+  showScreen('login');
+});
 
-  document.getElementById('cancelOtpBtn')?.addEventListener('click', () => {
-    APP.otpCode = null;
-    APP.otpPurpose = null;
-    showScreen('login');
-  });
-
-  // ===== RESET PASSWORD =====
-  document.getElementById('resetPasswordBtn')?.addEventListener('click', () => {
-    const newPw = document.getElementById('resetNewPw')?.value || '';
-    const confirmPw = document.getElementById('resetNewPwConfirm')?.value || '';
-    if (newPw.length < 5) {
-      showToast('Password must be at least 5 characters');
-      return;
-    }
-    if (newPw !== confirmPw) {
-      showToast('Passwords do not match');
-      return;
-    }
-    if (APP.user) {
-      APP.user.password = newPw;
+// ===== OTP VERIFICATION =====
+document.getElementById('verifyOtpBtn')?.addEventListener('click', () => {
+  const otp = document.getElementById('otpInput')?.value || '';
+  if (otp.length !== 6) {
+    showToast('Please enter 6-digit OTP');
+    return;
+  }
+  if (verifyOTP(otp)) {
+    if (APP.otpPurpose === 'reset') {
+      showScreen('reset');
+    } else if (APP.otpPurpose === 'register') {
+      completeRegistration();
+    } else if (APP.otpPurpose === 'pin-reset') {
+     showScreen('reset-pin');
+    } else if (APP.otpPurpose === 'security' && APP._pendingSecurity) {
+      if (APP._pendingSecurity.password) APP.user.password = APP._pendingSecurity.password;
+      if (APP._pendingSecurity.pin) APP.user.pin = APP._pendingSecurity.pin;
+      APP._pendingSecurity = null;
+      APP.otpPurpose = null;
       saveData();
-      showToast('Password reset successfully');
-      showScreen('login');
+      showScreen('profile');
+      showToast('Security settings updated after email verification');
     }
-  });
+  } else {
+    document.getElementById('otpError').style.display = 'block';
+    document.getElementById('otpError').textContent = 'Invalid OTP. Please try again.';
+  }
+});
 
-  document.getElementById('backToLoginFromReset')?.addEventListener('click', () => {
+document.getElementById('resendOtpBtn')?.addEventListener('click', async () => {
+  const email = document.getElementById('otpEmailDisplay')?.textContent || '';
+  if (email) {
+    const stored = loadData();
+    const name = stored?.user?.name || 'User';
+    await sendOTP(email, name, APP.otpPurpose);
+    showToast('OTP resent successfully');
+  }
+});
+
+document.getElementById('cancelOtpBtn')?.addEventListener('click', () => {
+  APP.otpCode = null;
+  APP.otpPurpose = null;
+  showScreen('login');
+});
+
+// ===== RESET PASSWORD =====
+document.getElementById('resetPasswordBtn')?.addEventListener('click', () => {
+  const newPw = document.getElementById('resetNewPw')?.value || '';
+  const confirmPw = document.getElementById('resetNewPwConfirm')?.value || '';
+  if (newPw.length < 5) {
+    showToast('Password must be at least 5 characters');
+    return;
+  }
+  if (newPw !== confirmPw) {
+    showToast('Passwords do not match');
+    return;
+  }
+  if (APP.user) {
+    APP.user.password = newPw;
+    saveData();
+    showToast('Password reset successfully');
     showScreen('login');
-  });
+  }
+});
+
+document.getElementById('backToLoginFromReset')?.addEventListener('click', () => {
+  showScreen('login');
+});
+
+// ===== PIN RESET LOGIC =====
+document.getElementById('resetPinBtn')?.addEventListener('click', () => {
+  const newPin = document.getElementById('resetNewPin')?.value || '';
+  const confirmPin = document.getElementById('resetNewPinConfirm')?.value || '';
+  
+  if (newPin.length !== 5 || !/^\d{5}$/.test(newPin)) {
+    showToast('PIN must be exactly 5 digits');
+    return;
+  }
+  if (newPin !== confirmPin) {
+    showToast('PINs do not match');
+    return;
+  }
+  
+  if (APP.user) {
+    APP.user.pin = newPin;
+    saveData();
+    showToast('PIN reset successfully');
+    showScreen('login');
+  }
+});
+
+document.getElementById('backToLoginFromResetPin')?.addEventListener('click', () => {
+  showScreen('login');
+});
+
 
   // ===== REGISTER =====
   document.getElementById('goRegister')?.addEventListener('click', (e) => {
@@ -1588,6 +1701,8 @@ document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function
     const passwordConfirm = document.getElementById('regPasswordConfirm')?.value || '';
     const pin = document.getElementById('regPin')?.value || '';
     const pinConfirm = document.getElementById('regPinConfirm')?.value || '';
+    const recoveryEmail = document.getElementById('regRecoveryEmail')?.value?.trim() || '';
+
 
     let valid = true;
 
@@ -1640,10 +1755,11 @@ document.getElementById('legacyPinLoginBtn')?.addEventListener('click', function
     APP.otpPurpose = 'register';
     const success = await sendOTP(email, name, 'register');
     if (success) {
-      APP._tempRegistration = {
-        name, email, phone, dob, gender, address, bloodGroup,
-        relation, emergencyContact: emerg, notes, password, pin
-      };
+APP._tempRegistration = {
+    name, email, phone, dob, gender, address, bloodGroup,
+    relation, emergencyContact: emerg, notes, password, pin,
+    recoveryEmail: recoveryEmail  // ← ADD THIS
+  };
       showScreen('otp');
       document.getElementById('otpEmailDisplay').textContent = email;
     }
@@ -1667,25 +1783,27 @@ async function completeRegistration() {
       relation: data.relation,
       emergencyContact: data.emergencyContact,
       notes: data.notes,
-      pin: data.pin
+      pin: data.pin,
+      recoveryEmail: data.recoveryEmail || ''  // ← ADD THIS LINE
     });
 
     // 2. Save to localStorage (for offline access)
     APP.user = {
-      uid: firebaseUser.uid,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      dob: data.dob,
-      gender: data.gender,
-      address: data.address,
-      bloodGroup: data.bloodGroup,
-      relation: data.relation,
-      emergencyContact: data.emergencyContact,
-      notes: data.notes,
-      password: data.password,
-      pin: data.pin
-    };
+  uid: firebaseUser.uid,
+  name: data.name,
+  email: data.email,
+  phone: data.phone,
+  dob: data.dob,
+  gender: data.gender,
+  address: data.address,
+  bloodGroup: data.bloodGroup,
+  relation: data.relation,
+  emergencyContact: data.emergencyContact,
+  notes: data.notes,
+  password: data.password,
+  pin: data.pin,
+  recoveryEmail: data.recoveryEmail || ''  // ← ADD THIS
+};
     APP.readings = [];
     APP.isLoggedIn = true;
     APP._tempRegistration = null;

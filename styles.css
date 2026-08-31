@@ -1682,3 +1682,71 @@ select[multiple] option:checked {
     font-size: 12px;
   }
 }
+
+/* ===== LOGIN SCREEN FIXES - FINAL ===== */
+
+/* Fix login sheet spacing */
+.login-sheet .input-group,
+.pin-sheet .input-group {
+  margin-bottom: 18px;
+}
+
+.login-sheet .btn-primary,
+.pin-sheet .btn-primary {
+  margin-top: 10px;
+}
+
+.login-sheet .modal-close,
+.pin-sheet .modal-close {
+  top: 12px;
+  right: 14px;
+}
+
+/* Fix quick auth buttons */
+.quick-auth {
+  min-height: 80px;
+  padding: 10px;
+}
+
+.quick-auth-row {
+  margin-bottom: 10px;
+}
+
+/* Fix preauth options */
+.preauth-options {
+  margin-top: 6px;
+  gap: 8px;
+}
+
+.preauth-options button {
+  padding: 8px 6px;
+  font-size: 11px;
+}
+
+/* Fix login card */
+#view-login .card {
+  margin-bottom: 10px;
+}
+
+#loginSheet h3,
+#pinSheet h3 {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+#loginSheet .input-group:last-child,
+#pinSheet .input-group:last-child {
+  margin-bottom: 6px;
+}
+
+#loginSheet #loginBtn,
+#pinSheet #submitPinLogin {
+  margin-top: 6px;
+}
+
+/* Fix login sheet height and padding */
+.login-sheet,
+.pin-sheet {
+  max-height: 70vh;
+  padding: 20px 24px 30px;
+}

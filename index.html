@@ -69,8 +69,8 @@
       </div>
       <div class="login-sheet" id="loginSheet" hidden>
         <div class="modal-handle"></div><h3>Sign in</h3>
-        <div class="input-group"><label>Email or Username</label><input type="text" id="loginEmail" placeholder="Enter your email or username" autocomplete="email" /></div>
-        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter your password" /><button class="toggle-pw" data-target="loginPassword" type="button">👁️</button></div></div>
+        <div class="input-group"><label>Email</label><input type="text" id="loginEmail" placeholder="Enter Your Email" autocomplete="email" /></div>
+        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter Your Password" /><button class="toggle-pw" data-target="loginPassword" type="button">👁️</button></div></div>
         <button class="modal-close" id="closeLoginSheet" aria-label="Close">✕</button>
         <a href="#" id="forgotPasswordLink" class="credentials-link">Forgot Your Credentials?</a>
         <button class="btn-primary" id="loginBtn">Login</button>
@@ -94,9 +94,15 @@
           </div>
 
           <div class="input-group">
-            <label>Email <span class="required-star">*</span></label>
-            <input type="email" id="regEmail" placeholder="name@email.com" autocomplete="email" required />
+            <label>Primary Email <span class="required-star">*</span></label>
+            <input type="email" id="regEmail" placeholder="primary@email.com" autocomplete="email" required />
           </div>
+
+<div class="input-group">
+  <label>Recovery Email (Optional)</label>
+  <input type="email" id="regRecoveryEmail" placeholder="backup@email.com" />
+  <span style="font-size:11px;color:var(--gray);">An OTP will be sent to both your primary and recovery emails.</span>
+</div>
 
           <div class="input-group">
             <label>Phone Number <span class="required-star">*</span></label>
@@ -121,7 +127,7 @@
 
           <div class="input-group">
             <label>Address</label>
-            <input type="text" id="regAddress" placeholder="Your complete address" />
+            <input type="text" id="regAddress" placeholder="House/Plot/Apt No, Street No, Sector/Block, Landmark, City, Province, Postal Code, PK." />
           </div>
 
           <div class="input-group">
@@ -172,7 +178,7 @@
           <div class="input-group">
             <label>Create Password (min 5 characters) <span class="required-star">*</span></label>
             <div class="password-wrap">
-              <input type="password" id="regPassword" placeholder="Create your password (min 5 characters)" />
+              <input type="password" id="regPassword" placeholder="Create your Password (min 5 charcters)" />
               <button class="toggle-pw" data-target="regPassword" type="button">👁</button>
             </div>
             <div id="regPasswordError" class="error-msg" style="display:none;">Password must be at least 5 characters</div>
@@ -181,16 +187,16 @@
           <div class="input-group">
             <label>Confirm Password <span class="required-star">*</span></label>
             <div class="password-wrap">
-              <input type="password" id="regPasswordConfirm" placeholder="Confirm your password" />
+              <input type="password" id="regPasswordConfirm" placeholder="Confirm your Password" />
               <button class="toggle-pw" data-target="regPasswordConfirm" type="button">👁</button>
             </div>
             <div id="regPasswordMatchError" class="error-msg" style="display:none;">Passwords do not match</div>
           </div>
 
           <div class="input-group">
-            <label>Create Quick PIN (exactly 5 digits) <span class="required-star">*</span></label>
+            <label>Create Quick PIN <span class="required-star">*</span></label>
             <div class="password-wrap">
-              <input type="password" id="regPin" placeholder="Create your PIN (min 5 characters)" maxlength="5" inputmode="numeric" />
+              <input type="password" id="regPin" placeholder="Create your PIN (min 5 digits)" maxlength="5" inputmode="numeric" />
               <button class="toggle-pw" data-target="regPin" type="button">👁</button>
             </div>
             <div id="regPinError" class="error-msg" style="display:none;">PIN must be exactly 5 digits</div>
@@ -229,48 +235,91 @@
       </div>
     </div>
 
-    <!-- ===== FORGOT PASSWORD ===== -->
-    <div class="screen-view" id="view-forgot">
-      <div class="card">
-        <h2 class="section-title">Reset Password</h2>
-        <p class="section-sub">Enter your email to receive OTP for password reset</p>
+<!-- ===== FORGOT PASSWORD ===== -->
+<div class="screen-view" id="view-forgot">
+  <div class="card">
+    <h2 class="section-title">Reset Password</h2>
+    <p class="section-sub">Enter your email to receive OTP for password reset</p>
 
-        <div class="input-group">
-          <label>Email</label>
-          <input type="email" id="forgotEmail" placeholder="name@email.com" />
-        </div>
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="forgotEmail" placeholder="name@email.com" />
+    </div>
 
-        <button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
-        <button class="modal-close" id="backToLoginFromForgot" aria-label="Close">✕</button>
+    <button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
+    <button class="modal-close" id="backToLoginFromForgot" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<!-- ===== FORGOT PIN ===== -->
+<div class="screen-view" id="view-pin-reset">
+  <div class="card">
+    <h2 class="section-title">Reset PIN</h2>
+    <p class="section-sub">Enter your email to receive OTP for PIN reset</p>
+
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="forgotPinEmail" placeholder="name@email.com" />
+    </div>
+
+    <button class="btn-primary" id="sendPinResetOtpBtn">Send OTP</button>
+    <button class="modal-close" id="backToLoginFromPinReset" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<!-- ===== RESET PASSWORD ===== -->
+<div class="screen-view" id="view-reset">
+  <div class="card">
+    <h2 class="section-title">Set New Password</h2>
+    <p class="section-sub">Enter your new password</p>
+
+    <div class="input-group">
+      <label>New Password (min 5 characters)</label>
+      <div class="password-wrap">
+        <input type="password" id="resetNewPw" placeholder="Enter new password" />
+        <button class="toggle-pw" data-target="resetNewPw" type="button">👁</button>
       </div>
     </div>
 
-    <!-- ===== RESET PASSWORD ===== -->
-    <div class="screen-view" id="view-reset">
-      <div class="card">
-        <h2 class="section-title">Set New Password</h2>
-        <p class="section-sub">Enter your new password</p>
-
-        <div class="input-group">
-          <label>New Password (min 5 characters)</label>
-          <div class="password-wrap">
-            <input type="password" id="resetNewPw" placeholder="Enter new password" />
-            <button class="toggle-pw" data-target="resetNewPw" type="button">👁</button>
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>Confirm New Password</label>
-          <div class="password-wrap">
-            <input type="password" id="resetNewPwConfirm" placeholder="Confirm new password" />
-            <button class="toggle-pw" data-target="resetNewPwConfirm" type="button">👁</button>
-          </div>
-        </div>
-
-        <button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
-        <button class="modal-close" id="backToLoginFromReset" aria-label="Close">✕</button>
+    <div class="input-group">
+      <label>Confirm New Password</label>
+      <div class="password-wrap">
+        <input type="password" id="resetNewPwConfirm" placeholder="Confirm new password" />
+        <button class="toggle-pw" data-target="resetNewPwConfirm" type="button">👁</button>
       </div>
     </div>
+
+    <button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
+    <button class="modal-close" id="backToLoginFromReset" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<!-- ===== RESET PIN ===== -->
+<div class="screen-view" id="view-reset-pin">
+  <div class="card">
+    <h2 class="section-title">Set New PIN</h2>
+    <p class="section-sub">Enter your new 5-digit PIN</p>
+
+    <div class="input-group">
+      <label>New PIN (exactly 5 digits)</label>
+      <div class="password-wrap">
+        <input type="password" id="resetNewPin" placeholder="Enter new PIN" maxlength="5" inputmode="numeric" />
+        <button class="toggle-pw" data-target="resetNewPin" type="button">👁</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Confirm New PIN</label>
+      <div class="password-wrap">
+        <input type="password" id="resetNewPinConfirm" placeholder="Confirm new PIN" maxlength="5" inputmode="numeric" />
+        <button class="toggle-pw" data-target="resetNewPinConfirm" type="button">👁</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="resetPinBtn">Reset PIN</button>
+    <button class="modal-close" id="backToLoginFromResetPin" aria-label="Close">✕</button>
+  </div>
+</div>
 
     <!-- ===== ACCOUNT READY (Screen 05) ===== -->
     <div class="screen-view" id="view-ready">
@@ -702,9 +751,13 @@
             <input type="text" id="editName" placeholder="Enter your full name" />
           </div>
           <div class="input-group">
-            <label>Email</label>
-            <input type="email" id="editEmail" placeholder="name@email.com" />
+            <label>Primary Email</label>
+            <input type="email" id="editEmail" placeholder="primary@email.com" />
           </div>
+<div class="input-group">
+  <label>Recovery Email</label>
+  <input type="email" id="editRecoveryEmail" placeholder="backup@email.com" />
+</div>
           <div class="input-group">
             <label>Phone</label>
             <input type="tel" id="editPhone" placeholder="03XX-XXXXXXX" />

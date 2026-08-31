@@ -392,7 +392,7 @@ try {
     setTimeout(resolve, 3000);
   });
   if (img.complete && img.naturalWidth > 0) {
-    const imgHeight = 28;
+    const imgHeight = 25;
     const imgWidth = (img.naturalWidth / img.naturalHeight) * imgHeight;
     doc.addImage(img, 'PNG', margin, 4, imgWidth, imgHeight);
   } else {
@@ -403,7 +403,7 @@ try {
 }
 
     // ===== 3. HEADER TITLE =====
-    doc.setFontSize(20);
+    doc.setFontSize(23);
     doc.setFont('helvetica', 'bold');
     const orangeTitle = 'BP & Pulse';
     const blackTitle = ' Report';

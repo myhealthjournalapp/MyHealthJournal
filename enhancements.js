@@ -403,8 +403,8 @@ try {
 }
 
     // ===== 3. HEADER TITLE =====
-    doc.setFontSize(23);
-    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(23);  // Bigger
+    doc.setFont('helvetica', 'black');  // Thicker/heaviest
     const orangeTitle = 'BP & Pulse';
     const blackTitle = ' Report';
     const titleWidth = doc.getTextWidth(orangeTitle + blackTitle);

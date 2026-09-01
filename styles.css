@@ -722,6 +722,15 @@ select[multiple] option:checked {
 .window-status.pending {
   color: var(--gray);
 }
+/* Make window icons consistent with Font Awesome */
+/* Force morning icon to show */
+.window-icon i {
+  font-size: 24px !important;
+  color: var(--orange) !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
 
 /* ===== TODAY READINGS LIST ===== */
 .today-readings-list {
@@ -1431,7 +1440,15 @@ select[multiple] option:checked {
 
 /* ===== MY HEALTH JOURNAL v1.1 ===== */
 [hidden] { display: none !important; }
-.brand-tagline { margin: 2px 0 0; color: var(--charcoal); font-size: 15px; }
+.brand-tagline {
+  font-weight: 600;  /* Semi-bold */
+  font-size: 16px;
+  color: var(--charcoal);
+}
+
+.brand-tagline .orange-text {
+  color: var(--orange);
+}
 .splash-content { min-height: 100vh; position: relative; padding-bottom: 96px; }
 .splash-credit { position: absolute; bottom: 28px; left: 18px; right: 18px; text-align: center; }
 .splash-credit .splash-dev { color: #a7adb6; font-size: 11px; margin: 0 0 4px; }
@@ -1750,3 +1767,104 @@ select[multiple] option:checked {
   max-height: 70vh;
   padding: 20px 24px 30px;
 }
+
+/* ===== FONT AWESOME ICON STYLES (for navigation) ===== */
+.nav-icon i {
+  font-size: 22px;
+  color: var(--gray);
+  transition: var(--transition);
+}
+
+.nav-item.active .nav-icon i {
+  color: var(--orange);
+}
+
+.nav-item .nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ===== FAB BUTTON STYLES ===== */
+.fab-btn {
+  background: var(--orange);
+  color: white;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 4px 16px rgba(255, 131, 8, 0.35);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: -16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  font-size: 0; /* Hide any text */
+}
+
+.fab-btn:active {
+  transform: scale(0.9);
+}
+
+/* Font Awesome icon in FAB (if used) */
+.fab-btn i {
+  color: white;
+  font-size: 24px;
+  display: none; /* Hidden - using Material Icons instead */
+}
+
+/* Material Icon in FAB */
+.fab-btn .material-icons {
+  font-size: 30px !important;
+  color: white !important;
+  line-height: 1 !important;
+}
+
+/* ===== MATERIAL ICONS STYLES ===== */
+/* Window icons (Morning, Afternoon, Evening) */
+.window-icon.material-icons {
+  font-size: 28px !important;
+  color: var(--orange) !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+}
+
+/* Navigation icons (if using Material Icons in nav) */
+.nav-icon .material-icons {
+  font-size: 24px;
+  color: var(--gray);
+  transition: var(--transition);
+}
+
+.nav-item.active .nav-icon .material-icons {
+  color: var(--orange);
+}
+
+/* ===== AVATAR ===== */
+.avatar .avatar-emoji {
+  font-size: 18px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+  .nav-icon i {
+    font-size: 18px;
+  }
+  .nav-icon .material-icons {
+    font-size: 20px;
+  }
+  .fab-btn .material-icons {
+    font-size: 24px !important;
+  }
+  .window-icon.material-icons {
+    font-size: 24px !important;
+  }
+}
+
+/* Optional: Different sizes for each */
+#wMorning .window-icon.material-icons { font-size: 28px; }
+#wAfternoon .window-icon.material-icons { font-size: 30px; }
+#wEvening .window-icon.material-icons { font-size: 26px; }

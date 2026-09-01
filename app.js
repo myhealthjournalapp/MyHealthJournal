@@ -180,7 +180,7 @@ function goToHome() {
   const readyName = document.getElementById('readyName');
   if (readyName) readyName.textContent = APP.user.name;
   const greetingMsg = document.getElementById('greetingMsg');
-  if (greetingMsg) greetingMsg.textContent = getGreeting();
+  if (greetingMsg) greetingMsg.textContent = getGreeting() + ',';  // ← ADD COMMA HERE
   showScreen('home');
   updateHome();
 }
@@ -195,13 +195,25 @@ function updateClock() {
     hour12: true
   });
   const date = now.toLocaleDateString('en-GB', {
+    weekday: 'short',
     day: '2-digit',
     month: 'short',
     year: 'numeric'
   });
   const topTime = document.getElementById('topTime');
   const homeDate = document.getElementById('homeDate');
-  if (topTime) topTime.textContent = time;
+  
+  // Top bar shows day + time
+  if (topTime) {
+    const dayTime = now.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+    topTime.textContent = `${dayTime} · ${time}`;
+  }
+  
+  // Home date shows full date + time
   if (homeDate) homeDate.textContent = `${date} · ${time}`;
 }
 
@@ -706,7 +718,7 @@ if (statusEl) {
 
   const greetingMsg = document.getElementById('greetingMsg');
   if (greetingMsg && APP.user) {
-    greetingMsg.textContent = getGreeting();
+    greetingMsg.textContent = getGreeting() + ',';  // ← ADD COMMA HERE
   }
 }
 

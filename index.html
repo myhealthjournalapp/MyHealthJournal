@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json" />
 </head>
@@ -20,7 +22,7 @@
   <div class="splash-content">
     <img src="app-logo.png" alt="My Health Journal" class="app-logo" id="splashLogo" />
     <h1 class="brand-name"><span>My</span> <span class="health-word">Health</span> <span>Journal</span></h1>
-    <p class="brand-tagline">Log, Track &amp; Live Well!</p>
+    <p class="brand-tagline">Log, Track &amp; <span class="orange-text">Live Well!</span></p>
     <div class="splash-loader"></div>
     <div class="splash-credit"><p class="splash-dev">Developed &amp; Maintained by</p><p class="splash-brand">WhiteMoon Jeweller | Asad Jewellers, Okara</p></div>
   </div>
@@ -391,22 +393,21 @@
 
 <div class="daily-windows">
   <div class="window-item" id="wMorning">
-    <span class="window-icon">&#127749;</span>
+    <span class="window-icon material-icons">wb_twilight</span>
     <span class="window-name">Morning</span>
     <span class="window-status pending">● Pending</span>
   </div>
   <div class="window-item" id="wAfternoon">
-    <span class="window-icon">&#127774;</span>
+    <span class="window-icon material-icons">sunny</span>
     <span class="window-name">Afternoon</span>
     <span class="window-status pending">● Pending</span>
   </div>
   <div class="window-item" id="wEvening">
-    <span class="window-icon">&#127751;</span>
+    <span class="window-icon material-icons">bedtime</span>
     <span class="window-name">Evening</span>
     <span class="window-status pending">● Pending</span>
   </div>
 </div>
-
         <div id="todayReadingsList" class="today-readings-list"></div>
       </div>
     </div>
@@ -809,24 +810,25 @@
 
 <!-- ===== BOTTOM NAVIGATION ===== -->
 <nav class="bottom-nav" id="bottomNav">
-  <button class="nav-item active" data-screen="home">
-    <span class="nav-icon">&#8962;</span>
-    <span class="nav-label">Home</span>
-  </button>
-  <button class="nav-item" data-screen="history">
-    <span class="nav-icon">&#128203;&#65038;</span>
-    <span class="nav-label">History</span>
-  </button>
-  <button class="nav-item" data-screen="trends">
-    <span class="nav-icon">&#128202;&#65038;</span>
-    <span class="nav-label">Trends</span>
-  </button>
-  <button class="nav-item" data-screen="profile">
-    <span class="nav-icon">&#128100;&#65038;</span>
-    <span class="nav-label">Profile</span>
-  </button>
-  <button class="nav-item fab-btn" id="fabRecord">+</button>
-</nav>
+<button class="nav-item active" data-screen="home">
+  <span class="nav-icon"><i class="fas fa-home"></i></span>
+  <span class="nav-label">Home</span>
+</button>
+<button class="nav-item" data-screen="history">
+  <span class="nav-icon"><i class="fas fa-history"></i></span>
+  <span class="nav-label">History</span>
+</button>
+<button class="nav-item" data-screen="trends">
+  <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+  <span class="nav-label">Trends</span>
+</button>
+<button class="nav-item" data-screen="profile">
+  <span class="nav-icon"><i class="fas fa-user"></i></span>
+  <span class="nav-label">Profile</span>
+</button>
+<button class="nav-item fab-btn" id="fabRecord">
+  <span class="material-icons">add</span>
+</button>
 
 </div><!-- /app -->
 

@@ -1,0 +1,1 @@
+{"functions":{"source":"functions"},"firestore":{"rules":"firestore.rules"},"hosting":{"public":".","ignore":["firebase.json","firestore.rules","functions/**","tests/**","node_modules/**","**/.*","*.md","*.txt","*.zip"],"headers":[{"source":"**/*.js","headers":[{"key":"Cache-Control","value":"no-cache"}]}]}}

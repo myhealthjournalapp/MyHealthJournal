@@ -1,1142 +1,1545 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#F8FAF9" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>My Health Journal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="manifest" href="manifest.json" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#F8FAF9" name="theme-color"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<!-- GOOGLE-SITE-VERIFICATION -->
+<title>My Health Journal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<link href="manifest.json" rel="manifest"/>
 </head>
 <body>
-
 <!-- ===== SPLASH SCREEN ===== -->
-<div id="splash" class="screen active">
-  <div class="splash-content">
-    <img src="app-logo.png" alt="My Health Journal" class="app-logo" id="splashLogo" />
-    <h1 class="brand-name"><span>My</span> <span class="health-word">Health</span> <span>Journal</span></h1>
-    <p class="brand-tagline">Log, Track &amp; <span class="orange-text">Live Well!</span></p>
-    <div class="splash-loader"></div>
-    <div class="splash-credit"><p class="splash-dev">Developed &amp; Maintained by</p><p class="splash-brand">WhiteMoon Jeweller | Asad Jewellers, Okara</p></div>
-  </div>
+<div class="screen active" id="splash">
+<div class="splash-content">
+<img alt="My Health Journal" class="app-logo" id="splashLogo" src="app-logo.png"/>
+<h1 class="brand-name"><span>My</span> <span class="health-word">Health</span> <span>Journal</span></h1>
+<p class="brand-tagline">Log, Track &amp; <span class="orange-text">Live Well!</span></p>
+<div class="splash-loader"></div>
+<div class="splash-credit">
+<p class="splash-dev">Developed &amp; Maintained by</p>
+<p class="splash-brand">
+<a class="jeweller-link" href="https://share.google/bWfGrw0Q622ZebL1s" rel="noopener" target="_blank">WhiteMoon Jeweller</a>
+        |
+        <a class="jeweller-link" href="https://share.google/jHB4SvgAeMeM0FXPk" rel="noopener" target="_blank">Asad Jewellers, Okara</a>
+</p>
+<div class="splash-contact-row">
+  <a href="https://wa.me/923110177836" class="contact-link splash-contact-item">
+    <img src="https://raw.githubusercontent.com/myhealthjournalapp/MyHealthJournal/main/whatsapp_icon.png" alt="" width="14" height="14" onerror="this.style.display='none'" />
+    <span>+92 311 0177836</span>
+  </a>
+  <a href="mailto:myhealthjournalapp@gmail.com" class="contact-link splash-contact-item">
+    <img src="https://raw.githubusercontent.com/myhealthjournalapp/MyHealthJournal/main/email_icon.png" alt="" width="14" height="14" onerror="this.style.display='none'" />
+    <span>myhealthjournalapp@gmail.com</span>
+  </a>
 </div>
-
+</div>
+</div>
+</div>
 <!-- ===== APP CONTAINER ===== -->
 <div id="app">
-
-  <!-- ===== TOP BAR ===== -->
-  <header class="top-bar" id="topBar">
-    <div class="brand">
-      <img src="app-logo.png" alt="My Health Journal" class="mini-logo" id="topLogo" />
-    </div>
-    <div class="actions">
-      <span id="topTime" class="top-time">--:--:--</span>
-      <div class="avatar" id="topAvatar" title="Account menu" hidden>
-        <span id="avatarInitials">U</span>
-      </div>
-      <div class="avatar-menu" id="avatarMenu" hidden>
-        <button data-avatar-action="profile">Edit Profile</button><button data-avatar-action="security">Security</button>
-        <button data-avatar-action="pdf">Export as PDF</button><button data-avatar-action="import">Import Data</button>
-        <button data-avatar-action="drive">Google Drive Backup</button><button data-avatar-action="settings">Settings</button>
-        <button data-avatar-action="logout" class="danger-text">Logout</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ===== SCREEN CONTAINER ===== -->
-  <div class="screen-container" id="screenContainer">
-
-    <!-- ===== LOGIN (Screen 02) ===== -->
-    <div class="screen-view active" id="view-login">
-      <div class="card login-card preauth-card">
-        <img src="reporting-logo.png" alt="My Health Journal" class="preauth-logo" />
-        <div class="quick-auth-row">
-          <button class="quick-auth" id="openLoginSheet"><strong>Login</strong><small>Enter Your Email & Password</small></button>
-          <button class="quick-auth" id="pinLoginBtn"><strong>PIN</strong><small>Enter Your 5-digits PIN</small></button>
-        </div>
-        <button class="biometric-btn" id="biometricLoginBtn"><span class="ui-icon">&#9783;</span> Fingerprint Unlock</button>
-        <div class="preauth-options">
-          <button id="goRegister">Register Account</button>
-          <button id="switchAccountBtn">Switch Account</button>
-          <button data-recovery="pin">Change PIN</button>
-          <button data-recovery="password">Change Password</button>
-        </div>
-      </div>
-      <div class="login-sheet" id="loginSheet" hidden>
-        <div class="modal-handle"></div><h3>Sign in</h3>
-        <div class="input-group"><label>Email</label><input type="text" id="loginEmail" placeholder="Enter Your Email" autocomplete="email" /></div>
-        <div class="input-group"><label>Password</label><div class="password-wrap"><input type="password" id="loginPassword" placeholder="Enter Your Password" /><button class="toggle-pw" data-target="loginPassword" type="button">👁️</button></div></div>
-        <button class="modal-close" id="closeLoginSheet" aria-label="Close">✕</button>
-        <a href="#" id="forgotPasswordLink" class="credentials-link">Forgot Your Credentials?</a>
-        <button class="btn-primary" id="loginBtn">Login</button>
-      </div>
-      <div class="pin-sheet" id="pinSheet" hidden><button class="modal-close" id="closePinSheet" aria-label="Close">✕</button><div class="modal-handle"></div><h3>Quick PIN</h3><div class="input-group"><label>5-digit PIN</label><div class="password-wrap"><input type="password" id="loginPin" placeholder="Enter Your 5-Digits PIN" maxlength="5" inputmode="numeric" /><button class="toggle-pw" data-target="loginPin" type="button">👁️</button></div></div><button class="btn-primary" id="submitPinLogin">Login with PIN</button></div>
-    </div>
-
-    <!-- ===== REGISTER (Screen 03 + 04 Combined) ===== -->
-    <div class="screen-view" id="view-register">
-      <div class="card">
-        <h2 class="section-title">Create Your Profile</h2>
-        <p class="section-sub">Set up your journal with personal details and security</p>
-
-        <!-- Personal Information -->
-        <div class="form-section">
-          <h3 class="form-section-title">Personal Information <span class="required-star">*</span></h3>
-
-          <div class="input-group">
-            <label>Full Name <span class="required-star">*</span></label>
-            <input type="text" id="regName" placeholder="Enter your full name" autocomplete="name" required />
-          </div>
-
-          <div class="input-group">
-            <label>Primary Email <span class="required-star">*</span></label>
-            <input type="email" id="regEmail" placeholder="primary@email.com" autocomplete="email" required />
-          </div>
-
-<div class="input-group">
-  <label>Recovery Email (Optional)</label>
-  <input type="email" id="regRecoveryEmail" placeholder="backup@email.com" />
-  <span style="font-size:11px;color:var(--gray);">An OTP will be sent to both your primary and recovery emails.</span>
+<!-- ===== TOP BAR ===== -->
+<header class="top-bar" id="topBar">
+<div class="brand">
+<img alt="My Health Journal" class="mini-logo" id="topLogo" src="app-logo.png"/>
+</div>
+<div class="actions">
+<span class="top-time" id="topTime">--:--:--</span>
+<span hidden="" id="topVerificationBadge"></span><div class="avatar" hidden="" id="topAvatar" title="Account Menu">
+<span id="avatarInitials">U</span>
 </div>
 
-          <div class="input-group">
-            <label>Phone Number <span class="required-star">*</span></label>
-            <input type="tel" id="regPhone" placeholder="03XX-XXXXXXX" required />
-          </div>
+<div class="avatar-menu" hidden="" id="avatarMenu">
+<button data-avatar-action="account-management">Account Management</button>
+<button data-avatar-action="data-management">Data Management</button>
+<button data-avatar-action="pdf">Export PDF</button>
+<button data-avatar-action="medical-records">Medical Records</button>
+<button data-avatar-action="security">Security</button>
+<button data-avatar-action="settings">Settings</button>
+<button class="danger-text" data-avatar-action="logout">Logout</button>
+</div>
+</div>
 
-          <div class="input-group">
-            <label>Date of Birth <span class="required-star">*</span></label>
-            <input type="date" id="regDob" required />
-            <span id="regAge" class="age-display"></span>
-          </div>
-
-          <div class="input-group">
-            <label>Gender</label>
-            <select id="regGender">
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div class="input-group">
-            <label>Address</label>
-            <input type="text" id="regAddress" placeholder="House/Plot/Apt No, Street No, Sector/Block, Landmark, City, Province, Postal Code, PK." />
-          </div>
-
-          <div class="input-group">
-            <label>Blood Group</label>
-            <select id="regBlood">
-              <option value="">Select Blood Group</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
-
-          <div class="input-group">
-            <label>Emergency Contact Relationship</label>
-            <select id="regRelation">
-              <option value="">Select Relationship</option>
-              <option value="Parent">Parent</option>
-              <option value="Guardian">Guardian</option>
-              <option value="Spouse">Spouse</option>
-              <option value="Sibling">Sibling</option>
-              <option value="Child">Child</option>
-              <option value="Other Family Member">Other Family Member</option>
-              <option value="Friend">Friend</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div class="input-group">
-            <label>Emergency Contact</label>
-            <input type="tel" id="regEmerg" placeholder="03XX-XXXXXXX" />
-          </div>
-
-          <div class="input-group">
-            <label>General Notes</label>
-            <textarea id="regNotes" placeholder="Add any important general information..."></textarea>
-          </div>
-        </div>
-
-        <!-- Security Section -->
-        <div class="form-section">
-          <h3 class="form-section-title">Security Settings <span class="required-star">*</span></h3>
-
-          <div class="input-group">
-            <label>Create Password (min 5 characters) <span class="required-star">*</span></label>
-            <div class="password-wrap">
-              <input type="password" id="regPassword" placeholder="Create your Password (min 5 charcters)" />
-              <button class="toggle-pw" data-target="regPassword" type="button">👁</button>
-            </div>
-            <div id="regPasswordError" class="error-msg" style="display:none;">Password must be at least 5 characters</div>
-          </div>
-
-          <div class="input-group">
-            <label>Confirm Password <span class="required-star">*</span></label>
-            <div class="password-wrap">
-              <input type="password" id="regPasswordConfirm" placeholder="Confirm your Password" />
-              <button class="toggle-pw" data-target="regPasswordConfirm" type="button">👁</button>
-            </div>
-            <div id="regPasswordMatchError" class="error-msg" style="display:none;">Passwords do not match</div>
-          </div>
-
-          <div class="input-group">
-            <label>Create Quick PIN <span class="required-star">*</span></label>
-            <div class="password-wrap">
-              <input type="password" id="regPin" placeholder="Create your PIN (min 5 digits)" maxlength="5" inputmode="numeric" />
-              <button class="toggle-pw" data-target="regPin" type="button">👁</button>
-            </div>
-            <div id="regPinError" class="error-msg" style="display:none;">PIN must be exactly 5 digits</div>
-          </div>
-
-          <div class="input-group">
-            <label>Confirm PIN <span class="required-star">*</span></label>
-            <div class="password-wrap">
-              <input type="password" id="regPinConfirm" placeholder="Confirm your PIN" maxlength="5" inputmode="numeric" />
-              <button class="toggle-pw" data-target="regPinConfirm" type="button">👁</button>
-            </div>
-            <div id="regPinMatchError" class="error-msg" style="display:none;">PINs do not match</div>
-          </div>
-        </div>
-
-        <button class="btn-primary" id="finishSignupBtn">Create Account</button>
-        <button class="modal-close" id="backToLogin" aria-label="Close">✕</button>
-      </div>
-    </div>
-
-    <!-- ===== OTP VERIFICATION ===== -->
-    <div class="screen-view" id="view-otp">
-      <div class="card">
-        <h2 class="section-title">Verify Your Email</h2>
-        <p class="section-sub">We've sent a 6-digit OTP to <span id="otpEmailDisplay"></span></p>
-
-        <div class="input-group">
-          <label>Enter OTP</label>
-          <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6" inputmode="numeric" />
-        </div>
-
-        <button class="btn-primary" id="verifyOtpBtn">Verify OTP</button>
-        <button class="btn-outline mt-8" id="resendOtpBtn">Resend OTP</button>
-        <button class="modal-close" id="cancelOtpBtn" aria-label="Close">✕</button>
-        <div id="otpError" class="error-msg" style="display:none;"></div>
-      </div>
-    </div>
-
+</header>
+<!-- ===== SCREEN CONTAINER ===== -->
+<div class="screen-container" id="screenContainer">
+<!-- ===== LOGIN ===== -->
+<div class="screen-view active" id="view-login">
+<div class="card login-card preauth-card">
+<img alt="My Health Journal" class="preauth-logo" src="reporting-logo.png"/>
+<div class="quick-auth-row">
+<button class="quick-auth" id="openLoginSheet"><strong>Login</strong><small>Enter Your Email &amp; Password</small></button>
+<button class="quick-auth" id="pinLoginBtn"><strong>PIN</strong><small>Enter Your 5-Digits PIN</small></button>
+</div>
+<button class="biometric-btn" id="biometricLoginBtn"><span class="ui-icon">☷</span> Fingerprint Unlock</button>
+<div class="preauth-options">
+<button id="goRegister">Register Account</button>
+<button id="switchAccountBtn">Switch Account</button>
+<button data-recovery="pin">Change PIN</button>
+<button data-recovery="password">Change Password</button>
+</div>
+</div>
+<div class="login-sheet" hidden="" id="loginSheet">
+<div class="modal-handle"></div>
+<h3>Sign In</h3>
+<div class="input-group">
+<label>Email</label>
+<input autocomplete="email" id="loginEmail" placeholder="Enter Your Email" type="text"/>
+</div>
+<div class="input-group">
+<label>Password</label>
+<div class="password-wrap">
+<input id="loginPassword" placeholder="Enter Your Password" type="password"/>
+<button class="toggle-pw" data-target="loginPassword" type="button"></button>
+</div>
+</div>
+<button aria-label="Close" class="modal-close" id="closeLoginSheet">✕</button>
+<a class="credentials-link" href="#" id="forgotPasswordLink">Forgot Your Credentials?</a>
+<button class="btn-primary" id="loginBtn">Login</button>
+</div>
+<div class="pin-sheet" hidden="" id="pinSheet">
+<button aria-label="Close" class="modal-close" id="closePinSheet">✕</button>
+<div class="modal-handle"></div>
+<h3>Quick PIN</h3>
+<div class="input-group">
+<label>5-Digit PIN</label>
+<div class="password-wrap">
+<input id="loginPin" inputmode="numeric" maxlength="5" placeholder="Enter Your 5-Digits PIN" type="password"/>
+<button class="toggle-pw" data-target="loginPin" type="button"></button>
+</div>
+</div>
+<button class="btn-primary" id="submitPinLogin">Login with PIN</button>
+</div>
+</div>
+<!-- ===== REGISTER ===== -->
+<div class="screen-view" id="view-register">
+<div class="card">
+<h2 class="section-title">Create Your Profile</h2>
+<p class="section-sub">Set Up Your Journal With Personal Details and Security</p>
+<div class="form-section">
+<h3 class="form-section-title">Personal Information <span class="required-star">*</span></h3>
+<div class="input-group">
+<label>Full Name <span class="required-star">*</span></label>
+<input autocomplete="name" id="regName" placeholder="Enter your full name" required="" type="text"/>
+</div>
+<div class="input-group">
+<label>Primary Email <span class="required-star">*</span></label>
+<input autocomplete="email" id="regEmail" placeholder="primary@email.com" required="" type="email"/>
+</div>
+<div class="input-group">
+<label>Recovery Email (Optional)</label>
+<input id="regRecoveryEmail" placeholder="backup@email.com" type="email"/>
+<span style="font-size:11px;color:var(--gray);">An OTP will be sent to both your primary and recovery emails.</span>
+</div>
+<div class="input-group">
+<label>Phone Number <span class="required-star">*</span></label>
+<input id="regPhone" placeholder="03XX-XXXXXXX" required="" type="tel"/>
+</div>
+<div class="input-group">
+<label>Date of Birth <span class="required-star">*</span></label>
+<input id="regDob" required="" type="date"/>
+<span class="age-display" id="regAge"></span>
+</div>
+<div class="input-group">
+<label>Gender</label>
+<select id="regGender">
+<option value="">Select Gender</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
+<div class="input-group">
+<label>Address</label>
+<input id="regAddress" placeholder="House/Apt./Plot 12-A, Street/Rd. 123, Landmark, Sector/Block/Locality, City, District, Province, ZIP, PK" type="text"/>
+</div>
+<div class="input-group">
+<label>Blood Group</label>
+<select id="regBlood">
+<option value="">Select Blood Group</option>
+<option value="A+">A+</option>
+<option value="A-">A-</option>
+<option value="B+">B+</option>
+<option value="B-">B-</option>
+<option value="AB+">AB+</option>
+<option value="AB-">AB-</option>
+<option value="O+">O+</option>
+<option value="O-">O-</option>
+</select>
+</div>
+<div class="input-group">
+<label>Emergency Contact Relationship</label>
+<select id="regRelation">
+<option value="">Select Relationship</option>
+<option value="Parent">Parent</option>
+<option value="Guardian">Guardian</option>
+<option value="Spouse">Spouse</option>
+<option value="Sibling">Sibling</option>
+<option value="Child">Child</option>
+<option value="Other Family Member">Other Family Member</option>
+<option value="Friend">Friend</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="input-group">
+<label>Emergency Contact</label>
+<input id="regEmerg" placeholder="03XX-XXXXXXX" type="tel"/>
+</div>
+<div class="input-group">
+<label>General Notes</label>
+<textarea id="regNotes" placeholder="Add any important general information..."></textarea>
+</div>
+</div>
+<div class="form-section">
+<h3 class="form-section-title">Security Settings <span class="required-star">*</span></h3>
+<div class="input-group">
+<label>Create Password (Min 5 Characters) <span class="required-star">*</span></label>
+<div class="password-wrap">
+<input id="regPassword" placeholder="Create Your Password" type="password"/>
+<button class="toggle-pw" data-target="regPassword" type="button"></button>
+</div>
+<div class="error-msg" id="regPasswordError" style="display:none;">Password must be at least 5 characters</div>
+</div>
+<div class="input-group">
+<label>Confirm Password <span class="required-star">*</span></label>
+<div class="password-wrap">
+<input id="regPasswordConfirm" placeholder="Confirm Your Password" type="password"/>
+<button class="toggle-pw" data-target="regPasswordConfirm" type="button"></button>
+</div>
+<div class="error-msg" id="regPasswordMatchError" style="display:none;">Passwords do not match</div>
+</div>
+<div class="input-group">
+<label>Create Quick PIN <span class="required-star">*</span></label>
+<div class="password-wrap">
+<input id="regPin" inputmode="numeric" maxlength="5" placeholder="Create Your PIN (5 Digits)" type="password"/>
+<button class="toggle-pw" data-target="regPin" type="button"></button>
+</div>
+<div class="error-msg" id="regPinError" style="display:none;">PIN must be exactly 5 digits</div>
+</div>
+<div class="input-group">
+<label>Confirm PIN <span class="required-star">*</span></label>
+<div class="password-wrap">
+<input id="regPinConfirm" inputmode="numeric" maxlength="5" placeholder="Confirm Your PIN" type="password"/>
+<button class="toggle-pw" data-target="regPinConfirm" type="button"></button>
+</div>
+<div class="error-msg" id="regPinMatchError" style="display:none;">PINs do not match</div>
+</div>
+</div>
+<button class="btn-primary" id="finishSignupBtn">Create Account</button>
+<button aria-label="Close" class="modal-close" id="backToLogin">✕</button>
+</div>
+</div>
+<!-- ===== OTP VERIFICATION ===== -->
+<div class="screen-view" id="view-otp">
+<div class="card">
+<h2 class="section-title">Verify Your Email</h2>
+<p class="section-sub">We've sent a 6-digit OTP to <span id="otpEmailDisplay"></span></p>
+<div class="input-group">
+<label>Enter OTP</label>
+<input id="otpInput" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP" type="text"/>
+</div>
+<button class="btn-primary" id="verifyOtpBtn">Verify OTP</button>
+<button class="btn-outline mt-8" id="resendOtpBtn">Resend OTP</button>
+<button aria-label="Close" class="modal-close" id="cancelOtpBtn">✕</button>
+<div class="error-msg" id="otpError" style="display:none;"></div>
+</div>
+</div>
 <!-- ===== FORGOT PASSWORD ===== -->
 <div class="screen-view" id="view-forgot">
-  <div class="card">
-    <h2 class="section-title">Reset Password</h2>
-    <p class="section-sub">Enter your email to receive OTP for password reset</p>
-
-    <div class="input-group">
-      <label>Email</label>
-      <input type="email" id="forgotEmail" placeholder="name@email.com" />
-    </div>
-
-    <button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
-    <button class="modal-close" id="backToLoginFromForgot" aria-label="Close">✕</button>
-  </div>
+<div class="card">
+<h2 class="section-title">Reset Password</h2>
+<p class="section-sub">Enter Your Email to Receive OTP for Password Reset</p>
+<div class="input-group">
+<label>Email</label>
+<input id="forgotEmail" placeholder="name@email.com" type="email"/>
 </div>
-
+<button class="btn-primary" id="sendResetOtpBtn">Send OTP</button>
+<div style="text-align:center; margin: 12px 0 8px;">
+<span style="color:var(--gray);font-size:13px;">OR</span>
+</div>
+<button class="btn-outline" id="useBackupCodePwBtn">Use Backup Code Instead</button>
+<button aria-label="Close" class="modal-close" id="backToLoginFromForgot">✕</button>
+</div>
+</div>
 <!-- ===== FORGOT PIN ===== -->
 <div class="screen-view" id="view-pin-reset">
-  <div class="card">
-    <h2 class="section-title">Reset PIN</h2>
-    <p class="section-sub">Enter your email to receive OTP for PIN reset</p>
-
-    <div class="input-group">
-      <label>Email</label>
-      <input type="email" id="forgotPinEmail" placeholder="name@email.com" />
-    </div>
-
-    <button class="btn-primary" id="sendPinResetOtpBtn">Send OTP</button>
-    <button class="modal-close" id="backToLoginFromPinReset" aria-label="Close">✕</button>
-  </div>
+<div class="card">
+<h2 class="section-title">Reset PIN</h2>
+<p class="section-sub">Enter Your Email to Receive OTP for PIN Reset</p>
+<div class="input-group">
+<label>Email</label>
+<input id="pinResetEmail" placeholder="name@email.com" type="email"/>
 </div>
-
+<button class="btn-primary" id="sendPinResetOtpBtn">Send OTP</button>
+<div style="text-align:center; margin: 12px 0 8px;">
+<span style="color:var(--gray);font-size:13px;">OR</span>
+</div>
+<button class="btn-outline" id="useBackupCodePinBtn">Use Backup Code Instead</button>
+<button aria-label="Close" class="modal-close" id="backToLoginFromPinReset">✕</button>
+</div>
+</div>
 <!-- ===== RESET PASSWORD ===== -->
 <div class="screen-view" id="view-reset">
-  <div class="card">
-    <h2 class="section-title">Set New Password</h2>
-    <p class="section-sub">Enter your new password</p>
-
-    <div class="input-group">
-      <label>New Password (min 5 characters)</label>
-      <div class="password-wrap">
-        <input type="password" id="resetNewPw" placeholder="Enter new password" />
-        <button class="toggle-pw" data-target="resetNewPw" type="button">👁</button>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label>Confirm New Password</label>
-      <div class="password-wrap">
-        <input type="password" id="resetNewPwConfirm" placeholder="Confirm new password" />
-        <button class="toggle-pw" data-target="resetNewPwConfirm" type="button">👁</button>
-      </div>
-    </div>
-
-    <button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
-    <button class="modal-close" id="backToLoginFromReset" aria-label="Close">✕</button>
-  </div>
+<div class="card">
+<h2 class="section-title">Set New Password</h2>
+<p class="section-sub">Enter Your New Password</p>
+<div class="input-group">
+<label>New Password (Min 5 Characters)</label>
+<div class="password-wrap">
+<input id="resetNewPw" placeholder="Enter new password" type="password"/>
+<button class="toggle-pw" data-target="resetNewPw" type="button"></button>
 </div>
-
+</div>
+<div class="input-group">
+<label>Confirm New Password</label>
+<div class="password-wrap">
+<input id="resetNewPwConfirm" placeholder="Confirm new password" type="password"/>
+<button class="toggle-pw" data-target="resetNewPwConfirm" type="button"></button>
+</div>
+</div>
+<button class="btn-primary" id="resetPasswordBtn">Reset Password</button>
+<button aria-label="Close" class="modal-close" id="backToLoginFromReset">✕</button>
+</div>
+</div>
 <!-- ===== RESET PIN ===== -->
 <div class="screen-view" id="view-reset-pin">
-  <div class="card">
-    <h2 class="section-title">Set New PIN</h2>
-    <p class="section-sub">Enter your new 5-digit PIN</p>
-
-    <div class="input-group">
-      <label>New PIN (exactly 5 digits)</label>
-      <div class="password-wrap">
-        <input type="password" id="resetNewPin" placeholder="Enter new PIN" maxlength="5" inputmode="numeric" />
-        <button class="toggle-pw" data-target="resetNewPin" type="button">👁</button>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label>Confirm New PIN</label>
-      <div class="password-wrap">
-        <input type="password" id="resetNewPinConfirm" placeholder="Confirm new PIN" maxlength="5" inputmode="numeric" />
-        <button class="toggle-pw" data-target="resetNewPinConfirm" type="button">👁</button>
-      </div>
-    </div>
-
-    <button class="btn-primary" id="resetPinBtn">Reset PIN</button>
-    <button class="modal-close" id="backToLoginFromResetPin" aria-label="Close">✕</button>
-  </div>
-</div>
-
-    <!-- ===== ACCOUNT READY (Screen 05) ===== -->
-    <div class="screen-view" id="view-ready">
-      <div class="card ready-card">
-        <div class="ready-icon">✅</div>
-        <h2 class="ready-title">You're all set, <span id="readyName">User</span>.</h2>
-        <p class="ready-sub">Your journal is ready.</p>
-        <button class="btn-primary" id="startJournalBtn">START JOURNAL</button>
-      </div>
-    </div>
-
-    <!-- ===== HOME (Screen 06) ===== -->
-    <div class="screen-view" id="view-home">
-      <div class="home-header">
-        <div class="greeting" id="greetingMsg">Good Morning</div>
-        <div class="home-username" id="homeUserDisplay">User</div>
-        <div class="home-date" id="homeDate">19 Aug 2026 · 01:45:07 PM</div>
-      </div>
-
-      <!-- Current Reading Card -->
-      <div class="card reading-card" id="currentReadingCard">
-        <div class="reading-display">
-          <div class="reading-label">Current Blood Pressure</div>
-          <div class="reading-value" id="currentBP">-- / --</div>
-          <div class="reading-unit">mmHg</div>
-          <div class="reading-status" id="currentStatus">No reading yet</div>
-          <div class="reading-pulse" id="currentPulse">Pulse -- BPM</div>
-          <div class="reading-time" id="currentReadingTime">--:--:-- · DD MMM YYYY</div>
-        </div>
-        <button class="btn-primary record-btn" id="recordFromHome">+ Record Measurement</button>
-      </div>
-
-      <!-- Today's Snapshot -->
-      <div class="card snapshot-card">
-        <h3 class="snapshot-title">Today's Snapshot</h3>
-
-        <div class="snapshot-grid">
-          <div class="snapshot-item">
-            <span class="snapshot-label">Average BP</span>
-            <span class="snapshot-value" id="todayAvgBP">-- / --</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Average Pulse</span>
-            <span class="snapshot-value" id="todayAvgPulse">-- BPM</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Highest BP</span>
-            <span class="snapshot-value" id="todayHighestBP">-- / --</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Lowest BP</span>
-            <span class="snapshot-value" id="todayLowestBP">-- / --</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Highest Pulse</span>
-            <span class="snapshot-value" id="todayHighestPulse">-- BPM</span>
-          </div>
-          <div class="snapshot-item">
-            <span class="snapshot-label">Lowest Pulse</span>
-            <span class="snapshot-value" id="todayLowestPulse">-- BPM</span>
-          </div>
-        </div>
-
-        <div class="today-consistency">
-          <span class="consistency-label">Measurement Consistency</span>
-          <span class="consistency-value" id="todayConsistency">0%</span>
-          <span class="consistency-grade" id="todayConsistencyGrade">Awful</span>
-        </div>
-
-<div class="daily-windows">
-  <div class="window-item" id="wMorning">
-    <span class="window-icon material-icons">wb_twilight</span>
-    <span class="window-name">Morning</span>
-    <span class="window-status pending">● Pending</span>
-  </div>
-  <div class="window-item" id="wAfternoon">
-    <span class="window-icon material-icons">sunny</span>
-    <span class="window-name">Afternoon</span>
-    <span class="window-status pending">● Pending</span>
-  </div>
-  <div class="window-item" id="wEvening">
-    <span class="window-icon material-icons">bedtime</span>
-    <span class="window-name">Evening</span>
-    <span class="window-status pending">● Pending</span>
-  </div>
-</div>
-        <div id="todayReadingsList" class="today-readings-list"></div>
-      </div>
-    </div>
-
-    <!-- ===== RECORD MEASUREMENT (Screen 06B) ===== -->
-    <div class="screen-view" id="view-record">
-      <div class="card">
-        <h2 class="section-title">Record Measurement</h2>
-
-        <div class="input-group">
-          <label>Systolic (mmHg)</label>
-          <input type="number" id="recSys" value="120" min="0" max="300" />
-        </div>
-
-        <div class="input-group">
-          <label>Diastolic (mmHg)</label>
-          <input type="number" id="recDia" value="80" min="0" max="200" />
-        </div>
-
-        <div class="input-group">
-          <label>Pulse (BPM)</label>
-          <input type="number" id="recPulse" value="72" min="0" max="250" />
-        </div>
-
-        <div class="input-group">
-          <label>Date</label>
-          <input type="date" id="recDate" />
-        </div>
-
-        <div class="input-group">
-          <label>Time</label>
-          <input type="time" id="recTime" step="1" />
-        </div>
-
-        <button class="btn-outline expand-btn" id="expandDetailsBtn">＋ Add measurement details</button>
-
-        <div id="extraDetails" style="display:none;">
-          <div class="input-group">
-            <label>Symptoms (select multiple)</label>
-            <select id="recSymptoms" multiple>
-              <option value="Feeling normal">Feeling normal</option>
-              <option value="Headache">Headache</option>
-              <option value="Dizziness">Dizziness</option>
-              <option value="Fatigue">Fatigue</option>
-              <option value="Stress">Stress</option>
-              <option value="Anxiety">Anxiety</option>
-              <option value="Nausea">Nausea</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="input-group" id="otherSymptomGroup" style="display:none;">
-            <label>Other Symptom</label>
-            <input type="text" id="recOtherSymptom" placeholder="Describe your symptom..." />
-          </div>
-          <div class="input-group">
-            <label>Arm</label>
-            <select id="recArm">
-              <option value="Left">Left</option>
-              <option value="Right">Right</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Position</label>
-            <select id="recPos">
-              <option value="Sitting">Sitting</option>
-              <option value="Standing">Standing</option>
-              <option value="Lying">Lying</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Medication</label>
-            <select id="recMed">
-              <option value="Before medication">Before medication</option>
-              <option value="After medication">After medication</option>
-              <option value="Not applicable">Not applicable</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Meal</label>
-            <select id="recMeal">
-              <option value="Before meal">Before meal</option>
-              <option value="After meal">After meal</option>
-              <option value="Not applicable">Not applicable</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Activity</label>
-            <select id="recAct" multiple>
-              <option value="Resting">Resting</option>
-              <option value="After walking">After walking</option>
-              <option value="After exercise">After exercise</option>
-              <option value="After climbing stairs">After climbing stairs</option>
-              <option value="After stressful activity">After stressful activity</option>
-              <option value="Custom">Custom</option>
-            </select>
-            <input class="custom-multi-input" type="text" id="recCustomAct" placeholder="Type custom activity..." hidden />
-          </div>
-          <div class="input-group">
-            <label>Recent intake</label>
-            <select id="recIntake" multiple>
-              <option value="None">None</option>
-              <option value="Coffee/tea">Coffee/tea</option>
-              <option value="Meal">Meal</option>
-              <option value="Salty food">Salty food</option>
-              <option value="Smoking">Smoking</option>
-              <option value="Medication">Medication</option>
-              <option value="Custom">Custom</option>
-            </select>
-            <input class="custom-multi-input" type="text" id="recCustomIntake" placeholder="Type custom intake..." hidden />
-          </div>
-          <div class="input-group">
-            <label>Additional Note</label>
-            <textarea id="recExtraNote" placeholder="Add anything else..."></textarea>
-          </div>
-        </div>
-
-        <button class="btn-primary" id="saveReadingBtn">SAVE READING</button>
-        <button class="modal-close" id="cancelRecord" aria-label="Close">✕</button>
-      </div>
-    </div>
-
-    <!-- ===== READING RESULT (Screen 08) ===== -->
-    <div class="screen-view" id="view-result">
-      <div class="card result-card">
-        <div class="result-icon">✅</div>
-        <h2 class="result-title">Reading Saved</h2>
-        <div class="result-bp" id="resultBP">-- / --</div>
-        <div class="result-status" id="resultStatus">--</div>
-        <div class="result-pulse" id="resultPulse">Pulse: -- BPM</div>
-        <div class="result-time" id="resultTime">Recorded at --:--:--</div>
-        <div class="result-avg" id="resultAvg">Today's average: -- / --</div>
-        <div class="result-count" id="resultCount">0 of 3 recommended daily readings</div>
-        <button class="btn-primary" id="resultDoneBtn">DONE</button>
-      </div>
-    </div>
-
-    <!-- ===== HISTORY (Screen 09) ===== -->
-    <div class="screen-view" id="view-history">
-      <div class="card">
-        <h2 class="section-title">History</h2>
-
-        <div class="history-filters">
-          <button class="filter-btn-small active" data-history="today">Today</button>
-          <button class="filter-btn-small" data-history="1">1D</button>
-          <button class="filter-btn-small" data-history="2">2D</button>
-          <button class="filter-btn-small" data-history="3">3D</button>
-          <button class="filter-btn-small" data-history="7">7D</button>
-          <button class="filter-btn-small" data-history="14">14D</button>
-          <button class="filter-btn-small" data-history="30">30D</button>
-          <button class="filter-btn-small" data-history="60">60D</button>
-          <button class="filter-btn-small" data-history="90">90D</button>
-          <button class="filter-btn-small" data-history="180">180D</button>
-          <button class="filter-btn-small" data-history="custom">Custom</button>
-        </div>
-
-        <div id="historyCustomRange" style="display:none;">
-          <div class="input-group inline-group">
-            <label>From</label>
-            <input type="date" id="historyFrom" />
-          </div>
-          <div class="input-group inline-group">
-            <label>To</label>
-            <input type="date" id="historyTo" />
-          </div>
-          <button class="btn-secondary" id="applyHistoryFilter">Apply</button>
-        </div>
-
-        <div id="historyDateDisplay" class="history-date-display"></div>
-        <div class="history-bulk" id="historyBulk" hidden><label><input type="checkbox" id="selectAllHistory" /> Select All</label><button class="btn-secondary" id="bulkExportBtn">Export</button><button class="btn-secondary danger-btn" id="bulkDeleteBtn">Delete</button></div>
-        <div id="historyList" class="history-list"></div>
-      </div>
-    </div>
-
-    <!-- ===== READING DETAIL (Screen 10) ===== -->
-    <div class="screen-view" id="view-detail">
-      <div class="card">
-        <button class="modal-close" id="backFromDetail" aria-label="Close">✕</button>
-        <div id="detailContent"></div>
-      </div>
-    </div>
-
-    <!-- ===== TRENDS (Screen 11) ===== -->
-    <div class="screen-view" id="view-trends">
-      <div class="card">
-        <h2 class="section-title">Trend Analysis</h2>
-
-        <div class="filter-bar">
-          <button class="filter-btn" data-days="today">Today</button>
-          <button class="filter-btn" data-days="1">1D</button>
-          <button class="filter-btn" data-days="2">2D</button>
-          <button class="filter-btn" data-days="3">3D</button>
-          <button class="filter-btn" data-days="7">7D</button>
-          <button class="filter-btn active" data-days="14">14D</button>
-          <button class="filter-btn" data-days="30">30D</button>
-          <button class="filter-btn" data-days="60">60D</button>
-          <button class="filter-btn" data-days="90">90D</button>
-          <button class="filter-btn" data-days="180">180D</button>
-          <button class="filter-btn" data-days="custom">Custom</button>
-        </div>
-
-        <div id="customDateRange" style="display:none;">
-          <div class="input-group inline-group">
-            <label>From</label>
-            <input type="date" id="trendFrom" />
-          </div>
-          <div class="input-group inline-group">
-            <label>To</label>
-            <input type="date" id="trendTo" />
-          </div>
-          <button class="btn-secondary" id="applyCustomRange">Apply</button>
-        </div>
-
-        <div id="trendDateDisplay" class="trend-date-display"></div>
-
-        <!-- Chart Options -->
-        <div class="chart-options">
-          <button class="chart-option active" data-chart="bp">BP Only</button>
-          <button class="chart-option" data-chart="pulse">Pulse Only</button>
-          <button class="chart-option" data-chart="combined">Combined</button>
-        </div>
-
-        <div class="trend-stats" id="trendStats">
-          <div class="stat-grid">
-            <div class="stat-item">
-              <span class="stat-label">Average BP</span>
-              <span class="stat-value" id="trendAvgBP">-- / --</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Average Pulse</span>
-              <span class="stat-value" id="trendAvgPulse">-- BPM</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Highest BP</span>
-              <span class="stat-value" id="trendHighestBP">-- / --</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Lowest BP</span>
-              <span class="stat-value" id="trendLowestBP">-- / --</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Highest Pulse</span>
-              <span class="stat-value" id="trendHighestPulse">-- BPM</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Lowest Pulse</span>
-              <span class="stat-value" id="trendLowestPulse">-- BPM</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="trend-consistency">
-          <h4>Measurement Consistency</h4>
-          <div class="consistency-display">
-            <span class="consistency-percent" id="trendConsistencyPercent">0%</span>
-            <span class="consistency-grade" id="trendConsistencyGrade">Awful</span>
-          </div>
-          <div class="consistency-detail" id="trendConsistencyDetail">0 of 0 expected readings</div>
-        </div>
-
-        <div class="chart-container">
-          <h4>Blood Pressure Trend</h4>
-          <div class="chart-area" id="bpChart">
-            <canvas id="bpChartCanvas"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-container">
-          <h4>Pulse Trend</h4>
-          <div class="chart-area" id="pulseChart">
-            <canvas id="pulseChartCanvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== PROFILE (Screen 17) ===== -->
-    <div class="screen-view" id="view-profile">
-      <div class="card">
-        <h2 class="section-title">Profile</h2>
-
-        <div id="profileView">
-          <div class="profile-avatar-section">
-            <div class="profile-avatar" id="profileAvatar">
-              <span id="profileAvatarInitials">U</span>
-            </div>
-            <div class="avatar-actions">
-              <button class="btn-secondary" id="uploadAvatarBtn">Upload Photo</button>
-              <button class="btn-secondary" id="chooseEmojiBtn">Change Avatar</button>
-            </div>
-            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
-          </div>
-
-          <div class="profile-field">
-            <label>Full Name</label>
-            <span id="pName">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Email</label>
-            <span id="pEmail">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Phone</label>
-            <span id="pPhone">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Date of Birth</label>
-            <span id="pDob">--</span>
-          </div>
-          <div class="profile-field"><label>Age</label><span id="pAge" class="age-display">--</span></div>
-          <div class="profile-field">
-            <label>Gender</label>
-            <span id="pGender">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Address</label>
-            <span id="pAddress">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Blood Group</label>
-            <span id="pBlood">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Emergency Contact</label>
-            <span id="pEmerg">--</span>
-          </div>
-          <div class="profile-field">
-            <label>Notes</label>
-            <span id="pNotes">--</span>
-          </div>
-
-          <button class="btn-primary" id="editProfileBtn">Edit Profile</button>
-          <button class="btn-outline mt-8" id="securityBtn">Security</button>
-          <button class="btn-outline mt-8" id="exportBackupBtn">My Health Logs</button>
-          <button class="btn-outline mt-8" id="logoutBtn">Logout</button>
-          <button class="btn-outline mt-8" id="settingsBtn">Settings</button>
-        </div>
-
-        <!-- Edit Profile -->
-        <div id="profileEdit" style="display:none;">
-          <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" id="editName" placeholder="Enter your full name" />
-          </div>
-          <div class="input-group">
-            <label>Primary Email</label>
-            <input type="email" id="editEmail" placeholder="primary@email.com" />
-          </div>
+<div class="card">
+<h2 class="section-title">Set New PIN</h2>
+<p class="section-sub">Enter Your New 5-Digit PIN</p>
 <div class="input-group">
-  <label>Recovery Email</label>
-  <input type="email" id="editRecoveryEmail" placeholder="backup@email.com" />
+<label>New PIN (Exactly 5 Digits)</label>
+<div class="password-wrap">
+<input id="resetNewPin" inputmode="numeric" maxlength="5" placeholder="Enter new PIN" type="password"/>
+<button class="toggle-pw" data-target="resetNewPin" type="button"></button>
 </div>
-          <div class="input-group">
-            <label>Phone</label>
-            <input type="tel" id="editPhone" placeholder="03XX-XXXXXXX" />
-          </div>
-          <div class="input-group">
-            <label>Date of Birth</label>
-            <input type="date" id="editDob" />
-          </div>
-          <div class="input-group">
-            <label>Gender</label>
-            <select id="editGender">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Address</label>
-            <input type="text" id="editAddress" placeholder="Your complete address" />
-          </div>
-          <div class="input-group">
-            <label>Blood Group</label>
-            <select id="editBlood">
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Emergency Contact</label>
-            <input type="tel" id="editEmerg" placeholder="03XX-XXXXXXX" />
-          </div>
-          <div class="input-group">
-            <label>Notes</label>
-            <textarea id="editNotes" placeholder="Add any important information..."></textarea>
-          </div>
-          <button class="btn-primary" id="saveProfileBtn">Save Profile</button>
-          <button class="modal-close" id="cancelEditProfile" aria-label="Close">✕</button>
-        </div>
+</div>
+<div class="input-group">
+<label>Confirm New PIN</label>
+<div class="password-wrap">
+<input id="resetNewPinConfirm" inputmode="numeric" maxlength="5" placeholder="Confirm new PIN" type="password"/>
+<button class="toggle-pw" data-target="resetNewPinConfirm" type="button"></button>
+</div>
+</div>
+<button class="btn-primary" id="resetPinBtn">Reset PIN</button>
+<button aria-label="Close" class="modal-close" id="backToLoginFromResetPin">✕</button>
+</div>
+</div>
+<!-- ===== ACCOUNT READY ===== -->
+<div class="screen-view" id="view-ready">
+<div class="card ready-card">
+<div class="ready-icon"></div>
+<h2 class="ready-title">You're All Set, <span id="readyName">User</span>.</h2>
+<p class="ready-sub">Your Journal Is Ready.</p>
+<button class="btn-primary" id="startJournalBtn">Start Journal</button>
+</div>
+</div>
+<!-- ===== HOME ===== -->
+<div class="screen-view" id="view-home">
+<div class="home-header">
+<div class="greeting" id="greetingMsg">Good Morning</div>
+<div class="home-username" id="homeUserDisplay">User</div>
+<div class="home-date" id="homeDate">19 Aug 2026 · 01:45:07 PM</div>
+</div>
+<div class="card reading-card" id="currentReadingCard">
+<div class="current-reading-panels" id="currentReadingPanels"></div>
+<div class="reading-time" id="currentReadingTime">No readings yet today</div>
+<button class="btn-primary record-btn" id="recordFromHome">+ Record Measurement</button>
+</div>
+<div class="card snapshot-card">
+<h3 class="snapshot-title">Today's Snapshot</h3>
+<div id="homeMetricPanels"></div>
+<div class="daily-windows">
+<div class="window-item" id="wMorning">
+<span class="window-icon material-icons">wb_twilight</span>
+<span class="window-name">Morning</span>
+<span class="window-status pending">Pending</span>
+</div>
+<div class="window-item" id="wAfternoon">
+<span class="window-icon material-icons">sunny</span>
+<span class="window-name">Afternoon</span>
+<span class="window-status pending">Pending</span>
+</div>
+<div class="window-item" id="wEvening">
+<span class="window-icon material-icons">bedtime</span>
+<span class="window-name">Evening</span>
+<span class="window-status pending">Pending</span>
+</div>
+</div>
+<div class="readings-table-wrap"><h4 class="readings-table-title">Today's Readings</h4><table class="readings-table" id="todayReadingsTable"><thead><tr><th>#</th><th>Blood Pressure</th><th>Pulse</th><th>Blood Glucose</th><th>Time</th></tr></thead><tbody id="todayReadingsBody"></tbody></table></div>
+</div>
+</div>
+<!-- ===== RECORD MEASUREMENT ===== -->
+<div class="screen-view" id="view-record">
+<div class="card">
+<h2 class="section-title">Record Measurement</h2>
+<div class="input-group">
+<label>Systolic (mmHg)</label>
+<input id="recSys" max="300" min="0" placeholder="Enter systolic value" type="number"/>
+</div>
+<div class="input-group">
+<label>Diastolic (mmHg)</label>
+<input id="recDia" max="200" min="0" placeholder="Enter diastolic value" type="number"/>
+</div>
+<div class="input-group">
+<label>Pulse (BPM)</label>
+<input id="recPulse" max="250" min="0" placeholder="Enter beats per minute" type="number"/>
+</div>
+<div class="input-group">
+<label for="recGlucose">Blood Glucose</label>
+<input id="recGlucose" min="0" placeholder="Enter blood glucose level" step="0.1" type="number"/>
+<small aria-live="polite" id="glucoseConversionHint"></small>
+</div>
+<div class="input-group">
+<label for="recGlucoseType">Timing of Reading</label>
+<select id="recGlucoseType">
+<option value="">Select timing of reading</option>
+<option value="fasting">Fasting (8+ hrs without food)</option>
+<option value="post_meal">Post-Meal (1–2 hrs after eating)</option>
+<option value="pre_meal">Pre-Meal (just before eating)</option>
+<option value="bedtime">Bedtime (before sleeping)</option>
+<option value="random">Random (any time)</option>
+</select>
+</div>
+<div class="input-group">
+<label for="recGlucoseUnit">Glucose Unit</label>
+<select id="recGlucoseUnit">
+<option selected="" value="mg/dL">mg/dL</option>
+<option value="mmol/L">mmol/L</option>
+</select>
+</div>
+<div class="input-group">
+<label>Date</label>
+<input id="recDate" type="date"/>
+</div>
+<div class="input-group">
+<label>Time</label>
+<input id="recTime" step="1" type="time"/>
+</div>
+<button class="btn-outline expand-btn" id="expandDetailsBtn">＋ Add Measurement Details</button>
+<div id="extraDetails" style="display:none;">
+<div class="input-group">
+<label>Symptoms (Select Multiple)</label>
+<select id="recSymptoms" multiple="">
+<option value="Feeling normal">Feeling normal</option>
+<option value="Headache">Headache</option>
+<option value="Dizziness">Dizziness</option>
+<option value="Fatigue">Fatigue</option>
+<option value="Stress">Stress</option>
+<option value="Anxiety">Anxiety</option>
+<option value="Nausea">Nausea</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="input-group" id="otherSymptomGroup" style="display:none;">
+<label>Other Symptom</label>
+<input id="recOtherSymptom" placeholder="Describe your symptom..." type="text"/>
+</div>
+<div class="input-group">
+<label>Arm</label>
+<select id="recArm">
+<option value="Left">Left</option>
+<option value="Right">Right</option>
+</select>
+</div>
+<div class="input-group">
+<label>Position</label>
+<select id="recPos">
+<option value="Sitting">Sitting</option>
+<option value="Standing">Standing</option>
+<option value="Lying">Lying</option>
+</select>
+</div>
+<div class="input-group">
+<label>Medication</label>
+<select id="recMed">
+<option value="Before medication">Before medication</option>
+<option value="After medication">After medication</option>
+<option value="Not applicable">Not applicable</option>
+</select>
+</div>
+<div class="input-group">
+<label>Meal</label>
+<select id="recMeal">
+<option value="Before meal">Before meal</option>
+<option value="After meal">After meal</option>
+<option value="Not applicable">Not applicable</option>
+</select>
+</div>
+<div class="input-group">
+<label>Activity</label>
+<select id="recAct" multiple="">
+<option value="Resting">Resting</option>
+<option value="After walking">After walking</option>
+<option value="After exercise">After exercise</option>
+<option value="After climbing stairs">After climbing stairs</option>
+<option value="After stressful activity">After stressful activity</option>
+<option value="Custom">Custom</option>
+</select>
+<input class="custom-multi-input" hidden="" id="recCustomAct" placeholder="Type custom activity..." type="text"/>
+</div>
+<div class="input-group">
+<label>Recent Intake</label>
+<select id="recIntake" multiple="">
+<option value="None">None</option>
+<option value="Coffee/tea">Coffee/tea</option>
+<option value="Meal">Meal</option>
+<option value="Salty food">Salty food</option>
+<option value="Smoking">Smoking</option>
+<option value="Medication">Medication</option>
+<option value="Custom">Custom</option>
+</select>
+<input class="custom-multi-input" hidden="" id="recCustomIntake" placeholder="Type custom intake..." type="text"/>
+</div>
+<div class="input-group">
+<label>Additional Note</label>
+<textarea id="recExtraNote" placeholder="Add anything else..."></textarea>
+</div>
+</div>
+<button class="btn-primary" id="saveReadingBtn">Save Reading</button>
+<button aria-label="Close" class="modal-close" id="cancelRecord">✕</button>
+</div>
+</div>
+<!-- ===== READING RESULT ===== -->
+<div class="screen-view" id="view-result">
+<div class="card result-card">
+<div class="result-icon"></div>
+<h2 class="result-title">Reading Saved</h2>
+<div class="result-bp" id="resultBP">-- / --</div>
+<div class="result-status" id="resultStatus">--</div>
+<div class="result-pulse" id="resultPulse">Pulse: -- BPM</div>
+<div id="resultGlucose" style="margin-top:8px;"></div>
+<div class="result-time" id="resultTime">Recorded at --:--:--</div>
+<div class="result-avg" id="resultAvg">Today's Average: -- / --</div>
+<div class="result-count" id="resultCount">No measurements today</div>
+<button class="btn-primary" id="resultDoneBtn">Done</button>
+</div>
+</div>
+<!-- ===== HISTORY ===== -->
+<div class="screen-view" id="view-history">
+<div class="card">
+<h2 class="section-title">History</h2>
+<div class="history-filters">
+<button class="filter-btn-small active" data-history="today">Today</button>
+<button class="filter-btn-small" data-history="1">1D</button>
+<button class="filter-btn-small" data-history="2">2D</button>
+<button class="filter-btn-small" data-history="3">3D</button>
+<button class="filter-btn-small" data-history="7">7D</button>
+<button class="filter-btn-small" data-history="14">14D</button>
+<button class="filter-btn-small" data-history="30">30D</button>
+<button class="filter-btn-small" data-history="60">60D</button>
+<button class="filter-btn-small" data-history="90">90D</button>
+<button class="filter-btn-small" data-history="180">180D</button>
+<button class="filter-btn-small" data-history="custom">Custom</button>
+</div>
+<div id="historyCustomRange" style="display:none;">
+<div class="input-group inline-group">
+<label>From</label>
+<input id="historyFrom" type="date"/>
+</div>
+<div class="input-group inline-group">
+<label>To</label>
+<input id="historyTo" type="date"/>
+</div>
+<button class="btn-secondary" id="applyHistoryFilter">Apply</button>
+</div>
+<div class="history-date-display" id="historyDateDisplay"></div>
+<div class="history-bulk" hidden="" id="historyBulk">
+<label><input id="selectAllHistory" type="checkbox"/> Select All</label>
+<button class="btn-secondary" id="bulkExportBtn">Export</button>
+<button class="btn-secondary danger-btn" id="bulkDeleteBtn">Delete</button>
+</div>
+<div aria-live="polite" class="measurement-scores" id="historyScores"></div>
+<div class="readings-table-wrap"><table class="readings-table" id="historyTable"><thead><tr><th>#</th><th>Blood Pressure</th><th>Pulse</th><th>Blood Glucose</th><th>Time</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+</div>
+</div>
+<!-- ===== READING DETAIL ===== -->
+<div class="screen-view" id="view-detail">
+<div class="card">
+<button aria-label="Close" class="modal-close" id="backFromDetail">✕</button>
+<div id="detailContent"></div>
+</div>
+</div>
+<!-- ===== TRENDS ===== -->
+<div class="screen-view" id="view-trends">
+  <div class="card">
+    <h2 class="section-title">Trend Analysis</h2>
+
+    <div class="filter-bar">
+      <button class="filter-btn" data-days="today">Today</button>
+      <button class="filter-btn" data-days="1">1D</button>
+      <button class="filter-btn" data-days="2">2D</button>
+      <button class="filter-btn" data-days="3">3D</button>
+      <button class="filter-btn" data-days="7">7D</button>
+      <button class="filter-btn active" data-days="14">14D</button>
+      <button class="filter-btn" data-days="30">30D</button>
+      <button class="filter-btn" data-days="60">60D</button>
+      <button class="filter-btn" data-days="90">90D</button>
+      <button class="filter-btn" data-days="180">180D</button>
+      <button class="filter-btn" data-days="custom">Custom</button>
+    </div>
+
+    <div id="customDateRange" style="display:none;">
+      <div class="input-group inline-group">
+        <label>From</label>
+        <input id="trendFrom" type="date" />
+      </div>
+      <div class="input-group inline-group">
+        <label>To</label>
+        <input id="trendTo" type="date" />
+      </div>
+      <button class="btn-secondary" id="applyCustomRange">Apply</button>
+    </div>
+
+    <div class="trend-date-display" id="trendDateDisplay"></div>
+
+    <div class="trend-stats" id="trendStats"></div>
+
+    <div class="chart-options">
+      <button class="chart-option active" data-chart="bp">Blood Pressure</button>
+      <button class="chart-option" data-chart="pulse">Pulse</button>
+      <button class="chart-option" data-chart="glucose">Blood Glucose</button>
+      <button class="chart-option" data-chart="combined">Combined</button>
+    </div>
+
+    <div class="input-group" hidden id="glucoseCategorySelector">
+      <label for="glucoseCategorySelect">Glucose Category</label>
+      <select id="glucoseCategorySelect">
+        <option value="fasting">Fasting</option>
+        <option value="pre_meal">Pre Meal</option>
+        <option value="post_meal">Post Meal</option>
+        <option value="bedtime">Bedtime</option>
+        <option value="random">Random</option>
+        <option selected value="all">All Categories</option>
+      </select>
+    </div>
+
+    <div class="chart-container">
+      <h4>Blood Pressure Trend</h4>
+      <div class="chart-area" id="bpChart">
+        <canvas id="bpChartCanvas"></canvas>
       </div>
     </div>
 
-  </div><!-- /screen-container -->
+    <div class="chart-container">
+      <h4>Pulse Trend</h4>
+      <div class="chart-area" id="pulseChart">
+        <canvas id="pulseChartCanvas"></canvas>
+      </div>
+    </div>
 
+    <div class="readings-table-wrap">
+      <h4 class="readings-table-title">Readings In Range</h4>
+      <table class="readings-table" id="trendsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Blood Pressure</th>
+            <th>Pulse</th>
+            <th>Blood Glucose</th>
+            <th>Time</th>
+            <th>Avg. Classification</th>
+          </tr>
+        </thead>
+        <tbody id="trendsBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== PROFILE ===== -->
+<div class="screen-view" id="view-profile">
+<div class="card">
+<h2 class="section-title">Profile</h2>
+<div id="profileView">
+<div class="profile-avatar-section">
+<div class="profile-avatar" id="profileAvatar">
+<span id="profileAvatarInitials">U</span>
+</div>
+<div class="avatar-actions">
+<button class="btn-secondary" id="uploadAvatarBtn">Upload Photo</button>
+<button class="btn-secondary" id="chooseEmojiBtn">Change Avatar</button>
+</div>
+<input accept="image/*" id="avatarFileInput" style="display:none;" type="file"/>
+</div>
+<div class="profile-field"><label>Full Name</label><span id="pName">--</span></div>
+<div class="profile-field"><label>Primary Email</label><span id="pEmail">--</span><span class="verification-badge unverified" id="pEmailVerificationBadge"></span></div>
+<div class="profile-field"><label>Recovery Email</label><span id="pRecoveryEmail">--</span><span class="verification-badge unverified" id="pRecoveryVerificationBadge"></span></div>
+<div class="profile-field"><label>Phone</label><span id="pPhone">--</span></div>
+<div class="profile-field"><label>Date of Birth</label><span id="pDob">--</span></div>
+<div class="profile-field"><label>Age</label><span class="age-display" id="pAge">--</span></div>
+<div class="profile-field"><label>Gender</label><span id="pGender">--</span></div>
+<div class="profile-field">
+<label>User ID</label>
+<div class="user-id-container">
+<span id="pUserId">--</span>
+<button aria-label="Copy User ID" class="copy-btn" id="copyUserIdBtn" title="Copy User ID">⎘</button>
+</div>
+</div>
+<div class="profile-field"><label>Address</label><span id="pAddress">--</span></div>
+<div class="profile-field"><label>Blood Group</label><span id="pBlood">--</span></div>
+<div class="profile-field"><label>Emergency Contact</label><span id="pEmerg">--</span></div>
+<div class="profile-field"><label>Notes</label><span id="pNotes">--</span></div>
+</div>
+<!-- ===== EDIT PROFILE FORM ===== -->
+<div id="profileEdit">
+<button aria-label="Close" class="modal-close" id="cancelEditProfile">✕</button>
+<h3 style="margin-bottom:16px;font-size:18px;font-weight:600;">Edit Profile</h3>
+<div class="input-group"><label>Full Name</label><input id="editName" placeholder="Enter your full name" type="text"/></div>
+<div class="input-group"><label>Primary Email</label><input id="editEmail" placeholder="primary@email.com" type="email"/></div>
+<div class="input-group"><label>Recovery Email</label><input id="editRecoveryEmail" placeholder="backup@email.com" type="email"/></div>
+<div class="input-group"><label>Phone</label><input id="editPhone" placeholder="03XX-XXXXXXX" type="tel"/></div>
+<div class="input-group"><label>Date of Birth</label><input id="editDob" type="date"/></div>
+<div class="input-group">
+<label>Gender</label>
+<select id="editGender">
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
+<div class="input-group"><label>Address</label><input id="editAddress" placeholder="House/Apt./Plot 12-A, Street/Rd. 123, Landmark, Sector/Block/Locality, City, District, Province, ZIP, PK" type="text"/></div>
+<div class="input-group">
+<label>Blood Group</label>
+<select id="editBlood">
+<option value="A+">A+</option>
+<option value="A-">A-</option>
+<option value="B+">B+</option>
+<option value="B-">B-</option>
+<option value="AB+">AB+</option>
+<option value="AB-">AB-</option>
+<option value="O+">O+</option>
+<option value="O-">O-</option>
+</select>
+</div>
+<div class="input-group"><label>Emergency Contact</label><input id="editEmerg" placeholder="03XX-XXXXXXX" type="tel"/></div>
+<div class="input-group"><label>Notes</label><textarea id="editNotes" placeholder="Add any important information..."></textarea></div>
+<button class="btn-primary" id="saveProfileBtn">Save Profile</button>
+</div>
+</div>
+</div>
 <!-- ===== BOTTOM NAVIGATION ===== -->
 <nav class="bottom-nav" id="bottomNav">
 <button class="nav-item active" data-screen="home">
-  <span class="nav-icon"><i class="fas fa-home"></i></span>
-  <span class="nav-label">Home</span>
+<span class="nav-icon"><i class="fas fa-home"></i></span>
+<span class="nav-label">Home</span>
 </button>
 <button class="nav-item" data-screen="history">
-  <span class="nav-icon"><i class="fas fa-history"></i></span>
-  <span class="nav-label">History</span>
+<span class="nav-icon"><i class="fas fa-history"></i></span>
+<span class="nav-label">History</span>
 </button>
 <button class="nav-item" data-screen="trends">
-  <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
-  <span class="nav-label">Trends</span>
+<span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+<span class="nav-label">Trends</span>
+</button>
+<button class="nav-item" id="navSettingsBtn">
+<span class="nav-icon"><i class="fas fa-cog"></i></span>
+<span class="nav-label">Settings</span>
 </button>
 <button class="nav-item" data-screen="profile">
-  <span class="nav-icon"><i class="fas fa-user"></i></span>
-  <span class="nav-label">Profile</span>
+<span class="nav-icon"><i class="fas fa-user"></i></span>
+<span class="nav-label">Profile</span>
 </button>
 <button class="nav-item fab-btn" id="fabRecord">
-  <span class="material-icons">add</span>
+<span class="material-icons">add</span>
 </button>
+</nav>
 
+<div class="screen-view" id="view-privacy-policy"><div class="card legal-doc"><button aria-label="Close" class="modal-close" id="closePrivacyPolicy">×</button><h1 class="legal-title">Privacy Policy</h1><p class="legal-updated">Last Updated: September 2026</p><h2>1. Introduction</h2>
+<p><strong>My Health Journal</strong> ("the App," "we," "us," or "our") is committed to protecting the privacy of every user. This Privacy Policy explains what information we collect, how we use it, where it is stored, and what rights you have over your data. By using the App, you consent to the practices described here.</p>
+<h2>2. Information We Collect</h2>
+<p>We collect only what is necessary to operate the App:</p>
+<ul>
+<li><strong>Account information:</strong> your name, primary email address, optional recovery email address, phone number, date of birth, gender, and (optionally) address, blood group, and emergency contact details.</li>
+<li><strong>Health readings you enter:</strong> blood pressure, pulse, and blood glucose values, along with contextual tags (medication timing, meal timing, activity, symptoms, notes) that you choose to record.</li>
+<li><strong>Device information:</strong> a randomly generated device identifier stored locally on your device. This identifier is used only to distinguish devices you sign in from; it is not tied to hardware or location.</li>
+<li><strong>Usage logs:</strong> timestamps of logins, profile changes, exports, backups, and other in-app actions you take. These are kept to help you review your own account history and to alert you of unusual activity.</li>
+</ul>
+<h2>3. Information We Do Not Collect</h2>
+<p>We do not collect, request, or store: your precise location, your contacts, your photos, your browsing history, advertising identifiers, or any biometric data. We do not use third-party analytics, tracking pixels, or advertising SDKs.</p>
+<h2>4. How We Use Your Information</h2>
+<ul>
+<li>To authenticate you and provide secure access to your account.</li>
+<li>To store and display your readings back to you across your devices.</li>
+<li>To send transactional emails — verification codes, login alerts, password/PIN reset notifications, and confirmation of account actions.</li>
+<li>To produce exports (PDF reports, CSV spreadsheets, JSON backups) that you explicitly request.</li>
+<li>To detect and warn you about potential security issues, such as logins from new devices.</li>
+</ul>
+<h2>5. Where Your Data Is Stored</h2>
+<ul>
+<li><strong>Primary storage:</strong> Your readings and profile are stored in a secure cloud database (Firebase Firestore) under your unique user identifier. Data is encrypted in transit and at rest.</li>
+<li><strong>Device storage:</strong> a local copy of your account data is cached on your device so the App works offline. You can clear this at any time in Settings → Advanced → Account &amp; Data Management → Clear Local Data.</li>
+<li><strong>Google Drive:</strong> If you choose to connect your Google Drive, exports and backups are stored in your own Drive under <em>/My Health Journal/</em>. The Administrator's Drive receives a mirror copy of each export and backup for archival purposes.</li>
+</ul>
+<h2>6. Email Communications</h2>
+<p>Your email address is used exclusively for the following:</p>
+<ul>
+<li>Account registration and login verification.</li>
+<li>One-Time Passwords (OTPs) for identity confirmation during sensitive operations such as password reset, PIN reset, and email verification.</li>
+<li>Transactional notifications such as login alerts, backup confirmations, and account security alerts.</li>
+</ul>
+<p>We do not send marketing emails, newsletters, or promotional content. You may opt out of the three optional summary emails (daily reminder, weekly summary, monthly summary) at any time in Settings → Advanced → Summary Emails.</p>
+<h2>7. Data Sharing</h2>
+<p>We do not sell, rent, or trade your personal information. We share data only in the following narrow circumstances:</p>
+<ul>
+<li><strong>Service providers:</strong> We use Firebase (Google) for authentication and database services, Google Drive for optional backups, and a mail delivery service for transactional email. These providers process data strictly on our behalf.</li>
+<li><strong>Administrator access:</strong> As described in the Terms of Service, the Administrator is legally permitted to access, view, or store data and may share it with third parties within the legal scope required by applicable law.</li>
+<li><strong>Legal obligations:</strong> If required by a valid court order, subpoena, or applicable law.</li>
+</ul>
+<h2>8. Data Retention</h2>
+<p>Your account and readings are retained for as long as your account remains active. You may delete your account at any time from Settings → Advanced → Account &amp; Data Management → Delete Account. Deletion removes your profile and all readings from our database and deletes your Firebase Auth account.</p>
+<h2>9. Your Rights</h2>
+<p>You have the right to:</p>
+<ul>
+<li><strong>Access</strong> your data at any time by exporting it as PDF, CSV, or JSON from My Health Logs.</li>
+<li><strong>Correct</strong> your profile at any time from the Profile page.</li>
+<li><strong>Delete</strong> your data or your entire account from Settings.</li>
+<li><strong>Opt out</strong> of optional summary emails from Settings → Advanced → Summary Emails.</li>
+<li><strong>Withdraw Google Drive access</strong> at any time by disconnecting Drive in Settings or by revoking the App's permissions from your Google Account.</li>
+</ul>
+<h2>10. Security</h2>
+<p>We use industry-standard safeguards: Firebase Authentication for sign-in, HTTPS for all network traffic, OAuth 2.0 for Google Drive access, and per-user access rules in the database. No system is perfectly secure; you are responsible for keeping your password and PIN confidential.</p>
+<h2>11. Children's Privacy</h2>
+<p>The App is not intended for children under 13. We do not knowingly collect data from children under 13. If you believe a child has provided us with personal information, contact us, and we will delete it.</p>
+<h2>12. Global Users</h2>
+<p>Your data may be stored and processed in countries other than your own, including the United States, where Firebase servers are located. By using the App, you consent to this transfer.</p>
+<h2>13. Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. Material changes will be announced inside the App. Continued use after a change constitutes acceptance of the updated policy.</p>
+<h2>14. Contact</h2>
+<p>For any privacy-related question or request:</p>
+<p><strong>Email:</strong> <a href="mailto:myhealthjournalapp@gmail.com">myhealthjournalapp@gmail.com</a><br/>
+<strong>WhatsApp:</strong> <a href="https://wa.me/923110177836">+92 311 0177836</a></p></div></div><div class="screen-view" id="view-terms-of-service"><div class="card legal-doc"><button aria-label="Close" class="modal-close" id="closeTermsOfService">×</button><h1 class="legal-title">Terms of Service</h1><p class="legal-updated">Last Updated: September 2026</p><h2>1. Acceptance of Terms</h2>
+<p>By installing, accessing, or using <strong>My Health Journal</strong> ("the App"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, do not use the App.</p>
+<h2>2. Purpose of the App</h2>
+<p><strong>My Health Journal</strong> is a personal health logging tool. It allows you to record blood pressure, pulse, and blood glucose readings, attach contextual notes, view trends, and export reports for your own reference or to share with your healthcare provider.</p>
+<p><strong>The App is not a medical device.</strong> It does not diagnose, treat, cure, or prevent any disease. It does not provide medical advice. All classifications shown (Normal, Elevated, Stage 1 Hypertension, Stage 2 Hypertension, Hypertensive Crisis, Bradycardia, Tachycardia, Hypoglycemia, Prediabetes, Diabetes Range, and others) are informational references based on published clinical guidelines and must not be interpreted as medical opinions.</p>
+<h2>3. Eligibility and Account Responsibility</h2>
+<ul>
+<li>You must be at least 13 years old to create an account.</li>
+<li>You are responsible for the accuracy of every measurement you enter.</li>
+<li>You are responsible for keeping your password, PIN, and backup codes confidential.</li>
+<li>You are responsible for any activity that occurs under your account.</li>
+<li>Up to five (5) accounts may be created per device.</li>
+</ul>
+<h2>4. Medical Disclaimer</h2>
+<p><strong>Always consult a qualified healthcare provider before making any decision about your health.</strong> Never disregard professional medical advice or delay seeking it because of something you read, saw, or inferred from the App. If you are experiencing a medical emergency, call your local emergency number immediately.</p>
+<h2>5. Data Storage and Backups</h2>
+<ul>
+<li><strong>Primary storage</strong> is Firebase Firestore, protected by per-user access rules.</li>
+<li><strong>Local cache</strong> is kept on your device to enable offline use; you can clear it in Settings.</li>
+<li><strong>Google Drive backups</strong> are optional. If enabled, a copy of each export and backup is placed in your own Drive under <em>/My Health Journal/</em> and a mirror copy is placed in the Administrator's Drive.</li>
+<li>You are responsible for maintaining your own external backups if you require an additional layer of protection.</li>
+</ul>
+<h2>6. Automatic Backups</h2>
+<p>The App offers an optional daily automatic backup. This runs while the App is open in your browser. If the App is closed, the backup runs when you next open it. Automatic backups are best-effort and depend on a working internet connection and continued Google Drive access.</p>
+<h2>7. Administrator Rights</h2>
+<p>By creating an account, you acknowledge and agree that:</p>
+<ul>
+<li>The Administrator is legally permitted to access, view, or store data associated with your account for the purpose of maintaining the App, responding to your support requests, and complying with applicable law.</li>
+<li>The Administrator may share data with third parties to the extent required by a valid legal order or applicable regulation.</li>
+<li>You consent to these terms at signup, and you agree not to challenge them in any court of law.</li>
+</ul>
+<h2>8. Account Termination</h2>
+<p>You may delete your account and all associated data at any time from Settings → Advanced → Account &amp; Data Management → Delete Account. Deletion is permanent; the App cannot restore deleted data.</p>
+<p>We may suspend or terminate access if you violate these terms, misuse the App, or attempt to compromise its security.</p>
+<h2>9. No Warranty</h2>
+<p>The App is provided <strong>" as is"</strong> and <strong>" as available"</strong> without warranties of any kind, express or implied, including but not limited to merchantability, fitness for a particular purpose, or non-infringement. We do not warrant that the App will be uninterrupted, error-free, or completely secure.</p>
+<h2>10. Limitation of Liability</h2>
+<p>To the maximum extent permitted by law, the Administrator and any contributors to the App shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of data, loss of revenue, personal injury, or health outcomes, arising out of or in connection with your use of the App.</p>
+<h2>11. Accuracy of Information</h2>
+<p>Classification thresholds, target ranges, and measurement scores shown in the App reflect published clinical guidelines at the time of writing. Individual circumstances vary; classifications are informational references only and do not replace your doctor's judgment.</p>
+<h2>12. Intellectual Property</h2>
+<p>All trademarks, logos, and brand names shown in the App (including "My Health Journal," "WhiteMoon Jeweller," and "Asad Jewellers, Okara") belong to their respective owners. You may not reuse them without written permission.</p>
+<h2>13. Modifications to These Terms</h2>
+<p>We may update these Terms of Service from time to time. Material changes will be announced inside the App. Continued use after a change constitutes acceptance of the updated terms.</p>
+<h2>14. Governing Law</h2>
+<p>These terms are governed by the laws of the Islamic Republic of Pakistan, without regard to conflict-of-law principles. Any dispute shall be resolved in the courts of Okara, Punjab, Pakistan.</p>
+<h2>15. Contact</h2>
+<p>For any questions about these terms:</p>
+<p><strong>Email:</strong> <a href="mailto:myhealthjournalapp@gmail.com">myhealthjournalapp@gmail.com</a><br/>
+<strong>WhatsApp:</strong> <a href="https://wa.me/923110177836">+92 311 0177836</a></p></div></div><div class="screen-view" id="view-email-triggers"><div class="card legal-doc"><button aria-label="Close" class="modal-close" id="backFromEmailTriggers">×</button><h2 class="section-title">Email Triggers</h2><p class="section-sub" id="emailTriggersCount"></p><div id="emailTriggersList"></div></div></div></div><!-- /screen-container -->
 </div><!-- /app -->
-
 <!-- ===== MODALS ===== -->
-
 <!-- Export Modal -->
 <div class="modal-overlay" id="exportModal">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <button class="modal-close" id="closeExport" aria-label="Close">✕</button>
-    <h3 class="modal-title">My Health Logs</h3>
-
-    <div class="input-group">
-      <label>From Date</label>
-      <input type="date" id="exportFrom" />
-    </div>
-    <div class="input-group">
-      <label>To Date</label>
-      <input type="date" id="exportTo" />
-    </div>
-
-    <button class="btn-primary export-option" data-type="pdf">Export PDF Report</button>
-    <button class="btn-primary export-option" data-type="csv">Export CSV Spreadsheet</button>
-    <button class="btn-primary export-option" data-type="gdrive">Save to Google Drive</button>
-    <button class="btn-primary export-option" data-type="backup">Download Backup File</button>
-    <button class="btn-primary" id="openImportFromLogs">Import Backup File</button>
-  </div>
+<div class="modal-sheet">
+<div class="modal-handle"></div>
+<button aria-label="Close" class="modal-close" id="closeExport">✕</button>
+<h3 class="modal-title">My Health Logs</h3>
+<div class="input-group"><label>From Date</label><input id="exportFrom" type="date"/></div>
+<div class="input-group"><label>To Date</label><input id="exportTo" type="date"/></div>
+<button class="btn-primary export-option" data-type="pdf">Export PDF Report</button>
+<button class="btn-primary export-option" data-type="csv">Export CSV Spreadsheet</button>
+<button class="btn-primary export-option" data-type="gdrive">Save to Google Drive</button>
+<button class="btn-primary export-option" data-type="backup">Download Backup File</button>
+<button class="btn-primary" id="openImportFromLogs">Import Backup File</button>
 </div>
-
+</div>
 <!-- Import Modal -->
 <div class="modal-overlay" id="importModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeImport" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">Import Journal Data</h3>
-    <p class="import-info">Import your JSON backup file to restore data</p>
-    <button class="btn-primary" id="importBackupBtn">📥 Import Backup</button>
-    <input type="file" id="fileInput" style="display:none" accept=".json" />
-    <div id="importPreview" class="import-preview"></div>
-  </div>
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeImport">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Import Journal Data</h3>
+<p class="import-info">Import Your JSON Backup File to Restore Data</p>
+<button class="btn-primary" id="importBackupBtn"> Import Backup</button>
+<input accept=".json" id="fileInput" style="display:none" type="file"/>
+<div class="import-preview" id="importPreview"></div>
 </div>
-
+</div>
 <!-- Avatar Selection Modal -->
 <div class="modal-overlay" id="avatarModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeAvatarModal" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">Choose Avatar</h3>
-    <div class="avatar-options">
-      <div class="avatar-option" data-avatar="👨">👨</div>
-      <div class="avatar-option" data-avatar="👩">👩</div>
-      <div class="avatar-option" data-avatar="🧑">🧑</div>
-      <div class="avatar-option" data-avatar="👴">👴</div>
-      <div class="avatar-option" data-avatar="👵">👵</div>
-      <div class="avatar-option" data-avatar="🧔">🧔</div>
-      <div class="avatar-option" data-avatar="👶">👶</div>
-      <div class="avatar-option" data-avatar="🧒">🧒</div>
-      <div class="avatar-option" data-avatar="🧓">🧓</div>
-    </div>
-  </div>
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeAvatarModal">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Choose Avatar</h3>
+<div class="avatar-options"><button class="btn-secondary avatar-option" data-avatar="initials">Use Initials</button></div>
 </div>
-
+</div>
 <!-- Security Modal -->
 <div class="modal-overlay" id="securityModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeSecurityModal" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">Security Settings</h3>
-    <div class="settings-item"><label>Enable PIN</label><label class="switch"><input type="checkbox" id="appLockToggle" /><span class="slider"></span></label></div>
-    <div class="settings-item"><label>Enable Biometric Verification</label><label class="switch"><input type="checkbox" id="biometricToggle" /><span class="slider"></span></label></div>
-
-    <div class="input-group">
-      <label>New Password (min 5 chars)</label>
-      <div class="password-wrap">
-        <input type="password" id="secNewPw" placeholder="Enter new password" />
-        <button class="toggle-pw" data-target="secNewPw" type="button">👁</button>
-      </div>
-    </div>
-    <div class="input-group">
-      <label>Confirm New Password</label>
-      <div class="password-wrap">
-        <input type="password" id="secNewPwConfirm" placeholder="Confirm new password" />
-        <button class="toggle-pw" data-target="secNewPwConfirm" type="button">👁</button>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label>New PIN (exactly 5 digits)</label>
-      <div class="password-wrap">
-        <input type="password" id="secNewPin" placeholder="Enter new PIN" maxlength="5" inputmode="numeric" />
-        <button class="toggle-pw" data-target="secNewPin" type="button">👁</button>
-      </div>
-    </div>
-    <div class="input-group">
-      <label>Confirm New PIN</label>
-      <div class="password-wrap">
-        <input type="password" id="secNewPinConfirm" placeholder="Confirm new PIN" maxlength="5" inputmode="numeric" />
-        <button class="toggle-pw" data-target="secNewPinConfirm" type="button">👁</button>
-      </div>
-    </div>
-
-    <button class="btn-primary" id="saveSecurityBtn">Save Security Settings</button>
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeSecurityModal">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Security Settings</h3>
+<div class="settings-item">
+<label>Enable PIN</label>
+<label class="switch">
+<input id="appLockToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="settings-item">
+<label>Enable Biometric Verification</label>
+<label class="switch">
+<input id="biometricToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="input-group">
+<label>New Password (Min 5 Characters)</label>
+<div class="password-wrap">
+<input id="secNewPw" placeholder="Enter new password" type="password"/>
+<button class="toggle-pw" data-target="secNewPw" type="button"></button>
+</div>
+</div>
+<div class="input-group">
+<label>Confirm New Password</label>
+<div class="password-wrap">
+<input id="secNewPwConfirm" placeholder="Confirm new password" type="password"/>
+<button class="toggle-pw" data-target="secNewPwConfirm" type="button"></button>
+</div>
+</div>
+<div class="input-group">
+<label>New PIN (Exactly 5 Digits)</label>
+<div class="password-wrap">
+<input id="secNewPin" inputmode="numeric" maxlength="5" placeholder="Enter new PIN" type="password"/>
+<button class="toggle-pw" data-target="secNewPin" type="button"></button>
+</div>
+</div>
+<div class="input-group">
+<label>Confirm New PIN</label>
+<div class="password-wrap">
+<input id="secNewPinConfirm" inputmode="numeric" maxlength="5" placeholder="Confirm new PIN" type="password"/>
+<button class="toggle-pw" data-target="secNewPinConfirm" type="button"></button>
+</div>
+</div>
+<button class="btn-primary" id="saveSecurityBtn">Save Security Settings</button>
+<hr style="margin: 20px 0; border: none; border-top: 2px solid var(--muted);"/>
+<h4 style="color: var(--navy); margin-bottom: 8px;">Backup Codes</h4>
+<p style="font-size: 13px; color: var(--gray); margin-bottom: 12px;">
+      Use backup codes when you can't access your email for OTP. Each code can be used once.
+    </p>
+<button class="btn-outline" id="showBackupCodesBtn">View Backup Codes</button>
+<div id="backupCodesPopup" style="display:none;position:relative;">
+  <button aria-label="Close" class="modal-close" id="closeBackupCodesPopupBtn">×</button>
+  <h4>Your Backup Code</h4>
+  <div id="backupCodesList">No code generated yet. Tap "Generate New Code".</div>
+  <p class="settings-help">Generate a new code to display and download it. Previously downloaded codes remain valid until used or replaced.</p>
+  <p class="settings-help">Save these codes. Keep them safe and do not share.</p>
+  <p class="settings-help">If you have used your previous code, generate a new code to display and download it.</p>
+  <p class="settings-help" id="backupCodeStatus"></p>
+  <div class="backup-code-actions">
+    <button class="btn-secondary" id="downloadBackupCodesBtn">Download Code</button>
+    <button class="btn-secondary" id="generateBackupCodesBtn">Generate New Code</button>
   </div>
 </div>
-
+</div>
+</div>
+<!-- Backup Code Verification Modal -->
+<div class="modal-overlay" id="backupCodeVerifyModal">
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeBackupCodeVerify">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Enter Backup Code</h3>
+<p style="font-size:14px;color:var(--gray);margin-bottom:16px;">Enter Your Email and Backup Code to Verify Your Identity</p>
+<div class="input-group"><label>Email</label><input id="backupCodeEmail" placeholder="Enter your email" type="email"/></div>
+<div class="input-group"><label>Backup Code</label><input id="backupCodeInput" placeholder="Enter your backup code" style="font-family:monospace;letter-spacing:1px;" type="text"/></div>
+<button class="btn-primary" id="verifyBackupCodeBtn">Verify Code</button>
+<button class="btn-outline mt-8" id="cancelBackupCodeVerify">Cancel</button>
+</div>
+</div>
 <!-- Settings Modal -->
 <div class="modal-overlay" id="settingsModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeSettingsModal" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">Settings</h3>
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeSettingsModal">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Settings</h3>
 
-    <details class="reference-guide"><summary>Classification Reference</summary><h4>Blood Pressure</h4><table><tr><th>Category</th><th>Range</th><th>Colour</th></tr><tr class="ref-low"><td>Hypotension</td><td>SYS &lt;90 or DIA &lt;60</td><td>Blue</td></tr><tr class="ref-normal"><td>Normal</td><td>SYS 90–120 and DIA 60–80</td><td>Green</td></tr><tr class="ref-elevated"><td>Elevated</td><td>SYS 121–129 and DIA &lt;80</td><td>Yellow</td></tr><tr class="ref-stage1"><td>Stage 1</td><td>SYS 130–139 or DIA 81–89</td><td>Orange</td></tr><tr class="ref-stage2"><td>Stage 2</td><td>SYS 140–180 or DIA 90–120</td><td>Purple</td></tr><tr class="ref-crisis"><td>Crisis</td><td>SYS &gt;180 or DIA &gt;120</td><td>Red</td></tr></table><h4>Pulse</h4><table><tr><th>Category</th><th>BPM</th><th>Colour</th></tr><tr class="ref-crisis"><td>Severe bradycardia</td><td>&lt;40</td><td>Orange</td></tr><tr class="ref-elevated"><td>Low</td><td>40–59</td><td>Yellow</td></tr><tr class="ref-normal"><td>Normal</td><td>60–100</td><td>Green</td></tr><tr class="ref-stage1"><td>Mild tachycardia</td><td>101–120</td><td>Purple</td></tr><tr class="ref-crisis"><td>Severe tachycardia</td><td>&gt;120</td><td>Red</td></tr></table><h4>Measurement Score</h4><table><tr><th>Grade</th><th>Score</th><th>Colour</th></tr><tr><td>Awful</td><td>≤39%</td><td>Purple</td></tr><tr><td>Poor</td><td>40–59%</td><td>Red</td></tr><tr><td>Below Average</td><td>60–69%</td><td>Orange</td></tr><tr><td>Average</td><td>70–79%</td><td>Yellow</td></tr><tr><td>Good</td><td>80–89%</td><td>Light Green</td></tr><tr><td>Excellent</td><td>≥90%</td><td>Green</td></tr></table></details>
+<!-- ===== 1. ACCOUNT MANAGEMENT ===== -->
+<div class="settings-subgroup">
+<h4 class="settings-subgroup-heading">Account Management</h4>
 
-    <div class="settings-item">
-      <label>Delete Account &amp; Data</label>
-      <button class="btn-secondary danger-btn" id="settingsDeleteBtn">Delete</button>
-    </div>
-
-    <div class="settings-item">
-      <label>About My Health Journal</label>
-      <button class="btn-secondary" id="openAboutBtn">Open</button>
-    </div>
-
-  </div>
+<div class="settings-item">
+<label>View Profile</label>
+<button class="btn-secondary" id="settingsViewProfileBtn">Open</button>
 </div>
 
-<!-- In index.html, find the aboutModal div and replace its content -->
+<div class="settings-item">
+<label>Security Settings</label>
+<button class="btn-secondary" id="settingsSecurityBtn">Open</button>
+</div>
+
+<div class="settings-item" style="flex-direction:column;align-items:stretch;margin-top:12px;">
+<label style="font-weight:600;margin-bottom:10px;">Privacy &amp; Data</label>
+<div class="settings-item" style="border:none;padding:8px 0;">
+<label>Clear This Account From This Device</label>
+<button class="btn-secondary danger-btn" id="clearLocalBtn">Clear</button>
+</div>
+<div class="settings-item" style="border:none;padding:8px 0;">
+<label>Clear Journal, Keep Account</label>
+<button class="btn-secondary danger-btn" id="clearJournalBtn">Clear</button>
+</div>
+<div class="settings-item" style="border:none;padding:8px 0;">
+<label>Delete Account &amp; Data</label>
+<button class="btn-secondary danger-btn" id="settingsDeleteBtn">Delete</button>
+</div>
+</div>
+</div>
+
+<!-- ===== 2. BACKUP & EXPORTS ===== -->
+<div class="settings-subgroup">
+<h4 class="settings-subgroup-heading">Backup &amp; Exports</h4>
+
+<div class="settings-item drive-settings" style="flex-direction:column;align-items:stretch;gap:10px;">
+<label style="font-weight:600;">Connect Your Google Drive</label>
+<p class="settings-help">Connect your personal Google Drive to enable automatic backups. When connected, both <strong>your own Google Drive</strong> and the <strong>Administrator's Google Drive</strong> receive a copy of each backup and export.</p>
+<p class="settings-help">The Administrator's Drive receives copies only while this app is open and your Google Drive is connected. If you disconnect, no further copies are sent.</p>
+<p class="settings-help" id="googleDriveStatus"></p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<button class="btn-secondary" id="connectGoogleBtn" style="min-width:180px;">Connect Google Drive</button>
+<button class="btn-secondary danger-btn" id="disconnectGoogleBtn" style="min-width:180px;display:none;">Disconnect</button>
+</div>
+</div>
+
+<div class="settings-item" style="flex-direction:column;align-items:stretch;">
+<label style="margin-bottom:8px;">Automatic Google Drive Backup</label>
+<div class="backup-schedule-row">
+<label><input id="autoBackupDaily" type="checkbox"/> Enable Automatic Backup</label>
+<label for="autoBackupInterval">Backup Interval</label>
+<select id="autoBackupInterval">
+<option value="1">Daily</option>
+<option value="3">3 Days</option>
+<option value="7">7 Days</option>
+<option value="14">14 Days</option>
+<option value="30">30 Days</option>
+<option value="60">60 Days</option>
+<option value="90">90 Days</option>
+<option value="180">180 Days</option>
+<option value="custom">Custom Days</option>
+</select>
+<label hidden="" id="autoBackupDaysLabel">Every <input id="autoBackupDays" max="3650" min="1" step="1" type="number"/> days</label>
+</div>
+<p class="settings-help">Runs while the app is open. Missed backups are checked when you return.</p>
+<button class="btn-secondary" id="saveAutoBackupBtn" style="align-self:flex-start;">Save Schedule</button>
+</div>
+
+<div class="settings-item">
+<label>Backup to Google Drive</label>
+<button class="btn-secondary" id="settingsBackupToDriveBtn">Backup Now</button>
+</div>
+
+<div class="settings-item">
+<label>Download Backup File</label>
+<button class="btn-secondary" id="settingsDownloadBackupBtn">Download</button>
+</div>
+
+<div class="settings-item">
+<label>Export PDF Report</label>
+<button class="btn-secondary" id="settingsExportPdfBtn">Export</button>
+</div>
+
+<div class="settings-item">
+<label>Export CSV Spreadsheet</label>
+<button class="btn-secondary" id="settingsExportCsvBtn">Export</button>
+</div>
+
+<div class="settings-item">
+<label>Import Backup File</label>
+<button class="btn-secondary" id="settingsImportBtn">Import</button>
+</div>
+</div>
+
+<!-- ===== 3. MEDICAL RECORDS ===== -->
+<div class="settings-subgroup">
+<h4 class="settings-subgroup-heading">Medical Records</h4>
+
+<div class="settings-item">
+<label>Add New Medical Record</label>
+<button class="btn-secondary" id="settingsAddMedicalBtn">Add</button>
+</div>
+
+<div class="settings-item">
+<label>Backup Medical Records to Google Drive</label>
+<button class="btn-secondary" id="settingsBackupMedicalBtn">Backup</button>
+</div>
+
+<div class="settings-item">
+<label>View Medical Records</label>
+<button class="btn-secondary" id="settingsViewMedicalBtn">View</button>
+</div>
+</div>
+
+<!-- ===== 4. EMAILS ===== -->
+<div class="settings-subgroup">
+<h4 class="settings-subgroup-heading">Emails</h4>
+
+<fieldset style="border:1px solid var(--muted);border-radius:12px;padding:14px;margin:0;">
+<legend style="font-weight:600;padding:0 6px;">Summary Emails (Optional)</legend>
+<p class="settings-help" style="margin-top:0;">These three summary emails are optional. All other app emails are sent automatically when their events occur. Tick a box to receive that summary; leave unticked to opt out.</p>
+<label style="display:block;margin:6px 0;"><input id="readingReminder" type="checkbox"/> Daily Reading Reminder</label>
+<label style="display:block;margin:6px 0;"><input id="weeklySummary" type="checkbox"/> Weekly Summary</label>
+<label style="display:block;margin:6px 0;"><input id="fortnightlySummary" type="checkbox"/> Fortnightly Summary</label>
+<label style="display:block;margin:6px 0;"><input id="monthlySummary" type="checkbox"/> Monthly Summary</label>
+<button class="btn-secondary" id="saveNotificationSettings" style="margin-top:8px;">Save Email Preferences</button>
+</fieldset>
+
+<div class="settings-item">
+<label>Email Delivery Logs</label>
+<button class="btn-secondary" id="advancedEmailLogsBtn">Open</button>
+</div>
+
+<div class="settings-item">
+<label>Download Change Logs</label>
+<button class="btn-secondary" id="advancedLogsBtn">Download</button>
+</div>
+</div>
+
+<!-- ===== 5. ABOUT ===== -->
+<div class="settings-subgroup">
+<h4 class="settings-subgroup-heading">About</h4>
+
+<div class="settings-item">
+<label>About 'My Health Journal' App</label>
+<button class="btn-secondary" id="openAboutBtn">Open</button>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Medical Records Modal -->
+<div class="modal-overlay" id="medicalRecordsModal">
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeMedicalRecordsModal">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Medical Records</h3>
+<p class="settings-help">Upload PDF files of prescriptions, test reports, or any medical documents. All files are stored in a single folder in your Drive and the Administrator's Drive.</p>
+<button class="btn-primary" id="uploadMedicalRecordBtn">Upload PDF</button>
+<input accept="application/pdf" id="medicalRecordInput" style="display:none" type="file"/>
+<div id="medicalRecordsList" style="margin-top:12px;"></div>
+</div>
+</div>
+<!-- About Modal -->
 <div class="modal-overlay" id="aboutModal">
-  <div class="modal-sheet about-sheet">
-    <button class="modal-close" id="closeAboutModal" aria-label="Close">✕</button>
-    
-    <h3 class="about-title">About <span class="orange-text">My Health Journal</span></h3>
-    
-    <p class="about-description">
-      <strong>My Health Journal</strong> is a secure, privacy-first offline application designed to help you log blood pressure and pulse readings, uncover vital trends, and maintain full control of your personal health data.
+<div class="modal-sheet about-sheet">
+<button aria-label="Close" class="modal-close" id="closeAboutModal">✕</button>
+<h3 class="about-title">About <strong><span class="orange-text">My Health Journal</span></strong></h3>
+<p class="about-description">
+<strong>My Health Journal</strong> is a secure, privacy-first application designed to help you log blood pressure, pulse, and blood glucose readings, uncover vital trends, and maintain full control of your personal health data.
     </p>
+<h4 class="about-section-heading">Key Features</h4>
+<ul class="about-feature-list">
+<li><strong>AHA Standard BP Tracking:</strong> Record your BP readings and get'em automatically classified (Normal, Elevated, Stage 1, Stage 2, Hypertensive Crisis) following American Heart Association guidelines.</li>
+<li><strong>Blood Glucose Tracking:</strong> Log fasting, pre-meal, post-meal, bedtime, and random glucose readings with per-category clinical classification.</li>
+<li><strong>Pulse Tracking:</strong> Record your resting pulse in beats per minute alongside each blood pressure reading to see how your heart rate trends over time.</li>
+<li><strong>Measurement Score:</strong> Track logging consistency per metric (BP, Pulse, and each glucose category).</li>
+<li><strong>Contextual Tags:</strong> Optionally attach tags (medication, meals, post-activity) to each reading.</li>
+<li><strong>Visual Analytics:</strong> Track health trends across custom date ranges with individual or combined charts.</li>
+<li><strong>Doctor-Ready Exports:</strong> Generate formatted PDF summary reports or CSV data sheets.</li>
+<li><strong>Medical Records:</strong> Store prescriptions and test reports as PDFs in your Drive and the Administrator's Drive.</li>
+<li><strong>Multi-User Support:</strong> Up to 5 distinct accounts per device.</li>
+<li><strong>App Security:</strong> Custom PIN or compatible biometric authentication.</li>
+<li><strong>Backup Codes:</strong> Generate, store, and download a secure backup code for account recovery.</li>
+<li><strong>Change Logs:</strong> Download detailed logs of all account changes.</li>
+<li><strong>Automated Emails:</strong> The app sends emails regularly for actions such as logins, password changes, backups, exports, and account updates to keep you informed. To review every email and its trigger, see the <a href="#" id="openEmailTriggersInline" class="jeweller-link"><strong>Email Templates and Triggers</strong></a> page.</li>
+</ul>
+<h4 class="about-section-heading">Clinical &amp; Metric Classifications</h4>
+<h5 class="about-sub-heading">Blood Pressure (BP) Classification <span class="orange-text">(AHA Standards)</span></h5>
+<table class="about-table">
+<thead>
+<tr><th>Category</th><th>Systolic (mmHg)</th><th></th><th>Diastolic (mmHg)</th></tr>
+</thead>
+<tbody>
+<tr class="ref-yellow"><td><strong>Hypotension</strong></td><td>&lt; 90</td><td>AND</td><td>&lt; 60</td></tr>
+<tr class="ref-green"><td><strong>Normal</strong></td><td>90 – 120</td><td>AND</td><td>60 – 80</td></tr>
+<tr class="ref-orange"><td><strong>Elevated</strong></td><td>121 – 129</td><td>AND</td><td>&lt; 80</td></tr>
+<tr class="ref-palered"><td><strong>Stage 1 Hypertension</strong></td><td>130 – 139</td><td>OR</td><td>80 – 89</td></tr>
+<tr class="ref-red"><td><strong>Stage 2 Hypertension</strong></td><td>140 – 180</td><td>OR</td><td>90 – 120</td></tr>
+<tr class="ref-purple"><td><strong>Hypertensive Crisis</strong></td><td>&gt; 180</td><td>AND/OR</td><td>&gt; 120</td></tr>
+</tbody>
+</table>
+<h5 class="about-sub-heading">Pulse Rate Classification</h5>
+<table class="about-table">
+<thead>
+<tr><th>Category</th><th>Range (BPM)</th></tr>
+</thead>
+<tbody>
+<tr class="ref-yellow"><td><strong>Severe Bradycardia</strong></td><td>&lt; 40 BPM</td></tr>
+<tr class="ref-orange"><td><strong>Low (Bradycardia)</strong></td><td>40 – 59 BPM</td></tr>
+<tr class="ref-green"><td><strong>Normal</strong></td><td>60 – 100 BPM</td></tr>
+<tr class="ref-palered"><td><strong>Mild Tachycardia</strong></td><td>101 – 120 BPM</td></tr>
+<tr class="ref-red"><td><strong>Severe Tachycardia</strong></td><td>&gt; 120 BPM</td></tr>
+</tbody>
+</table>
+<h5 class="about-sub-heading">Blood Glucose Classification</h5>
+<div class="glucose-reference">
+  <h5 class="about-sub-heading">Fasting</h5>
+  <table class="about-table">
+    <thead>
+      <tr><th>Range (mg/dL)</th><th>Range (mmol/L)</th><th>Classification</th></tr>
+    </thead>
+    <tbody>
+      <tr class="ref-yellow"><td>&lt; 70</td><td>&lt; 3.89</td><td>Hypoglycemia (Low)</td></tr>
+      <tr class="ref-green"><td>70 to &lt; 100</td><td>3.89 to &lt; 5.56</td><td>Normoglycemia (Normal)</td></tr>
+      <tr class="ref-palered"><td>100 to &lt; 126</td><td>5.56 to &lt; 7.00</td><td>Prediabetes</td></tr></tr>
+      <tr class="ref-red"><td>≥ 126</td><td>≥ 7.00</td><td>Diabetes Range</td></tr>
+    </tbody>
+  </table>
 
-    <h4 class="about-section-heading">Key Features</h4>
-    <ul class="about-feature-list">
-      <li><strong>AHA Color-Coded Guidance:</strong> Readings are automatically classified (Normal, Elevated, Stage 1, Stage 2, Hypertensive Crisis) following American Heart Association guidelines.</li>
-      <li><strong>Measurement Score:</strong> Track consistency using a 3-readings-per-day target (Morning, Afternoon, Evening) to measure log completeness over time.</li>
-      <li><strong>Contextual Tags:</strong> Optionally attach tags (medications taken, meals, post-activity) to each reading for deeper personal insights.</li>
-      <li><strong>Visual Analytics:</strong> Track health trends across custom date ranges with interactive, combined, or individual line graphs for BP and Pulse.</li>
-      <li><strong>Doctor-Ready Exports:</strong> Generate formatted PDF summary reports or CSV data sheets to print or share directly with your physician.</li>
-      <li><strong>100% Offline &amp; Private:</strong> Primary health logs stay strictly on your local device. Cloud backup options rely on secure transfers to the app's designated cloud storage facility.</li>
-      <li><strong>Multi-User Support:</strong> Supports up to 5 distinct user accounts on a single device.</li>
-      <li><strong>App Security:</strong> Secure your account with a custom PIN or compatible Fingerprint authentication.</li>
-    </ul>
+  <h5 class="about-sub-heading">Pre Meal</h5>
+  <table class="about-table">
+    <thead>
+      <tr><th>Range (mg/dL)</th><th>Range (mmol/L)</th><th>Classification</th></tr>
+    </thead>
+    <tbody>
+      <tr class="ref-yellow"><td>&lt; 70</td><td>&lt; 3.89</td><td>Hypoglycemia (Low)</td></tr>
+      <tr class="ref-orange"><td>70 to &lt; 80</td><td>3.89 to &lt; 4.44</td><td>Below Target</td></tr></tr>
+      <tr class="ref-green"><td>80 – 130</td><td>4.44 – 7.22</td><td>Target Range</td></tr>
+      <tr class="ref-palered"><td>&gt; 130 to &lt; 181</td><td>&gt; 7.22 to &lt; 10.06</td><td>Above Target</td></tr></tr>
+      <tr class="ref-purple"><td>≥ 181</td><td>≥ 10.06</td><td>Hyperglycemia (High)</td></tr>
+    </tbody>
+  </table>
 
-    <h4 class="about-section-heading">Clinical &amp; Metric Classifications</h4>
+  <h5 class="about-sub-heading">Post Meal</h5>
+  <table class="about-table">
+    <thead>
+      <tr><th>Range (mg/dL)</th><th>Range (mmol/L)</th><th>Classification</th></tr>
+    </thead>
+    <tbody>
+      <tr class="ref-yellow"><td>&lt; 70</td><td>&lt; 3.89</td><td>Hypoglycemia (Low)</td></tr>
+      <tr class="ref-green"><td>70 to &lt; 140</td><td>3.89 to &lt; 7.78</td><td>Normoglycemia (Normal)</td></tr>
+      <tr class="ref-palered"><td>140 to &lt; 200</td><td>7.78 to &lt; 11.11</td><td>Prediabetes</td></tr></tr>
+      <tr class="ref-red"><td>≥ 200</td><td>≥ 11.11</td><td>Diabetes Range</td></tr>
+    </tbody>
+  </table>
 
-    <h5 class="about-sub-heading">Blood Pressure (BP) Classification <span class="orange-text">(AHA Standards)</span></h5>
-    <table class="about-table">
-      <thead>
-        <tr><th>Category</th><th>Systolic (mmHg)</th><th></th><th>Diastolic (mmHg)</th></tr>
-      </thead>
-      <tbody>
-        <tr class="ref-low"><td><strong>Hypotension</strong></td><td>&lt; 90</td><td>AND</td><td>&lt; 60</td></tr>
-        <tr class="ref-normal"><td><strong>Normal</strong></td><td>90 – 120</td><td>AND</td><td>60 – 80</td></tr>
-        <tr class="ref-elevated"><td><strong>Elevated</strong></td><td>121 – 129</td><td>AND</td><td>&lt; 80</td></tr>
-        <tr class="ref-stage1"><td><strong>Stage 1 Hypertension</strong></td><td>130 – 139</td><td>OR</td><td>80 – 89</td></tr>
-        <tr class="ref-stage2"><td><strong>Stage 2 Hypertension</strong></td><td>140 – 180</td><td>OR</td><td>90 – 120</td></tr>
-        <tr class="ref-crisis"><td><strong>Hypertensive Crisis</strong></td><td>&gt; 180</td><td>AND/OR</td><td>&gt; 120</td></tr>
-      </tbody>
-    </table>
+  <h5 class="about-sub-heading">Bedtime</h5>
+  <table class="about-table">
+    <thead>
+      <tr><th>Range (mg/dL)</th><th>Range (mmol/L)</th><th>Classification</th></tr>
+    </thead>
+    <tbody>
+      <tr class="ref-yellow"><td>&lt; 70</td><td>&lt; 3.89</td><td>Hypoglycemia (Low)</td></tr>
+      <tr class="ref-green"><td>70 to &lt; 140</td><td>3.89 to &lt; 7.78</td><td>Target Range</td></tr>
+      <tr class="ref-purple"><td>≥ 140</td><td>≥ 7.78</td><td>Hyperglycemia (High)</td></tr>
+    </tbody>
+  </table>
 
-    <h5 class="about-sub-heading">Pulse Rate Classification</h5>
-    <table class="about-table">
-      <thead>
-        <tr><th>Category</th><th>Range (BPM)</th></tr>
-      </thead>
-      <tbody>
-        <tr class="ref-crisis"><td><strong>Severe Bradycardia</strong></td><td>&lt; 40 BPM</td></tr>
-        <tr class="ref-elevated"><td><strong>Low (Bradycardia)</strong></td><td>40 – 59 BPM</td></tr>
-        <tr class="ref-normal"><td><strong>Normal</strong></td><td>60 – 100 BPM</td></tr>
-        <tr class="ref-stage1"><td><strong>Mild Tachycardia</strong></td><td>101 – 120 BPM</td></tr>
-        <tr class="ref-crisis"><td><strong>Severe Tachycardia</strong></td><td>&gt; 120 BPM</td></tr>
-      </tbody>
-    </table>
-
-    <h5 class="about-sub-heading">Log Consistency Grade</h5>
-    <table class="about-table">
-      <thead>
-        <tr><th>Grade</th><th>Consistency Score</th><th>Target Standard</th></tr>
-      </thead>
-      <tbody>
-        <tr class="ref-stage2"><td><strong>Awful</strong></td><td>≤ 39%</td><td>Needs significant tracking improvement</td></tr>
-        <tr class="ref-crisis"><td><strong>Poor</strong></td><td>40% – 59%</td><td>Inconsistent tracking</td></tr>
-        <tr class="ref-stage1"><td><strong>Below Average</strong></td><td>60% – 69%</td><td>Moderate log gaps</td></tr>
-        <tr class="ref-elevated"><td><strong>Average</strong></td><td>70% – 79%</td><td>Acceptable baseline tracking</td></tr>
-        <tr class="ref-normal"><td><strong>Good</strong></td><td>80% – 89%</td><td>Strong logging consistency</td></tr>
-        <tr class="ref-low"><td><strong>Excellent</strong></td><td>≥ 90%</td><td>Optimal diagnostic log quality</td></tr>
-      </tbody>
-    </table>
-
-    <h4 class="about-section-heading">User Manual &amp; Data Management</h4>
-    <ol class="about-ordered-list">
-      <li><strong>Logging Readings:</strong> For maximum accuracy, log up to 3 times daily (Morning, Afternoon, Evening). Complete all three daily entries to achieve a 100% Measurement Score.</li>
-      <li><strong>Backups &amp; Storage Options:</strong>
-        <ul>
-          <li><strong>Central Cloud Facility:</strong> Sync your encrypted data directly to the App's centralized cloud storage facility. Access to this service requires account authorization and developer permission.</li>
-          <li><strong>Local Storage (Recommended for Absolute Privacy):</strong> For maximum confidentiality and total control, generate local <code>.backup</code> files stored directly on your physical device or PC without using cloud services.</li>
-          <li><strong>Restoring Data:</strong> Access <em>Settings &gt; Import Backup File</em> anytime to restore from local <code>.backup</code> files or authorized cloud data sets.</li>
-        </ul>
-      </li>
-      <li><strong>Security Updates:</strong> To change your PIN or account password, the app sends a unique One-Time Password (OTP) to your verified email address to validate the request.</li>
-    </ol>
-
-    <h4 class="about-section-heading">Medical Disclaimer</h4>
-    <p class="about-disclaimer">
-      <strong>Notice:</strong> <em>My Health Journal</em> is strictly a personal data-logging tool and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider regarding any medical condition or clinical decisions. Never disregard professional medical advice based on information stored or displayed within this app.
-    </p>
-
-    <h4 class="about-section-heading">Terms of Service &amp; Privacy Policy</h4>
-    <p class="about-terms">
-      By using <strong>My Health Journal</strong>, you acknowledge and agree to the following terms:
-    </p>
-    <ul class="about-terms-list">
-      <li><strong>App-Managed Cloud Storage Facility:</strong> Cloud backups are uploaded directly to the application's centralized cloud storage infrastructure maintained by the developers. Personal user-owned cloud accounts cannot be integrated. Access to the app's cloud facility is provided at the sole discretion of the developers.</li>
-      <li><strong>Privacy Choice &amp; Recommendation:</strong> If you require maximum confidentiality or do not wish to store health records on centralized servers, <strong>you are explicitly advised to use Local Storage backups</strong> on your physical device instead of the cloud backup facility.</li>
-      <li><strong>Data Protection &amp; Security:</strong> While the developers implement industry-standard security protocols to keep stored data safe, no central facility is completely immune to external security events. The developers assume no liability for lost, stolen, corrupted, or deleted data.</li>
-      <li><strong>No Automatic Cloud Sync:</strong> Cloud backups are strictly user-initiated. You retain 100% responsibility for regularly generating local or cloud backups to protect your records.</li>
-      <li><strong>Accuracy of Data Entry:</strong> The user is solely responsible for entering accurate blood pressure, pulse, and contextual entries.</li>
-      <li><strong>Guideline Calculations:</strong> Color coding and classification categories are provided for general informational reference based on standard guidelines and do not constitute an official medical diagnosis.</li>
-      <li><strong>OTP &amp; Account Verification:</strong> Email verification via OTP is used exclusively for account security and identity authentication procedures.</li>
-      <li><strong>Multi-Account Boundaries:</strong> Up to 5 accounts can exist per device. Passcodes/PINs must be set per account to prevent unauthorized access by secondary device users.</li>
-      <li><strong>Application Provided "As Is":</strong> The app is provided on an "as-is" and "as-available" basis without warranties of any kind regarding continuous uptime or error-free operation.</li>
-      <li><strong>User Acceptance:</strong> Installing, importing data into, or regularly using this application constitutes full acceptance of these terms.</li>
-    </ul>
-
-    <h4 class="about-section-heading">Support &amp; Contact</h4>
-    <p class="about-contact">
-      <strong>Email:</strong> <a href="mailto:myhealthjournalapp@gmail.com">myhealthjournalapp@gmail.com</a><br>
-      <strong>WhatsApp:</strong> +92 311 0177836 | +92 303 5908359
-    </p>
-
-    <p class="about-version">
-      <strong>App Version:</strong> <span id="aboutVersion">v1.1.0</span>
-    </p>
-
-    <p class="about-maintainer">
-      <strong>Maintained &amp; Developed by:</strong><br>
-      <span class="orange-text">WhiteMoon Jeweller | Asad Jewellers, Okara</span>
-    </p>
-
-    <p class="about-copyright">
-      &copy; <span id="aboutYear"></span> <strong>My Health Journal</strong>. All rights reserved.
-    </p>
-  </div>
+  <h5 class="about-sub-heading">Random</h5>
+  <table class="about-table">
+    <thead>
+      <tr><th>Range (mg/dL)</th><th>Range (mmol/L)</th><th>Classification</th></tr>
+    </thead>
+    <tbody>
+      <tr class="ref-yellow"><td>&lt; 70</td><td>&lt; 3.89</td><td>Hypoglycemia (Low)</td></tr>
+      <tr class="ref-green"><td>70 to &lt; 140</td><td>3.89 to &lt; 7.78</td><td>Normoglycemia (Normal)</td></tr>
+      <tr class="ref-palered"><td>140 to &lt; 200</td><td>7.78 to &lt; 11.11</td><td>Prediabetes</td></tr></tr>
+      <tr class="ref-red"><td>≥ 200</td><td>≥ 11.11</td><td>Diabetes Range</td></tr>
+    </tbody>
+  </table>
 </div>
+<p>Conversion: mg/dL ÷ 18 = mmol/L | mmol/L × 18 = mg/dL</p>
+<p>Each category is summarized separately because target ranges differ. Averages, highs, and lows are never combined across categories.</p>
+<p>Reference values in mmol/L are rounded; classification uses the unrounded mg/dL value. Pre-meal 70–79 mg/dL is shown as Below Target.</p>
+<h5 class="about-sub-heading">Measurement Score</h5>
+<table class="about-table">
+<thead>
+<tr><th>Grade</th><th>Measurement Score</th><th>Target Standard</th></tr>
+</thead>
+<tbody>
+<tr class="ref-purple"><td><strong>Awful</strong></td><td>≤ 39%</td><td>Needs significant tracking improvement</td></tr>
+<tr class="ref-red"><td><strong>Poor</strong></td><td>40% – 59%</td><td>Inconsistent tracking</td></tr>
+<tr class="ref-palered"><td><strong>Below Average</strong></td><td>60% – 69%</td><td>Moderate log gaps</td></tr>
+<tr class="ref-yellow"><td><strong>Average</strong></td><td>70% – 79%</td><td>Acceptable baseline tracking</td></tr>
+<tr class="ref-orange"><td><strong>Good</strong></td><td>80% – 89%</td><td>Strong logging consistency</td></tr>
+<tr class="ref-green"><td><strong>Excellent</strong></td><td>≥ 90%</td><td>Optimal diagnostic log quality</td></tr>
+</tbody>
+</table>
+<h4 class="about-section-heading">User Manual &amp; Data Management</h4>
+<ol class="about-ordered-list">
+<li><strong>Logging Readings:</strong> For maximum accuracy, log up to 3 times daily (Morning, Afternoon, Evening).</li>
+<li><strong>Backups &amp; Storage:</strong>
+<ul>
+<li><strong>Central Cloud Facility:</strong> Sync your data to the App's centralized cloud storage facility.</li>
+<li><strong>Local Downloads:</strong> While your Google Drive is connected, downloaded exports are uploaded to both Drives. A failed upload is reported and can be retried.</li>
+<li><strong>Restoring Data:</strong> Access <em>Settings &gt; Import Backup File</em> to restore from local <code>.backup</code> files.</li>
+</ul>
+</li>
+<li><strong>Security Updates:</strong> To change your PIN or password, the app sends a One-Time Password (OTP) to your verified email.</li>
+</ol>
+<h4 class="about-section-heading">Medical Disclaimer</h4>
+<p class="about-disclaimer">
+<strong>My Health Journal</strong> is strictly a personal data-logging tool and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.
+    </p>
+<h4 class="about-section-heading">Terms of Service &amp; Privacy Policy</h4>
+<h5 class="about-sub-heading">Terms of Service</h5><p>This is a personal health logging tool, provided as available. Classifications are informational and do not replace medical advice. Review the full terms for account responsibilities and data management.</p><h5 class="about-sub-heading">Privacy Policy</h5><p>Your profile and readings are stored in Firebase and cached on your device. While your Google Drive is connected, requested exports and scheduled backups also send a mirror copy to the Administrator’s Drive. Read the full policy for details.</p><div class="about-legal-buttons"><button class="btn-outline" id="openPrivacyPolicyBtn">Privacy Policy</button><button class="btn-outline" id="openTermsOfServiceBtn">Terms of Service</button></div>
 
+<h4 class="about-section-heading">How to Navigate the App?</h4>
+<p><strong>My Health Journal</strong> is organised around five main screens, reachable from the bottom navigation bar — <strong>Home</strong>, <strong>History</strong>, <strong>Trends</strong>, <strong>Settings</strong>, and <strong>Profile</strong> — plus an orange <strong>+</strong> button in the centre of the bottom navigation for recording a new measurement, and an avatar menu in the top-right corner for account actions.</p>
+<ol class="about-ordered-list">
+<li>
+<strong>Home</strong>
+<p>Your daily dashboard. It shows three things at once:</p>
+<ul class="about-feature-list">
+<li><strong>Current Reading:</strong> three equal panels displaying the latest Blood Pressure, Pulse, and Blood Glucose values from today, each with its classification.</li>
+<li><strong>Today's Snapshot:</strong> per-metric summaries — Blood Pressure Today, Pulse Today, and Blood Glucose Today. The Glucose panel is further broken down into its five timing categories (Fasting, Pre Meal, Post Meal, Bedtime, Random), each with its own Average, Highest, Lowest, Count, and Measurement Score.</li>
+<li><strong>Today's Readings Table:</strong> a list of every reading you have logged today, in chronological order, with values and classification pills for each metric.</li>
+</ul>
+<p>Use the blue <strong>+ Record Measurement</strong> button, or the orange <strong>+</strong> button in the centre of the bottom navigation, to log a new reading at any time.</p></li>
+
+<li>
+<strong>History</strong>
+<p>A complete list of every reading you have ever logged.</p>
+<p><strong>Date filters:</strong> Today, 1 Day, 2 Days, 3 Days, 7 Days, 14 Days, 30 Days, 60 Days, 90 Days, 180 Days, or a Custom range (choose any From and To dates).</p>
+<p>Readings are displayed in a table with columns for Serial, Blood Pressure, Pulse, Blood Glucose, and Time. Each value has a small colour-coded classification label below it.</p>
+<p><strong>Actions:</strong></p>
+<ul class="about-feature-list">
+<li><strong>View:</strong> tap any row to open the full detail of that reading — date, time, window, position, arm, medication, meal, activity, intake, symptoms, and notes.</li>
+<li><strong>Edit:</strong> use the <strong>Edit Reading</strong> button inside the reading detail view to correct values, unit, category, or timestamp. Every edit is logged with a timestamp under <strong>Edit History</strong>.</li>
+<li><strong>Delete:</strong> use the <strong>Delete Reading</strong> button inside the reading detail view.</li>
+<li><strong>Bulk select:</strong> right-click (or long-press on mobile) any reading to reveal checkboxes, then Export or Delete multiple readings at once.</li>
+</ul>
+<p><strong>About editing:</strong> readings can be edited after saving. Tap <strong>Edit Reading</strong> inside the reading detail view to correct values, unit, category, or timestamp. Every edit is logged with a timestamp in the reading's <strong>Edit History</strong>.</p>
+</li>
+
+<li>
+<strong>Trends</strong>
+<p>Visual analysis of your readings over time.</p>
+<p><strong>Date filters:</strong> same options as History — Today through 180 Days, or a Custom range.</p>
+<p><strong>Summary statistics:</strong> for the selected range, you see Average, Highest, Lowest, Count, Measurement Score, and Average Classification for Blood Pressure, Pulse, and each glucose category.</p>
+<p><strong>Chart options:</strong></p>
+<ul class="about-feature-list">
+<li><strong>Blood Pressure:</strong> systolic and diastolic lines over time.</li>
+<li><strong>Pulse:</strong> pulse rate line over time.</li>
+<li><strong>Blood Glucose:</strong> choose a single category (Fasting, Pre Meal, Post Meal, Bedtime, Random) or view all categories together. Each category has its own colour and its own target band shown as a shaded strip behind the line.</li>
+<li><strong>Combined:</strong> stacked panels for Blood Pressure, Pulse, and Blood Glucose all aligned on the same time axis, so you can see how the three metrics move together.</li>
+</ul>
+<p>Below the charts is a table of every reading in the selected range, with columns for Serial, Blood Pressure, Pulse, Blood Glucose, Time, and Average Classification.</p>
+</li>
+
+<li>
+<strong>Settings</strong>
+<p>Configuration for backup, exports, emails, security, and account actions. Opens from either the <strong>Settings</strong> button in the bottom navigation, or the avatar menu. It has five sections:</p>
+<ol class="about-ordered-list">
+<li><strong>Account Management</strong> — View Profile, Security Settings (PIN, password, biometric, backup codes), and Privacy &amp; Data (clear local data, clear journal, delete account).</li>
+<li><strong>Backup &amp; Exports</strong> — Connect Your Google Drive, Automatic Google Drive Backup, Backup to Google Drive, Download Backup File, Export PDF Report, Export CSV Spreadsheet, and Import Backup File.</li>
+<li><strong>Medical Records</strong> — Add New Medical Record, Backup Medical Records to Google Drive, and View Medical Records.</li>
+<li><strong>Emails</strong> — Summary Emails (Optional), Email Delivery Logs, and Download Change Logs.</li>
+<li><strong>About</strong> — full information about the app.</li>
+</ol>
+</li>
+
+<li>
+<strong>Profile</strong>
+<p>Your personal details and account summary. Read-only.</p>
+<p><strong>What it shows:</strong> your avatar, full name, primary email (with a verification badge), recovery email (with a verification badge), phone, date of birth, age, gender, User ID (with a copy button), address, blood group, emergency contact, and general notes.</p>
+<p>To edit your profile or manage your account, use the avatar menu in the top-right corner, or the Settings button in the bottom navigation.</p>
+</li>
+
+<li>
+<strong>Medical Records</strong>
+<p>Store prescriptions, test reports, and other medical documents as PDFs. Every file is uploaded to <strong>your own Google Drive</strong> under <em>/My Health Journal/Medical Records/</em> and a mirror copy is saved in the <strong>Administrator's Drive</strong>. The records survive across devices and sessions, and are the safest place to keep your clinical paperwork.</p>
+<p><strong>Actions:</strong> add a new record (PDF only, up to 10 MB), back up the full collection to Drive, and view or open any existing record directly from the list.</p>
+</li>
+
+<li>
+<strong>Avatar Menu</strong>
+<p>The circular avatar in the top-right corner opens a quick menu with:</p>
+<ul class="about-feature-list">
+<li><strong>Account Management</strong> — opens Settings → Account Management.</li>
+<li><strong>Data Management</strong> — opens Settings → Backup &amp; Exports.</li>
+<li><strong>Export PDF</strong> — generates a PDF report of your readings.</li>
+<li><strong>Medical Records</strong> — opens the Medical Records module.</li>
+<li><strong>Security</strong> — opens Security Settings directly.</li>
+<li><strong>Settings</strong> — opens the full Settings panel.</li>
+<li><strong>Logout</strong> — signs you out of the current device.</li>
+</ul>
+<p>You can also reach Settings directly from the <strong>Settings</strong> button in the bottom navigation bar.</p>
+</li>
+
+<li>
+<strong>Multi-Device Sync</strong>
+<p>You can sign in to <strong>My Health Journal</strong> on multiple devices with the same account. Every reading, profile change, and setting is synced to a secure cloud database (Firebase Firestore) in real time.</p>
+<p>When you add, update, or delete a reading on one device, the change appears on all other signed-in devices within seconds — without needing to refresh.</p>
+<p><strong>What syncs automatically:</strong></p>
+<ul class="about-feature-list">
+<li>All blood pressure, pulse, and blood glucose readings</li>
+<li>Your profile (name, phone, address, and other fields)</li>
+<li>App settings (backup schedule, email preferences, security options)</li>
+<li>Medical records metadata (adding or removing a record updates every device)</li>
+<li>Email delivery logs</li>
+</ul>
+<p><strong>What is per-device only:</strong></p>
+<ul class="about-feature-list">
+<li>Your Google Drive connection. Tokens are stored in the browser's local storage and are tied to the specific browser session. If you connect Drive on one device, you need to connect it separately on each additional device you sign in to. Once connected, the connection persists on that device until you manually disconnect.</li>
+</ul>
+<p><strong>Offline use:</strong> If a device loses internet, changes are queued locally and pushed to the cloud automatically when the connection returns. Nothing is lost.</p>
+</li>
+</ol>
+
+<h4 class="about-section-heading">How to Change Your Preferences in the App?</h4>
+<p>Every configurable setting in the app, and exactly where to find it.</p>
+<table class="about-table">
+<thead>
+<tr><th>What You Want to Change</th><th>Where to Do It</th></tr>
+</thead>
+<tbody>
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Profile</td></tr>
+<tr><td>Full name, phone, date of birth, gender, address, blood group, emergency contact, general notes</td><td>Avatar menu (top-right) → Account Management → View Profile</td></tr>
+<tr><td>Primary email</td><td>Avatar menu (top-right) → Account Management → View Profile → Primary Email field</td></tr>
+<tr><td>Recovery email</td><td>Avatar menu (top-right) → Account Management → View Profile → Recovery Email field</td></tr>
+<tr><td>Profile photo or avatar</td><td>Profile screen → tap the avatar to reveal Upload Photo / Change Avatar buttons</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Security</td></tr>
+<tr><td>Enable or disable the app PIN lock</td><td>Settings → Account Management → Security Settings → Enable PIN</td></tr>
+<tr><td>Enable or disable biometric (fingerprint) verification</td><td>Settings → Account Management → Security Settings → Enable Biometric Verification</td></tr>
+<tr><td>Change your account password</td><td>Settings → Account Management → Security Settings → New Password</td></tr>
+<tr><td>Change your 5-digit PIN</td><td>Settings → Account Management → Security Settings → New PIN</td></tr>
+<tr><td>Generate a new backup code</td><td>Settings → Account Management → Security Settings → Backup Codes → Generate New Code</td></tr>
+<tr><td>View your current backup code</td><td>Settings → Account Management → Security Settings → Backup Codes → View Backup Codes</td></tr>
+<tr><td>Download your backup code</td><td>Settings → Account Management → Security Settings → Backup Codes → Download Code</td></tr>
+<tr><td>Verify your primary email</td><td>Profile screen → tap the badge next to Primary Email</td></tr>
+<tr><td>Verify your recovery email</td><td>Profile screen → tap the badge next to Recovery Email</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Google Drive &amp; Backups</td></tr>
+<tr><td>Connect your Google Drive</td><td>Settings → Backup &amp; Exports → Connect Your Google Drive → Connect Google Drive</td></tr>
+<tr><td>Disconnect your Google Drive</td><td>Settings → Backup &amp; Exports → Connect Your Google Drive → Disconnect</td></tr>
+<tr><td>See which Google account is connected</td><td>Settings → Backup &amp; Exports → Connect Your Google Drive (status line shows the connected email)</td></tr>
+<tr><td>Turn automatic Drive backup on or off</td><td>Settings → Backup &amp; Exports → Automatic Google Drive Backup → Enable Automatic Backup checkbox</td></tr>
+<tr><td>Change how often automatic backup runs</td><td>Settings → Backup &amp; Exports → Automatic Google Drive Backup → Backup Interval dropdown (Daily, 3, 7, 14, 30, 60, 90, 180 days, or Custom)</td></tr>
+<tr><td>Save the automatic backup schedule</td><td>Settings → Backup &amp; Exports → Automatic Google Drive Backup → Save Schedule</td></tr>
+<tr><td>Run a backup immediately</td><td>Settings → Backup &amp; Exports → Backup to Google Drive → Backup Now</td></tr>
+<tr><td>Download a backup file to your device</td><td>Settings → Backup &amp; Exports → Download Backup File → Download</td></tr>
+<tr><td>Export readings as PDF</td><td>Settings → Backup &amp; Exports → Export PDF Report → Export</td></tr>
+<tr><td>Export readings as CSV</td><td>Settings → Backup &amp; Exports → Export CSV Spreadsheet → Export</td></tr>
+<tr><td>Import a backup file</td><td>Settings → Backup &amp; Exports → Import Backup File → Import</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Medical Records</td></tr>
+<tr><td>Add a new medical record (PDF)</td><td>Settings → Medical Records → Add New Medical Record</td></tr>
+<tr><td>Back up all your medical records to Google Drive</td><td>Settings → Medical Records → Backup Medical Records to Google Drive</td></tr>
+<tr><td>View or open your medical records</td><td>Settings → Medical Records → View Medical Records</td></tr>
+<tr><td>Delete a medical record</td><td>Settings → Medical Records → View Medical Records → Delete button on the record</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Emails</td></tr>
+<tr><td>Turn the daily reading reminder on or off</td><td>Settings → Emails → Summary Emails (Optional) → Daily Reading Reminder checkbox</td></tr>
+<tr><td>Turn the weekly summary on or off</td><td>Settings → Emails → Summary Emails (Optional) → Weekly Summary checkbox</td></tr>
+<tr><td>Turn the fortnightly summary on or off</td><td>Settings → Emails → Summary Emails (Optional) → Fortnightly Summary checkbox</td></tr>
+<tr><td>Turn the monthly summary on or off</td><td>Settings → Emails → Summary Emails (Optional) → Monthly Summary checkbox</td></tr>
+<tr><td>Save your email preferences</td><td>Settings → Emails → Summary Emails (Optional) → Save Email Preferences</td></tr>
+<tr><td>View email delivery history</td><td>Settings → Emails → Email Delivery Logs → Open</td></tr>
+<tr><td>Download change logs</td><td>Settings → Emails → Download Change Logs → Download</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Privacy &amp; Data</td></tr>
+<tr><td>Clear this account from this device only</td><td>Settings → Account Management → Privacy &amp; Data → Clear This Account From This Device</td></tr>
+<tr><td>Delete all readings but keep the account</td><td>Settings → Account Management → Privacy &amp; Data → Clear Journal, Keep Account</td></tr>
+<tr><td>Permanently delete your account and all data</td><td>Settings → Account Management → Privacy &amp; Data → Delete Account &amp; Data</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Readings</td></tr>
+<tr><td>Add a new reading</td><td>Home → "+ Record Measurement", or the orange <strong>+</strong> button in the centre of the bottom navigation</td></tr>
+<tr><td>Edit an existing reading</td><td>History → tap a row → Edit Reading</td></tr>
+<tr><td>Delete a reading</td><td>History → tap a row → Delete Reading</td></tr>
+<tr><td>Bulk delete readings</td><td>History → right-click (or long-press) a row → select checkboxes → Delete</td></tr>
+<tr><td>Filter readings by date</td><td>History → date filter pills (Today, 1D, 2D, 3D, 7D, 14D, 30D, 60D, 90D, 180D, Custom)</td></tr>
+<tr><td>View trend charts</td><td>Trends → choose a chart option (Blood Pressure, Pulse, Blood Glucose, Combined)</td></tr>
+
+<tr><td colspan="2" style="background:#EDF2F7;font-weight:700;">Account Access</td></tr>
+<tr><td>Log out of this device</td><td>Avatar menu (top-right) → Logout</td></tr>
+<tr><td>Switch to a different account on this device</td><td>Login screen → Switch Account</td></tr>
+<tr><td>Reset a forgotten password</td><td>Login screen → Forgot Your Credentials? → Reset Password</td></tr>
+<tr><td>Reset a forgotten PIN</td><td>Login screen → Change PIN → Reset PIN</td></tr>
+<tr><td>Recover your account using a backup code</td><td>Login screen → Forgot Your Credentials? → Use Backup Code Instead</td></tr>
+</tbody>
+</table>
+
+<h4 class="about-section-heading">Get the App</h4><p>Add <strong>My Health Journal</strong> to your phone or desktop for quick access. Open either address in your browser and choose "Add to Home Screen" or "Install App."</p>
+<ul class="about-download-list">
+  <li><a href="https://myhealthjournalapp.pages.dev" target="_blank" rel="noopener" class="jeweller-link">myhealthjournalapp.pages.dev</a></li>
+  <li><a href="https://my-health-journal-app.vercel.app" target="_blank" rel="noopener" class="jeweller-link">my-health-journal-app.vercel.app</a></li>
+  <li><a href="https://myhealthjournalapp.netlify.app" target="_blank" rel="noopener" class="jeweller-link">myhealthjournalapp.netlify.app</a></li>
+</ul>
+<h4 class="about-section-heading">Support &amp; Contact</h4>
+<p class="about-contact">
+<p class="about-contact">
+  <strong>Email:</strong> <a href="mailto:myhealthjournalapp@gmail.com" class="contact-link">myhealthjournalapp@gmail.com</a>
+  <strong>WhatsApp:</strong> <a href="https://wa.me/923110177836" class="contact-link">+92 311 0177836</a><br>
+</p>
+</p>
+<p class="about-version"><span style="font-weight:600;">App Version:</span> <strong id="aboutVersion">v1.0.0</strong></p>
+<p class="about-maintainer">
+<strong>Maintained &amp; Developed By:</strong><br/>
+<a class="jeweller-link orange-text" href="https://share.google/bWfGrw0Q622ZebL1s" rel="noopener" target="_blank">WhiteMoon Jeweller</a>
+      |
+      <a class="jeweller-link orange-text" href="https://share.google/jHB4SvgAeMeM0FXPk" rel="noopener" target="_blank">Asad Jewellers, Okara</a>
+</p>
+<p class="about-copyright"> <span id="aboutYear"></span> <strong>My Health Journal</strong>. All rights reserved.</p>
+</div>
+</div>
 <!-- Google Drive Setup Modal -->
 <div class="modal-overlay" id="gdriveModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeGdriveModal" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">Google Drive Setup</h3>
-    <p class="gdrive-info">Connect your Google Drive to backup and restore your journal data.</p>
-
-    <div class="input-group">
-      <label>Google Apps Script Deployment URL</label>
-      <input type="url" id="gdriveScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbzx9iQMlMAtJN74z1E8f6H6vk3GCdMHp60wfsXLPE8p7bfUeNFIMeOi8pcehVoIeVy2dQ/exec" />
-    <div class="input-group">
-      <label>Folder ID</label>
-      <input type="text" id="gdriveFolderId" placeholder="Folder ID" value="1Yb3oXj9CAQH_aXqQo26g0x71rdXMhV8t" />
-    </div>
-
-    <button class="btn-primary" id="gdriveConnectBtn">Connect to Google Drive</button>
-  </div>
+<div class="modal-sheet">
+<button aria-label="Close" class="modal-close" id="closeGdriveModal">✕</button>
+<div class="modal-handle"></div>
+<h3 class="modal-title">Connect Google Drive</h3>
+<p class="gdrive-info">Connect your Google Drive to enable automatic backups. Both your Drive and the Administrator's Drive will receive a copy.</p>
+<p>The connected Google Drive is <strong>your own</strong> Drive. The Administrator receives a mirror copy.</p>
+<button class="btn-primary" id="gdriveConnectBtn">Connect Google Drive</button>
 </div>
-
-<!-- EmailJS Config Modal -->
-<div class="modal-overlay" id="emailjsModal">
-  <div class="modal-sheet">
-    <button class="modal-close" id="closeEmailjsModal" aria-label="Close">✕</button>
-    <div class="modal-handle"></div>
-    <h3 class="modal-title">EmailJS Configuration</h3>
-
-    <div class="input-group">
-      <label>Service ID</label>
-      <input type="text" id="emailjsServiceId" value="service_v9ftkd3" />
-    </div>
-    <div class="input-group">
-      <label>Template ID</label>
-      <input type="text" id="emailjsTemplateId" value="template_2uke34t" />
-    </div>
-    <div class="input-group">
-      <label>Public Key</label>
-      <input type="text" id="emailjsPublicKey" value="ty3zPrAyx5SIEI836" />
-    </div>
-
-    <button class="btn-primary" id="saveEmailjsBtn">Save Configuration</button>
-  </div>
 </div>
-
-<!-- Firebase SDK (NEW - Add this first) -->
+<!-- ===== SCRIPTS ===== -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore-compat.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check-compat.js"></script>
 <!-- EmailJS and other libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
-
-<!-- Your Firebase Config -->
+<!-- Google API Client Library -->
+<script src="https://accounts.google.com/gsi/client"></script>
+<!-- Config + templates -->
+<script src="runtime-config.js"></script>
+<script src="email-templates.js"></script>
+<script src="google-api.js"></script>
+<!-- Firebase Config -->
 <script>
-  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAUO4TJ8IlY46omW8eoQNyuClZHPUormdw",
     authDomain: "my-health-journal-application.firebaseapp.com",
@@ -1145,27 +1548,20 @@
     messagingSenderId: "626039155068",
     appId: "1:626039155068:web:85b7c7df69cb109d3b5cf9"
   };
-
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
 </script>
-
-
-<!-- Firebase Helpers (NEW - ADD THIS LINE) -->
-<script src="firebase.js"></script>
-
-<!-- Your App Scripts -->
+<!-- App Scripts -->
 <script src="app.js"></script>
 <script src="enhancements.js"></script>
-
+<script src="reliability.js"></script>
+<script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
       .then(() => console.log('SW registered'))
       .catch(() => console.log('SW registration failed'));
   }
 </script>
-
 </body>
 </html>

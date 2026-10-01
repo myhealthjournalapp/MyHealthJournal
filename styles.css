@@ -18,6 +18,13 @@
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Classification palette */
+  --cl-yellow:   #FEFCBF;
+  --cl-orange:   #FBD38D;
+  --cl-green:    #C6F6D5;
+   --cl-palered: #FBB6B6;
+  --cl-red:      #FC8181;
+  --cl-purple:   #D6BCFA;
 }
 
 body {
@@ -548,56 +555,21 @@ select[multiple] option:checked {
 }
 
 /* ===== STATUS COLORS ===== */
-.status-normal {
-  background: #C6F6D5;
-  color: #276749;
-}
-.status-elevated {
-  background: #FEFCBF;
-  color: #975A16;
-}
-.status-stage1 {
-  background: #FED7D7;
-  color: #9B2C2C;
-}
-.status-stage2 {
-  background: #D6BCFA;
-  color: #553C9A;
-}
-.status-crisis {
-  background: #FC8181;
-  color: #742A2A;
-}
-.status-hypotension {
-  background: #BEE3F8;
-  color: #2A4365;
-}
-.status-orthostatic {
-  background: #2C5282;
-  color: #FFFFFF;
-}
+/* BP status */
+
+.status-hypotension { background: var(--cl-yellow);  color: #975A16; }
+.status-normal      { background: var(--cl-green);   color: #276749; }
+.status-elevated    { background: var(--cl-orange);  color: #975A16; }
+.status-stage1      { background: var(--cl-palered); color: #9B2C2C; }
+.status-stage2      { background: var(--cl-red);     color: #742A2A; }
+.status-crisis      { background: var(--cl-purple);  color: #553C9A; }
 
 /* Pulse status */
-.pulse-normal {
-  background: #C6F6D5;
-  color: #276749;
-}
-.pulse-tachy-mild {
-  background: #D6BCFA;
-  color: #553C9A;
-}
-.pulse-tachy-severe {
-  background: #FC8181;
-  color: #742A2A;
-}
-.pulse-brady {
-  background: #FEFCBF;
-  color: #975A16;
-}
-.pulse-brady-severe {
-  background: #FED7D7;
-  color: #9B2C2C;
-}
+.pulse-brady-severe { background: var(--cl-yellow);  color: #975A16; }
+.pulse-brady        { background: var(--cl-orange);  color: #975A16; }
+.pulse-normal       { background: var(--cl-green);   color: #276749; }
+.pulse-tachy-mild   { background: var(--cl-palered); color: #9B2C2C; }
+.pulse-tachy-severe { background: var(--cl-red);     color: #742A2A; }
 
 /* ===== SNAPSHOT ===== */
 .snapshot-title {
@@ -662,30 +634,12 @@ select[multiple] option:checked {
 }
 
 /* ===== CONSISTENCY GRADE COLORS ===== */
-.consistency-grade-excellent {
-  background: #C6F6D5;
-  color: #276749;
-}
-.consistency-grade-good {
-  background: #E6FFFA;
-  color: #234E52;
-}
-.consistency-grade-average {
-  background: #FEFCBF;
-  color: #975A16;
-}
-.consistency-grade-below {
-  background: #FED7D7;
-  color: #9B2C2C;
-}
-.consistency-grade-poor {
-  background: #FC8181;
-  color: #742A2A;
-}
-.consistency-grade-awful {
-  background: #D6BCFA;
-  color: #553C9A;
-}
+.consistency-grade-awful     { background: var(--cl-purple);  color: #553C9A; }
+.consistency-grade-poor      { background: var(--cl-red);     color: #742A2A; }
+.consistency-grade-below     { background: var(--cl-palered); color: #9B2C2C; }
+.consistency-grade-average   { background: var(--cl-yellow);  color: #975A16; }
+.consistency-grade-good      { background: var(--cl-orange);  color: #975A16; }
+.consistency-grade-excellent { background: var(--cl-green);   color: #276749; }
 
 /* ===== DAILY WINDOWS ===== */
 .daily-windows {
@@ -722,8 +676,6 @@ select[multiple] option:checked {
 .window-status.pending {
   color: var(--gray);
 }
-/* Make window icons consistent with Font Awesome */
-/* Force morning icon to show */
 .window-icon i {
   font-size: 24px !important;
   color: var(--orange) !important;
@@ -1069,6 +1021,30 @@ select[multiple] option:checked {
   color: var(--navy);
 }
 
+/* ===== USER ID STYLES ===== */
+.user-id-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #F0F4F8;
+  border-radius: 6px;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #E0E8F0;
+}
+
 /* ===== MODALS ===== */
 .modal-overlay {
   position: fixed;
@@ -1321,8 +1297,8 @@ select[multiple] option:checked {
 .fab-btn {
   background: var(--orange);
   color: white;
-  width: 52px;
-  height: 52px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   font-size: 30px;
@@ -1438,10 +1414,10 @@ select[multiple] option:checked {
   }
 }
 
-/* ===== MY HEALTH JOURNAL v1.1 ===== */
+/* ===== MY HEALTH JOURNAL v1.0 ===== */
 [hidden] { display: none !important; }
 .brand-tagline {
-  font-weight: 600;  /* Semi-bold */
+  font-weight: 600;
   font-size: 16px;
   color: var(--charcoal);
 }
@@ -1548,14 +1524,8 @@ select[multiple] option:checked {
 .about-table tbody td {
   padding: 7px 10px;
   border: 1px solid #e3e7eb;
+  color: #101A31;
 }
-
-.about-table tbody tr.ref-low { background: #e5f1ff; }
-.about-table tbody tr.ref-normal { background: #e8f7ee; }
-.about-table tbody tr.ref-elevated { background: #fff8d8; }
-.about-table tbody tr.ref-stage1 { background: #fff0df; }
-.about-table tbody tr.ref-stage2 { background: #efe8ff; }
-.about-table tbody tr.ref-crisis { background: #ffe7e5; }
 
 .about-ordered-list {
   padding-left: 20px;
@@ -1682,6 +1652,38 @@ select[multiple] option:checked {
 .about-copyright strong {
   color: var(--navy);
 }
+.about-download-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 10px 0 16px;
+}
+
+.about-download-list li {
+  position: relative;
+  padding-left: 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.about-download-list li::before {
+  content: "◆";
+  color: var(--orange);
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  font-size: 10px;
+  line-height: 3;      /* same as li line-height */
+  width: 20px;
+  text-align: left;
+}
+
+.about-download-list li a,
+.about-download-list li span {
+  display: inline-block;
+  margin-left: 20px;
+  word-break: break-all;
+}
 
 /* ===== RESPONSIVE ABOUT ===== */
 @media (max-width: 400px) {
@@ -1700,9 +1702,7 @@ select[multiple] option:checked {
   }
 }
 
-/* ===== LOGIN SCREEN FIXES - FINAL ===== */
-
-/* Fix login sheet spacing */
+/* ===== LOGIN SCREEN FIXES ===== */
 .login-sheet .input-group,
 .pin-sheet .input-group {
   margin-bottom: 18px;
@@ -1719,7 +1719,6 @@ select[multiple] option:checked {
   right: 14px;
 }
 
-/* Fix quick auth buttons */
 .quick-auth {
   min-height: 80px;
   padding: 10px;
@@ -1729,7 +1728,6 @@ select[multiple] option:checked {
   margin-bottom: 10px;
 }
 
-/* Fix preauth options */
 .preauth-options {
   margin-top: 6px;
   gap: 8px;
@@ -1740,7 +1738,6 @@ select[multiple] option:checked {
   font-size: 11px;
 }
 
-/* Fix login card */
 #view-login .card {
   margin-bottom: 10px;
 }
@@ -1761,14 +1758,13 @@ select[multiple] option:checked {
   margin-top: 6px;
 }
 
-/* Fix login sheet height and padding */
 .login-sheet,
 .pin-sheet {
   max-height: 70vh;
   padding: 20px 24px 30px;
 }
 
-/* ===== FONT AWESOME ICON STYLES (for navigation) ===== */
+/* ===== FONT AWESOME ICON STYLES ===== */
 .nav-icon i {
   font-size: 22px;
   color: var(--gray);
@@ -1786,45 +1782,40 @@ select[multiple] option:checked {
   line-height: 1;
 }
 
-/* ===== FAB BUTTON STYLES ===== */
 .fab-btn {
   background: var(--orange);
   color: white;
-  width: 52px;
-  height: 52px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   border: none;
   box-shadow: 0 4px 16px rgba(255, 131, 8, 0.35);
   cursor: pointer;
   transition: var(--transition);
-  margin-top: -16px;
+  margin-top: -10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 52px;
-  font-size: 0; /* Hide any text */
+  min-width: 32px;
+  font-size: 0;
 }
 
 .fab-btn:active {
   transform: scale(0.9);
 }
 
-/* Font Awesome icon in FAB (if used) */
 .fab-btn i {
   color: white;
   font-size: 24px;
-  display: none; /* Hidden - using Material Icons instead */
+  display: none;
 }
 
-/* Material Icon in FAB */
 .fab-btn .material-icons {
   font-size: 30px !important;
   color: white !important;
   line-height: 1 !important;
 }
 
-/* ===== MATERIAL ICONS STYLES ===== */
-/* Window icons (Morning, Afternoon, Evening) */
 .window-icon.material-icons {
   font-size: 28px !important;
   color: var(--orange) !important;
@@ -1832,7 +1823,6 @@ select[multiple] option:checked {
   line-height: 1 !important;
 }
 
-/* Navigation icons (if using Material Icons in nav) */
 .nav-icon .material-icons {
   font-size: 24px;
   color: var(--gray);
@@ -1843,12 +1833,10 @@ select[multiple] option:checked {
   color: var(--orange);
 }
 
-/* ===== AVATAR ===== */
 .avatar .avatar-emoji {
   font-size: 18px;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 400px) {
   .nav-icon i {
     font-size: 18px;
@@ -1864,7 +1852,842 @@ select[multiple] option:checked {
   }
 }
 
-/* Optional: Different sizes for each */
 #wMorning .window-icon.material-icons { font-size: 28px; }
 #wAfternoon .window-icon.material-icons { font-size: 30px; }
 #wEvening .window-icon.material-icons { font-size: 26px; }
+
+/* ===== BACKUP CODES STYLES ===== */
+#backupCodesDisplay {
+  background: var(--muted) !important;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  word-break: break-all;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#backupCodesList div {
+  padding: 4px 8px;
+  background: var(--white);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  border-left: 3px solid var(--orange);
+  font-size: 12px;
+}
+
+/* ===== EMAIL VERIFICATION BADGE ===== */
+.verification-badge {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  padding: 0;
+  margin-left: 6px;
+  line-height: 1;
+}
+
+.verification-badge.verified,
+.verification-badge.unverified {
+  background: transparent;
+  padding: 0;
+}
+
+.verification-badge.unverified {
+  cursor: pointer;
+}
+
+.verification-badge.unverified:hover {
+  opacity: 0.75;
+}
+
+/* Verified starburst — solid orange with white tick */
+.verify-icon.verified {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  display: inline-grid;
+  place-items: center;
+  cursor: default;
+}
+
+.verify-icon.verified svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.verify-icon.verified svg path:first-of-type {
+  fill: #FF8308;
+  fill-opacity: 1;
+}
+
+.verify-icon.verified svg path:last-of-type {
+  stroke: #FFFFFF;
+  stroke-opacity: 1;
+}
+
+/* Unverified starburst — clearer orange outline with visible tick */
+.verify-icon:not(.verified) {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.verify-icon:not(.verified) svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* More visible orange tint so it doesn't look ghostly */
+.verify-icon:not(.verified) svg path:first-of-type {
+  fill: #FF8308;
+  fill-opacity: 0.25;
+  stroke: #FF8308;
+  stroke-width: 1;
+  stroke-dasharray: 1.2 1.2;
+}
+
+.verify-icon:not(.verified) svg path:last-of-type {
+  stroke: #FF8308;
+  stroke-opacity: 0.9;
+  stroke-width: 2;
+}
+
+/* ===== BACKUP CODES POPUP ===== */
+#backupCodesPopup {
+  background: var(--muted) !important;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-top: 12px;
+  animation: fadeSlide 0.3s ease;
+}
+
+#backupCodesList {
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  text-align: center;
+  word-break: break-all;
+  border: 2px solid var(--muted);
+  color: var(--navy);
+}
+
+#backupCodesList.backup-code-usable {
+  color: #10B981;
+  border-color: #10B981;
+}
+
+#backupCodesList.backup-code-used {
+  color: #EF4444;
+  border-color: #EF4444;
+}
+
+#backupCodesList.backup-code-empty {
+  color: var(--gray);
+  border-color: var(--muted);
+}
+
+/* ===== LOGS POPUP ===== */
+#logsPopupContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(16, 26, 49, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logsPopupContainer > div {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+#logsPopupContainer h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+#logsPopupContainer .logs-field {
+  accent-color: var(--orange);
+}
+
+/* ===== SETTINGS ITEMS ===== */
+.settings-item .btn-secondary {
+  width: auto;
+  padding: 6px 16px;
+  font-size: 12px;
+}
+
+/* ===== EDIT PROFILE ===== */
+#profileEdit {
+  display: none;
+  background: white;
+  border: 3px solid #FF8308;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+#profileEdit.active {
+  display: block !important;
+}
+
+#profileEdit .input-group {
+  display: block !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+}
+
+#profileEdit .input-group label {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #2D3748 !important;
+  margin-bottom: 6px !important;
+}
+
+#profileEdit .input-group input,
+#profileEdit .input-group select,
+#profileEdit .input-group textarea {
+  display: block !important;
+  width: 100% !important;
+  height: 45px !important;
+  min-height: 45px !important;
+  padding: 8px 12px !important;
+  border: 2px solid #E2E8F0 !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+  font-family: 'Inter', sans-serif !important;
+  background: white !important;
+  color: #1A202C !important;
+  box-sizing: border-box !important;
+}
+
+#profileEdit .input-group textarea {
+  height: 80px !important;
+  min-height: 80px !important;
+  resize: vertical !important;
+}
+
+#profileEdit .input-group input:focus,
+#profileEdit .input-group select:focus,
+#profileEdit .input-group textarea:focus {
+  border-color: #FF8308 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255, 131, 8, 0.2) !important;
+}
+
+#profileEdit .btn-primary {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+  padding: 12px !important;
+  background: #FF8308 !important;
+  color: #101A31 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+#profileEdit .modal-close {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 30px !important;
+  height: 30px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #EDF2F7 !important;
+  color: #2D3748 !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#profileEdit .modal-close:hover {
+  background: #E2E8F0 !important;
+}
+
+#profileView.hidden {
+  display: none !important;
+}
+/* Targeted profile, settings and dialog repairs. */
+#pUserId { color: var(--navy, #101A31); font: inherit; overflow-wrap: anywhere; }
+.user-id-container { min-width: 0; flex-wrap: wrap; }
+#profileEdit { margin-top: 0; padding-top: 52px; }
+.verification-badge { display:inline-flex; align-items:center; background:transparent; padding:0; }
+.verify-icon { width:25px; height:25px; border:2px dotted #FF8308; border-radius:50%; background:transparent; color:#101A31; cursor:pointer; display:inline-grid; place-items:center; font-size:16px; }
+.verify-icon.verified { background:#FF8308; border-style:solid; }
+.settings-help { font-size:13px; line-height:1.5; color:#4A5568; margin:8px 0; }
+.settings-item { gap:12px; flex-wrap:wrap; }
+.mhj-dialog { position:fixed; inset:0; z-index:10000; background:#101a3188; display:grid; place-items:center; padding:16px; }
+.mhj-dialog-panel { width:min(100%,540px); max-height:85dvh; overflow:auto; background:white; padding:24px; border-radius:16px; }
+.mhj-dialog-panel .dialog-top { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; }
+.mhj-dialog-panel select,.mhj-dialog-panel input[type=date] { width:100%; padding:10px; margin:6px 0 12px; }
+.mhj-dialog-panel .log-row { overflow-wrap:anywhere; padding:12px 0; border-bottom:1px solid #e2e8f0; }
+.mhj-dialog-panel button { margin-top:8px; }
+
+/* Independent metric summaries, glucose statuses, and aligned trend panels. */
+.glucose-low          { background: var(--cl-yellow);  color: #975A16; }  /* Hypoglycemia */
+.glucose-below-target { background: var(--cl-orange);  color: #975A16; }  /* Below Target */
+.glucose-normal       { background: var(--cl-green);   color: #276749; }  /* Normoglycemia / Target */
+.glucose-elevated     { background: var(--cl-palered); color: #9B2C2C; }  /* Prediabetes / Above Target */
+.glucose-high         { background: var(--cl-red);     color: #742A2A; }  /* Diabetes Range */
+.glucose-hyper        { background: var(--cl-purple);  color: #553C9A; }  /* Hyperglycemia (High) */
+.glucose-none         { background: #E5E7EB; color: #6B7280; }
+.glucose-badge { display:inline-block; padding:4px 8px; border-radius:8px; font-size:12px; line-height:1.5; }
+.glucose-badge small { font-size:0.9em; opacity:0.9; }
+.metric-panel { border-top:1px solid #E2E8F0; padding:14px 0; min-width:0; }
+.metric-panel h4 { margin:0 0 10px; }
+.metric-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:0; }
+.metric-grid dt,.metric-empty,#glucoseConversionHint { color:#64748B; font-size:12px; }
+.metric-grid dd { margin:3px 0; font-weight:600; font-size:13px; overflow-wrap:anywhere; }
+.glucose-summary { display:grid; gap:4px; padding:10px 0; border-bottom:1px solid #E2E8F0; }
+.glucose-summary small { color:#64748B; }
+.measurement-scores { font-size:12px; line-height:1.7; margin-bottom:12px; overflow-wrap:anywhere; }
+.glucose-reference { max-width:100%; overflow-x:auto; }
+.glucose-reference table { min-width:620px; }
+#bpChart { height:auto; display:block; min-width:0; }
+.chart-metric { width:100%; min-width:0; }
+.chart-metric canvas { display:block; max-width:100%; touch-action:pan-y; }
+.chart-metric h5 { margin:10px 0; }
+.chart-tooltip { min-height:2em; font-size:12px; overflow-wrap:anywhere; }
+.today-reading-item { flex-wrap:wrap; gap:6px; }
+.chart-options { flex-wrap:wrap; }
+#glucoseCategorySelector[hidden] { display:none; }
+
+#bpChart canvas { height:210px !important; max-height:none; }
+
+.glucose-secondary { color:#64748B; font-size:0.85em; font-weight:400; }
+/* ================================================================
+   APPEND-ONLY PATCH — My Health Journal v1.0 fixes
+   Do not delete anything above this line.
+   ================================================================ */
+
+/* ===== CURRENT READING CARD — three equal siblings ===== */
+.current-reading-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.current-panel {
+  background: var(--muted);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.current-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+.current-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  word-break: break-word;
+}
+.current-unit {
+  font-size: 11px;
+  color: var(--gray);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.current-unit small {
+  font-size: 0.9em;
+  color: #94A3B8;
+}
+.current-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  max-width: 100%;
+  text-align: center;
+  word-break: break-word;
+}
+.current-category {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+/* Override legacy reading-display so any leftover markup collapses gracefully */
+.reading-display { text-align: center; padding: 4px 0; }
+.reading-time {
+  font-size: 12px;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 12px;
+  margin-top: 4px;
+}
+
+/* ===== RESULT SCREEN — clean per-line scores ===== */
+.result-count {
+  font-size: 12px;
+  color: var(--charcoal);
+  margin: 4px 0 12px;
+  line-height: 1.7;
+  white-space: pre-line;
+  text-align: center;
+}
+.result-icon { color: var(--orange); }
+
+/* ===== SNAPSHOT PANELS — three stacked sections ===== */
+#homeMetricPanels { display: block; }
+.metric-panel {
+  border-top: 0px solid #E2E8F0;
+  padding: 14px 0;
+  min-width: 0;
+}
+.metric-panel:first-child { border-top: none; padding-top: 6px; }
+.metric-panel h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin: 0 0 10px;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.metric-grid div { min-width: 0; }
+.metric-grid dt {
+  color: #64748B;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+.metric-grid dd {
+  margin: 3px 0;
+  font-weight: 600;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  color: var(--navy);
+}
+.metric-empty { color: #64748B; font-size: 12px; margin: 4px 0; }
+
+/* Glucose subcategory rows inside Glucose panel */
+.glucose-summary {
+  display: grid;
+  gap: 3px;
+  padding: 10px 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+.glucose-summary:last-child { border-bottom: none; }
+.glucose-summary strong { font-size: 13px; font-weight: 600; color: var(--navy); }
+.glucose-summary span { font-size: 13px; font-weight: 600; color: var(--navy); }
+.glucose-summary small { color: #64748B; font-size: 11px; line-height: 1.5; }
+
+/* ===== GLUCOSE BADGES (idempotent — safe if already present) ===== */
+.glucose-low       { background: #EF4444; color: #fff; }
+.glucose-normal    { background: #10B981; color: #fff; }
+.glucose-elevated  { background: #F59E0B; color: #fff; }
+.glucose-high      { background: #B91C1C; color: #fff; }
+.glucose-none      { background: #E5E7EB; color: #6B7280; }
+.glucose-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.glucose-badge small { font-size: 0.9em; opacity: 0.92; }
+.glucose-secondary { color: #64748B; font-size: 0.85em; font-weight: 400; }
+
+/* ===== TODAY READINGS LIST — no heart emoji, consistent styling ===== */
+.today-reading-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--muted);
+  font-size: 13px;
+  gap: 6px;
+}
+.today-reading-item span { font-weight: 500; color: var(--navy); }
+.today-reading-item .reading-time-sm { color: var(--gray); font-size: 12px; }
+
+/* ===== HISTORY — equal-weight metrics ===== */
+.history-item .bp { font-weight: 600; font-size: 16px; color: var(--navy); }
+.history-item .meta { font-size: 11px; color: var(--gray); }
+.measurement-scores {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+  color: var(--charcoal);
+  padding: 8px 12px;
+  background: var(--muted);
+  border-radius: var(--radius-sm);
+}
+
+/* ===== CHART PANELS ===== */
+.chart-metric { width: 100%; min-width: 0; }
+.chart-metric canvas { display: block; max-width: 100%; touch-action: pan-y; }
+.chart-metric h5 {
+  margin: 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+.chart-tooltip {
+  min-height: 2em;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  color: var(--charcoal);
+}
+#glucoseCategorySelector[hidden] { display: none; }
+.glucose-reference { max-width: 100%; overflow-x: auto; }
+.glucose-reference table { min-width: 620px; }
+
+/* ===== DESTRUCTIVE BUTTONS — neutral grey + red text ===== */
+.danger-btn {
+  background: transparent !important;
+  border: 2px solid #E2E8F0 !important;
+  color: #B91C1C !important;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+}
+.danger-btn:hover { background: #FEF2F2 !important; }
+.danger-btn:active { transform: scale(0.96); }
+
+/* ===== AUTO BACKUP — two visible fields ===== */
+.backup-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.backup-schedule-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--navy);
+}
+.backup-schedule-row input[type="number"] {
+  width: 100px;
+  padding: 6px 10px;
+  border: 2px solid var(--muted);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+.backup-schedule-row input[type="number"]:disabled {
+  background: #F1F5F9;
+  color: #94A3B8;
+}
+
+/* ===== MEDICAL RECORDS ===== */
+.medical-record-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--muted);
+  flex-wrap: wrap;
+}
+.medical-record-item:last-child { border-bottom: none; }
+.medical-record-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.medical-record-info strong { font-size: 14px; color: var(--navy); word-break: break-word; }
+.medical-record-info small { font-size: 11px; color: var(--gray); }
+.medical-record-actions { display: flex; gap: 6px; }
+.medical-record-actions .btn-secondary { width: auto; padding: 6px 14px; font-size: 12px; }
+#medicalRecordsList { margin-top: 12px; }
+
+/* ===== JEWELLER LINKS ===== */
+.jeweller-link {
+  color: var(--orange);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--orange);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.jeweller-link:hover {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+}
+
+.contact-link {
+  color: var(--gray);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--gray);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.contact-link:hover {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+/* Splash-specific: keep flex layout */
+.splash-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+/* ===== COLOUR-CODED REFERENCE TABLES ===== */
+.about-table .ref-blue { background: #e5f1ff; }
+.about-table .ref-green { background: #e8f7ee; }
+.about-table .ref-yellow { background: #fff8d8; }
+.about-table .ref-orange { background: #fff0df; }
+.about-table .ref-purple { background: #efe8ff; }
+.about-table .ref-red { background: #ffe7e5; }
+.about-table .ref-darkred { background: #f8d7d7; }
+
+/* ===== Small-screen adjustments for new components ===== */
+@media (max-width: 400px) {
+  .current-panel { padding: 10px 6px; }
+  .current-value { font-size: 20px; }
+  .metric-grid { grid-template-columns: 1fr; }
+}
+.email-trigger-row {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--muted);
+}
+.email-trigger-row:last-child { border-bottom: none; }
+.email-trigger-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.email-trigger-head strong { font-size: 14px; color: var(--navy); }
+.email-trigger-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.email-trigger-type.is-routine { background: #C6F6D5; color: #276749; }
+.email-trigger-type.is-critical { background: #FED7D7; color: #9B2C2C; }
+.email-trigger-subject { font-size: 12px; color: var(--navy); margin-bottom: 4px; }
+.email-trigger-body { font-size: 12px; color: var(--charcoal); line-height: 1.5; margin-bottom: 6px; }
+.email-trigger-vars {
+  font-size: 11px;
+  color: var(--gray);
+  font-family: monospace;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.email-trigger-test { width: auto; padding: 6px 14px; font-size: 12px; }
+
+/* Shared readings presentation and accessible verification artwork. */
+.readings-table-wrap { background:#fff; border-radius:12px; padding:12px; margin:16px 0; overflow-x:auto; }
+.readings-table-title { color:#101A31; margin:0 0 12px; }
+.readings-table { width:100%; border-collapse:collapse; font-size:13px; text-align:left; }
+.readings-table th { color:#101A31; background:#EDF2F7; font-weight:700; padding:10px 8px; white-space:nowrap; }
+.readings-table td { padding:12px 8px; border-bottom:1px solid #EDF2F7; vertical-align:top; }
+.readings-table tbody tr:nth-child(even) { background:#F8FAF9; }
+.metric-value-cell { font-weight:700; color:#101A31; white-space:nowrap; }
+.metric-pill { display:inline-block; padding:3px 7px; margin-top:5px; border-radius:8px; font-size:10px; font-weight:600; line-height:1.4; }
+.range-classification { min-width:180px; }
+.range-classification .metric-pill { margin-right:4px; }
+#historyTable tr[data-reading-id] { cursor:pointer; }
+#historyTable tr:focus-visible { outline:2px solid #FF8308; outline-offset:-2px; }
+#historyTable .selection-cell { display:none; }
+#historyTable.selection-mode .selection-cell { display:table-cell; }
+.metric-panel h4, .about-section-heading { color: #101A31; }
+.glucose-category-panel { border:1px solid #EDF2F7; border-radius:10px; padding:12px; margin-top:10px; position:relative; }
+.glucose-category-panel h5 { margin:0; color:#000; padding-right:25px; }
+.category-heading { background:none; border:0; padding:0; color:#000; font:inherit; font-weight:700; text-align:left; cursor:pointer; width:100%; }
+.category-close { position:absolute; top:7px; right:8px; background:none; border:0; font-size:22px; color:#2D3748; cursor:pointer; }
+.glucose-category-panel.collapsed .category-stats, .glucose-category-panel.collapsed .category-close { display:none; }
+.glucose-category-panel.collapsed .category-heading::after { content:'+'; float:right; }
+.metric-grid { display:block; }
+.metric-grid > div { display:flex; justify-content:space-between; gap:12px; padding:6px 0; }
+.metric-grid dd { text-align:right; margin:0; color:#101A31; }
+#topVerificationBadge { display:inline-flex; align-items:center; margin-right:6px; flex-shrink:0; }
+#topVerificationBadge[hidden] { display:none; }
+.verification-badge { display:inline-flex; padding:0; background:none; border:none; }
+.verify-icon, .verify-icon.verified { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; padding:4px; border:0; border-radius:0; background:none; clip-path:none; }
+.verify-icon svg { display:block; flex-shrink:0; }
+.result-icon { background:none; display:flex; justify-content:center; align-items:center; }
+.settings-subgroup { padding:14px; border:1px solid #EDF2F7; border-radius:12px; margin-top:14px; }
+.settings-subgroup label { display:block; margin:8px 0; }
+.settings-subgroup-heading { color:#000; margin:0 0 10px; }
+.drive-settings { flex-direction:column; align-items:stretch; }
+.backup-schedule-row { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.backup-schedule-row select { max-width:180px; padding:8px; }
+#autoBackupDays { max-width:90px; }
+#autoBackupDaysLabel[hidden] { display:none; }
+#backupCodesPopup { padding:20px 8px 8px; }
+#backupCodesList { border:1px solid #A0AEC0; padding:14px; border-radius:8px; font-family:monospace; overflow-wrap:anywhere; margin:12px 0; }
+.backup-code-actions, .about-legal-buttons { display:flex; gap:10px; flex-wrap:wrap; }
+.about-legal-buttons > button {
+  flex: 1 1 140px;
+  background: var(--orange);
+  color: var(--navy);
+  border: none;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.about-legal-buttons > button:hover {
+  box-shadow: 0 0 14px rgba(255, 131, 8, 0.6);
+  transform: translateY(-1px);
+}
+
+.about-legal-buttons > button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(255, 131, 8, 0.4);
+}
+.legal-doc { position:relative; padding:24px; }
+.legal-title { color:#101A31; padding-right:28px; }
+.legal-updated { color:#667085; margin:10px 0 20px; }
+.legal-doc h2 { margin:22px 0 10px; font-size:18px; color:#101A31; }
+.legal-doc p, .legal-doc li { line-height:1.65; margin-bottom:10px; overflow-wrap:anywhere; }
+.legal-doc ul { padding-left:20px; }
+.jeweller-link, .jeweller-link.orange-text { color:#FF8308; }
+.jeweller-link:hover, .jeweller-link.orange-text:hover { color:#000; }
+.about-download-list { list-style:none; padding:0; margin:8px 0 16px; }
+.about-download-list li { font-size:13px; padding:6px 0; word-break:break-all; }
+.splash-contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 14px;
+  margin-top: 10px;
+}
+
+.splash-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #A0AEC0;
+  text-decoration: none;
+  font-size: 11px;
+
+
+.splash-contact-item:hover {
+  color: #FF8308;
+}
+
+.splash-contact-item:hover::before {
+  color: #FF8308;
+}
+.splash-contact-row img, .splash-contact-row span { animation:none !important; opacity:1; }
+@media(max-width:480px) { .readings-table { min-width:530px; } #trendsTable { min-width:730px; } .email-trigger-head { align-items:flex-start; flex-direction:column; } .legal-doc { padding:18px; } }
+
+.metric-pill.status-stage1, .metric-pill.pulse-tachy-mild { background:#fff0df; color:#9a4b00; }
+#bpChart { display:block; }
+#bpChart canvas { height:210px !important; }
+.splash-contact-row { font-size:10px; }
+/* ===== About table row colours — classification palette ===== */
+.about-table tbody tr.ref-yellow  { background: var(--cl-yellow); }
+.about-table tbody tr.ref-orange  { background: var(--cl-orange); }
+.about-table tbody tr.ref-green   { background: var(--cl-green); }
+.about-table tbody tr.ref-palered { background: var(--cl-palered); }
+.about-table tbody tr.ref-red     { background: var(--cl-red); }
+.about-table tbody tr.ref-purple  { background: var(--cl-purple); }
+
+/* If any glucose tables still use their own class names, map them too */
+.about-table tbody tr.glucose-low          { background: var(--cl-yellow); }   /* Hypoglycemia */
+.about-table tbody tr.glucose-below-target { background: var(--cl-orange); }   /* Below Target */
+.about-table tbody tr.glucose-normal       { background: var(--cl-green); }    /* Normoglycemia / Target */
+.about-table tbody tr.glucose-elevated     { background: var(--cl-palered); }  /* Prediabetes / Above Target */
+.about-table tbody tr.glucose-high         { background: var(--cl-red); }      /* Diabetes Range */
+.about-table tbody tr.glucose-hyper        { background: var(--cl-purple); }   /* Hyperglycemia (High) */
+/* Google Drive status display */
+#googleDriveStatus.connected {
+  color: #10B981;
+  font-weight: 600;
+}
+#googleDriveStatus.disconnected {
+  color: #A0AEC0;
+}
+.drive-settings {
+  gap: 10px;
+}
+.drive-settings .btn-secondary {
+  width: auto;
+}
+/* ===== SETTINGS SECTION GROUPING ===== */
+.settings-subgroup {
+  padding: 14px;
+  border: 1px solid #EDF2F7;
+  border-radius: 12px;
+  margin-top: 14px;
+  background: #FFFFFF;
+}
+.settings-subgroup-heading {
+  color: #101A31;
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #EDF2F7;
+}
+.settings-subgroup .settings-item {
+  border-bottom: none;
+  padding: 8px 0;
+}
+.settings-subgroup .settings-item + .settings-item {
+  border-top: 1px solid #F7FAFC;
+}

@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function owner(uid) { return request.auth != null && request.auth.uid == uid; }
+  // Optional metrics permit partial readings while retaining owner-only access.
+  function optionalMeasurement(data, key, maximum) {
+   return data.get(key, null) == null || (data.get(key, null) is number
+     && data.get(key, null) > 0 && data.get(key, null) <= maximum);
+  }
+  function validReading(data) {
+   let glucose = data.get('glucoseValue', null);
+   let category = data.get('glucoseCategory', null);
+   let unit = data.get('glucoseUnit', 'mg/dL');
+   return optionalMeasurement(data, 'sys', 999)
+     && optionalMeasurement(data, 'dia', 999)
+     && optionalMeasurement(data, 'pulse', 999)
+     && unit in ['mg/dL', 'mmol/L']
+     && optionalMeasurement(data, 'glucoseValue', unit == 'mmol/L' ? 120 : 2000)
+     && ((data.get('sys', null) == null) == (data.get('dia', null) == null))
+     && ((glucose == null && category == null) ||
+       (glucose != null && category in ['fasting', 'pre_meal', 'post_meal', 'bedtime', 'random']))
+     && (data.get('sys', null) != null || data.get('pulse', null) != null || glucose != null)
+     && data.timestamp is string;
+  }
+  match /users/{uid} {
+   allow read: if owner(uid);
+   // Identity, verification, recovery and profile edits go through authenticated server operations.
+   allow update: if owner(uid) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['settings'])
+     && request.resource.data.settings is map;
+   allow create: if false;
+   allow delete: if owner(uid);
+   match /readings/{id} {
+    allow read, delete: if owner(uid);
+    allow create, update: if owner(uid) && validReading(request.resource.data);
+   }
+   match /activityLogs/{id} { allow read, delete: if owner(uid); allow create, update: if false; }
+   match /emailLogs/{id} { allow read, delete: if owner(uid); allow create, update: if false; }
+   match /medicalRecords/{id} {
+    allow read, delete: if owner(uid);
+    allow create: if owner(uid) && request.resource.data.title is string
+      && request.resource.data.fileName is string
+      && request.resource.data.mimeType == 'application/pdf'
+      && request.resource.data.size is number
+      && request.resource.data.size > 0 && request.resource.data.size <= 10485760
+      && request.resource.data.uploadedAt is string;
+    allow update: if false;
+   }
+  }
+  match /{document=**} { allow read, write: if false; }
+ }
+}
